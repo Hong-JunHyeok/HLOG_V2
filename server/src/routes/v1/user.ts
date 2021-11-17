@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { useRecoilSnapshot } from "recoil";
-import { getConnection, getRepository } from "typeorm";
+import { getRepository } from "typeorm";
 import { User } from "../../entity/User";
-import { UserRepository } from "../../repository/UserRepository";
 import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = Router();

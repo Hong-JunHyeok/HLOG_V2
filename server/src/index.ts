@@ -6,7 +6,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import logger from "morgan";
 import { userRouter, authRouter } from "./routes/v1";
-import setJsonResponser from "./utils/setJsonResponser";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -39,13 +39,8 @@ app.use("/", userRouter);
 app.use("/auth", authRouter);
 
 //! Error handler
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  //! 에러 핸들러
-  setJsonResponser(res, {
-    code: 500,
-    message: "서버 에러",
-    payload: error,
-  });
-});
+app.use((error: Error, req: Request, res: Response, next: NextFunction) =>
+  errorHandler(error, req, res, next)
+);
 
 export default app;
