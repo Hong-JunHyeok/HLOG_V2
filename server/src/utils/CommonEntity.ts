@@ -3,10 +3,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BaseEntity,
 } from "typeorm";
 
 @Entity()
-export class Common {
+export class Common extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   public id: number;
 

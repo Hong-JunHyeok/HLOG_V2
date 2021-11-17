@@ -2,6 +2,8 @@ import { Entity, Column, Index, BeforeInsert, OneToMany } from "typeorm";
 import bcrypt from "bcrypt";
 import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
+import { throws } from "assert";
+import { IUserJoin } from "../types/JoinTypes";
 
 require("dotenv").config();
 
@@ -36,4 +38,8 @@ export class User extends Common {
     onDelete: "CASCADE",
   })
   posts: Post[];
+
+  static async createUser(joinData: IUserJoin) {
+    return this.create(joinData);
+  }
 }

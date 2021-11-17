@@ -3,7 +3,7 @@ import { Response } from "express";
 interface ResponseObject {
   code: number;
   message?: string;
-  payload: any;
+  payload?: any;
 }
 
 const setJsonResponser = (res: Response, resObj: ResponseObject) => {
