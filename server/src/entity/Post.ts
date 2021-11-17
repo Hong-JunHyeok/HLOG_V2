@@ -1,5 +1,5 @@
-import { Column, Entity, ManyToMany, ManyToOne } from "typeorm";
-import { Common } from "./Common";
+import { Column, Entity, ManyToOne } from "typeorm";
+import { Common } from "../utils/CommonEntity";
 import { User } from "./User";
 
 @Entity({

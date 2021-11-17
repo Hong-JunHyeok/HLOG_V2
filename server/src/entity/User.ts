@@ -1,6 +1,6 @@
 import { Entity, Column, Index, BeforeInsert, OneToMany } from "typeorm";
 import bcrypt from "bcrypt";
-import { Common } from "./Common";
+import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 
 require("dotenv").config();
@@ -31,6 +31,9 @@ export class User extends Common {
     this.password = await bcrypt.hash(this.password, 12);
   }
 
-  @OneToMany((Type) => Post, (post) => post.id)
+  @OneToMany((Type) => Post, (post) => post.id, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   posts: Post[];
 }

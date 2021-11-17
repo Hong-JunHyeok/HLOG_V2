@@ -4,6 +4,7 @@ require("dotenv").config();
 import { createConnection } from "typeorm";
 import express from "express";
 import cors from "cors";
+import { userRouter } from "./routes/v1";
 
 const app = express();
 
@@ -19,5 +20,18 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
+//* DB connection
+setImmediate(async () => {
+  try {
+    await createConnection();
+    console.log("DB Connecting success");
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+//* Routes
+app.use("/", userRouter);
 
 export default app;
