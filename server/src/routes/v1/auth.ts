@@ -12,8 +12,8 @@ const router = Router();
 
 router.get("/test", async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = Token.createAccessToken({
-    email: "1@1",
-    nickname: "wnsgur34",
+    email: "test",
+    nickname: "test",
   });
   const refreshToken = Token.createRefreshToken();
 
@@ -25,6 +25,10 @@ router.get("/test", async (req: Request, res: Response, next: NextFunction) => {
       refreshToken,
     },
   });
+});
+
+router.post("/validation", tokenValidator, (req, res, next) => {
+  res.send("성공");
 });
 
 router.post(
