@@ -7,7 +7,7 @@ interface TokenUserPayload {
 export class Token {
   static createAccessToken(userPayload: TokenUserPayload): string {
     const accessToken = jwt.sign({ ...userPayload }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "10s",
     });
 
     return accessToken;

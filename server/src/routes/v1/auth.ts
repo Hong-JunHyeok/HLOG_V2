@@ -129,14 +129,12 @@ router.post(
         email: loginData.email,
         nickname: loginData.password,
       });
-      const refreshToken = Token.createRefreshToken();
 
       setJsonResponser(res, {
         code: 201,
         message: "로그인 성공",
         payload: {
           accessToken,
-          refreshToken,
         },
       });
     } catch (error) {
