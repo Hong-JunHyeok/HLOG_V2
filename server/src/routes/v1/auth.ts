@@ -2,10 +2,10 @@ import { NextFunction, Request, Response, Router } from "express";
 import { User } from "../../entity/User";
 import { IUserJoin } from "../../types/JoinTypes";
 import setJsonResponser from "../../utils/setJsonResponser";
-import _ from "lodash";
 import { getRepository } from "typeorm";
 import { LoginTypes } from "../../types/LoginTypes";
 import bcrypt from "bcrypt";
+import { Token } from "../../utils/token";
 
 const router = Router();
 
@@ -103,9 +103,19 @@ router.post(
         });
       }
 
+      const accessToken = Token.createAccessToken({
+        email: loginData.email,
+        nickname: loginData.password,
+      });
+      const refreshToken = Token.createRefreshToken();
+
       setJsonResponser(res, {
         code: 201,
         message: "로그인 성공",
+        payload: {
+          accessToken,
+          refreshToken,
+        },
       });
     } catch (error) {
       console.error(error);

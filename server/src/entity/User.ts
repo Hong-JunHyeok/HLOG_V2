@@ -1,12 +1,4 @@
-import {
-  Entity,
-  Column,
-  Index,
-  BeforeInsert,
-  OneToMany,
-  BeforeUpdate,
-} from "typeorm";
-import bcrypt from "bcrypt";
+import { Entity, Column, Index, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 import { IUserJoin } from "../types/JoinTypes";
@@ -34,7 +26,7 @@ export class User extends Common {
   @Column({ nullable: false, comment: "사용자의 비밀번호", type: "varchar" })
   password: string;
 
-  @OneToMany((Type) => Post, (post) => post.id, {
+  @OneToMany((Type) => Post, (post) => post.author, {
     nullable: true,
     onDelete: "CASCADE",
   })

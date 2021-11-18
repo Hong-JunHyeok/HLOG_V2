@@ -7,6 +7,7 @@ import cors from "cors";
 import logger from "morgan";
 import { userRouter, authRouter } from "./routes/v1";
 import errorHandler from "./middlewares/errorHandler";
+import tokenValidator from "./middlewares/tokenValidator";
 
 const app = express();
 
