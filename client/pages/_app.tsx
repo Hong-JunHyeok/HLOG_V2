@@ -1,10 +1,13 @@
 import React from "react";
+import AuthProvider from "../contexts/AuthContext";
 import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   return (
     <React.Fragment>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </React.Fragment>
   );
 }

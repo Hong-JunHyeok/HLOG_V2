@@ -1,14 +1,43 @@
+import { useCallback, useEffect } from "react";
+import Link from "next/link";
 import useInput from "../../../hooks/useInput";
 import styles from "./loginForm.module.scss";
+import { loginValidation } from "../../../utils/validator/login";
+import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
 
-interface LoginFormProps {}
+type LoginFormProps = {};
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
+  const authDispatch = useAuthDispatch();
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+
+      const validateResult = loginValidation({ email, password });
+
+      switch (validateResult.type) {
+        case "SUCCESS":
+          authDispatch({
+            type: "LOGIN_SUCCESS",
+          });
+          break;
+        case "EMPTY":
+          alert(validateResult.message);
+          break;
+        case "WRONG":
+          alert(validateResult.message);
+          break;
+      }
+    },
+    [email, password]
+  );
+
   return (
-    <form className={styles.container}>
+    <form className={styles.container} onSubmit={handleSubmit}>
       <input
         type="text"
         className={styles.input}
@@ -28,6 +57,13 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
       <button type="submit" className={styles.button}>
         로그인
       </button>
+
+      <p className={styles.joinUs}>
+        HLOG와 함께해주세요.
+        <Link href="/join">
+          <a className={styles.joinButton}>회원가입</a>
+        </Link>
+      </p>
     </form>
   );
 };

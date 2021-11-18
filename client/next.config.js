@@ -1,10 +1,2 @@
-// const path = require("path");
-
-// module.exports = {
-//   sassOptions: {
-//     includePaths: [
-//       path.join(__dirname, "styles"),
-//       path.join(__dirname, "components/**/*.scss"),
-//     ],
-//   },
-// };
+const withImages = require("next-images");
+module.exports = withImages();

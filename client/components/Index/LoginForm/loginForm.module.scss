@@ -9,7 +9,7 @@
   border-radius: 10px;
 
   .input {
-    width: 500px;
+    width: 400px;
     border-radius: 10px;
     border: none;
     margin-top: 1rem;
@@ -29,5 +29,16 @@
     padding: 1rem;
     border: none;
     cursor: pointer;
+  }
+
+  .joinUs {
+    font-weight: lighter;
+    margin-top: 2rem;
+    text-align: end;
+
+    .joinButton {
+      background-color: #e7f5ff;
+      color: #74c0fc;
+    }
   }
 }
