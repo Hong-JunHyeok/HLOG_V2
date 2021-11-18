@@ -16,6 +16,13 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "YeolrinGothic-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/YeolrinGothic-Bold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html,
 body {
@@ -36,4 +43,8 @@ a {
   font-family: "NanumBarunGothic";
   font-weight: 400;
   font-weight: normal;
+}
+
+.special_text {
+  color: #0076ffe6;
 }

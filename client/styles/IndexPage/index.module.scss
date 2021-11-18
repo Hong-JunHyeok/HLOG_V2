@@ -1,4 +1,12 @@
 .container {
   padding: 0 0.5rem;
   display: flex;
+  justify-content: space-evenly;
+  .mainComment {
+    font-weight: 400;
+    font-family: "YeolrinGothic-Bold";
+    font-weight: bold;
+    font-size: 58px;
+    white-space: pre-wrap;
+  }
 }
