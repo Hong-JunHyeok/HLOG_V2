@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { User } from "./User";
 
@@ -16,6 +16,7 @@ export class Post extends Common {
   @Column({ nullable: false, comment: "게시글의 본문", type: "text" })
   postContent: string;
 
-  @ManyToOne((Type) => User, (user) => user.id)
-  author: User;
+  @ManyToOne(() => User, (user) => user.posts)
+  @JoinColumn([{ name: "authorId", referencedColumnName: "id" }])
+  user: User;
 }

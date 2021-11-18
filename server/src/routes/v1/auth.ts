@@ -73,7 +73,9 @@ router.post(
         password: await bcrypt.hash(joinData.password, 12),
       };
 
-      await userRepository.save(encryptedJoinData);
+      const newUser = userRepository.create(encryptedJoinData);
+      await userRepository.save(newUser);
+
       setJsonResponser(res, {
         code: 201,
         message: "회원가입 성공",

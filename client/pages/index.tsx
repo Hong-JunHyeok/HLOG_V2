@@ -8,6 +8,7 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import { PostType } from "../types/Post";
+import PostItem from "../components/PostItem";
 
 export default function Index({
   posts,
@@ -16,7 +17,7 @@ export default function Index({
     <React.Fragment>
       <Header />
       {posts.map((post) => (
-        <>{post.postTitle}</>
+        <PostItem {...post} />
       ))}
     </React.Fragment>
   );

@@ -10,11 +10,6 @@ const tokenValidator = (req: Request, res: Response, next: NextFunction) => {
     if (decoded) {
       req.body.decodedUserPayload = decoded;
       next();
-    } else {
-      setJsonResponser(res, {
-        code: 401,
-        message: "unauthorized",
-      });
     }
   } catch (error) {
     if (error.name === "JsonWebTokenError") {

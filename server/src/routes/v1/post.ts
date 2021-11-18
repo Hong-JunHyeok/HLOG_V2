@@ -4,6 +4,7 @@ import setJsonResponser from "../../utils/setJsonResponser";
 import { getRepository } from "typeorm";
 import { Post } from "../../entity/Post";
 import tokenValidator from "../../middlewares/tokenValidator";
+import { User } from "../../entity/User";
 
 const router = express.Router();
 
@@ -28,20 +29,28 @@ router.post(
     }
 
     try {
+      const userRepository = getRepository(User);
+
+      const user = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
       const postRepository = getRepository(Post);
 
-      await postRepository.save({
-        postTitle,
-        postContent,
-        postThumnail,
-      });
+      const newPost = new Post();
+
+      newPost.postTitle = postTitle;
+      newPost.postThumnail = postThumnail;
+      newPost.postContent = postContent;
+      newPost.user = user;
+
+      await postRepository.save(newPost);
 
       return setJsonResponser(res, {
         code: 200,
         message: "성공적으로 게시글을 작성하였습니다.",
       });
     } catch (error) {
-      console.error(error);
       next(error);
     }
   }
