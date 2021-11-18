@@ -1,0 +1,15 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.header {
+  width: 100vw;
+  background-color: inherit;
+  padding: 1rem 3rem;
+  font-family: ChosunBg;
+
+  .logo {
+    font-size: 26px;
+    &:first-letter {
+      color: colors.$primary_color;
+    }
+  }
+}
