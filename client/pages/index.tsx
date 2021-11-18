@@ -9,10 +9,10 @@ import {
 } from "next";
 
 export default function Index({
-  postsResponse,
+  posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const authState = useAuthState();
-  console.log(postsResponse);
+  console.log(posts);
 
   return (
     <React.Fragment>
@@ -27,6 +27,6 @@ export const getServerSideProps: GetServerSideProps = async (
   const postsResponse = await getPostsResponse();
 
   return {
-    props: { postsResponse },
+    props: { posts: postsResponse.payload.posts },
   };
 };
