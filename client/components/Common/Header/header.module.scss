@@ -1,15 +1,29 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .header {
+  display: flex;
   width: 100vw;
   background-color: inherit;
   padding: 1rem 3rem;
-  font-family: ChosunBg;
 
   .logo {
+    line-height: 3rem;
+    vertical-align: middle;
     font-size: 26px;
-    &:first-letter {
+    font-weight: lighter;
+    font-family: ChosunBg;
+    margin-right: 15rem;
+    &::first-letter {
       color: colors.$primary_color;
+    }
+  }
+
+  .menus {
+    list-style: none;
+    display: flex;
+
+    & > .menu {
+      margin: 1rem 3rem;
     }
   }
 }
