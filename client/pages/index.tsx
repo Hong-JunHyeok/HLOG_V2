@@ -13,6 +13,7 @@ import PostItem from "../components/PostItem";
 export default function Index({
   posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(posts);
   return (
     <React.Fragment>
       <Header />

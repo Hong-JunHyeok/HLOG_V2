@@ -59,7 +59,26 @@ router.post(
 router.get(
   "/posts",
   async (req: Request, res: Response, next: NextFunction) => {
-    const posts = await getRepository(Post).find();
+    const postRepository = getRepository(Post);
+
+    const posts = await postRepository
+      .createQueryBuilder("posts")
+      .select([
+        "posts.id",
+        "posts.createdAt",
+        "posts.updatedAt",
+        "posts.postThumnail",
+        "posts.postContent",
+        "posts.postTitle",
+        "user.username",
+        "user.id",
+        "user.profileUrl",
+      ])
+      .leftJoin("posts.user", "user")
+      .getMany();
+    // find({
+    //   relations: ["user"],
+    // });
 
     setJsonResponser(res, {
       code: 200,

@@ -17,6 +17,5 @@ export class Post extends Common {
   postContent: string;
 
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn([{ name: "authorId", referencedColumnName: "id" }])
   user: User;
 }
