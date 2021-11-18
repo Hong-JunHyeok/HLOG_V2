@@ -23,8 +23,15 @@ const tokenValidator = (req: Request, res: Response, next: NextFunction) => {
         message: error.message,
         payload: error,
       });
+    } else if (error.name === "TokenExpireError") {
+      return setJsonResponser(res, {
+        code: 419,
+        message: error.message,
+        payload: error,
+      });
+    } else {
+      next(error);
     }
-    next(error);
   }
 };
 

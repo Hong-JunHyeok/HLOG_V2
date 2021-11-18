@@ -6,8 +6,26 @@ import { getRepository } from "typeorm";
 import { LoginTypes } from "../../types/LoginTypes";
 import bcrypt from "bcrypt";
 import { Token } from "../../utils/token";
+import tokenValidator from "../../middlewares/tokenValidator";
 
 const router = Router();
+
+router.get("/test", async (req: Request, res: Response, next: NextFunction) => {
+  const accessToken = Token.createAccessToken({
+    email: "1@1",
+    nickname: "wnsgur34",
+  });
+  const refreshToken = Token.createRefreshToken();
+
+  setJsonResponser(res, {
+    code: 200,
+    message: "테스트 성공",
+    payload: {
+      accessToken,
+      refreshToken,
+    },
+  });
+});
 
 router.post(
   "/join",
