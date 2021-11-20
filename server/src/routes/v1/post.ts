@@ -103,6 +103,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
         "posts.createdAt",
         "posts.updatedAt",
         "posts.postThumnail",
+        "posts.postContent",
         "posts.postTitle",
         "user.username",
         "user.selfIntroduction",

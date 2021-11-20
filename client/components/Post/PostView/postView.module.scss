@@ -26,6 +26,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           width: 100px;
           border-radius: 50%;
           .profileImage {
@@ -50,13 +51,16 @@
       }
 
       .date {
+        color: colors.$normal_text;
       }
     }
   }
 
   .content {
-  }
-
-  .footer {
+    padding: 1rem 5rem;
+    & > img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
   }
 }
