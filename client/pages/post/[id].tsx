@@ -5,6 +5,7 @@ import React from "react";
 import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
+import Footer from "../../components/Common/Footer";
 
 interface IPostViewProps {
   post: PostType;
@@ -19,6 +20,7 @@ const PostViewPage = (
     <React.Fragment>
       <Header />
       <PostView post={post} />
+      <Footer />
     </React.Fragment>
   );
 };
