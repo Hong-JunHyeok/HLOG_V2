@@ -5,10 +5,14 @@ import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 
+interface IPostViewProps {
+  post: PostType;
+}
+
 const PostView = (
-  post: PostType
+  props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-  console.log(post);
+  const { post } = props;
 
   return (
     <React.Fragment>
@@ -22,15 +26,13 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { id } = context.params;
-  let postsResponse: any;
+  let postResponse: any;
   if (typeof id === "string") {
-    postsResponse = await getPostResponse(parseInt(id, 10));
+    postResponse = await getPostResponse(parseInt(id, 10));
   }
 
   return {
-    props: {
-      post: {},
-    },
+    props: { post: postResponse.payload },
   };
 };
 

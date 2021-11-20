@@ -8,7 +8,7 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import { PostType } from "../types/Post";
-import PostItem from "../components/PostItem";
+import PostItem from "../components/Post/PostItem";
 
 export default function Index({
   posts,

@@ -61,32 +61,53 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     const postRepository = getRepository(Post);
 
-    const posts = await postRepository
-      .createQueryBuilder("posts")
-      .select([
-        "posts.id",
-        "posts.createdAt",
-        "posts.updatedAt",
-        "posts.postThumnail",
-        "posts.postTitle",
-        "user.username",
-        "user.id",
-        "user.profileUrl",
-      ])
-      .leftJoin("posts.user", "user")
-      .getMany();
-    // find({
-    //   relations: ["user"],
-    // });
+    try {
+      const posts = await postRepository
+        .createQueryBuilder("posts")
+        .select([
+          "posts.id",
+          "posts.createdAt",
+          "posts.updatedAt",
+          "posts.postThumnail",
+          "posts.postTitle",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("posts.user", "user")
+        .getMany();
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "모든 포스터조회 성공",
+        payload: {
+          posts,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+
+  const postRepository = getRepository(Post);
+
+  try {
+    const post = await postRepository.findOne({
+      where: { id },
+    });
 
     setJsonResponser(res, {
       code: 200,
-      message: "모든 포스터조회 성공",
-      payload: {
-        posts,
-      },
+      message: "포스트 조회성공",
+      payload: post,
     });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 export default router;

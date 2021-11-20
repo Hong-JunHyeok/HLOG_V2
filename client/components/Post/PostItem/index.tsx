@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { If, Then, Else } from "react-if";
-import { PostType } from "../../types/Post";
+import { PostType } from "../../../types/Post";
 import styles from "./postItem.module.scss";
 import { useRouter } from "next/router";
-import dateFormatter from "../../utils/formatter/date-format";
+import dateFormatter from "../../../utils/formatter/date-format";
 
 const PostItem: React.FunctionComponent<PostType> = ({
   id,
