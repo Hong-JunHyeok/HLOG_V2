@@ -5,7 +5,7 @@ export interface PostType {
   postTitle: string;
   postThumnail: string;
   postContent: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   author: UserType;
 }

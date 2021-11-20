@@ -68,7 +68,6 @@ router.get(
         "posts.createdAt",
         "posts.updatedAt",
         "posts.postThumnail",
-        "posts.postContent",
         "posts.postTitle",
         "user.username",
         "user.id",

@@ -1,17 +1,25 @@
-import React from "react";
-import { If, Then } from "react-if";
+import React, { useCallback } from "react";
+import { If, Then, Else } from "react-if";
 import { PostType } from "../../types/Post";
 import styles from "./postItem.module.scss";
+import { useRouter } from "next/router";
+import dateFormatter from "../../utils/formatter/date-format";
 
 const PostItem: React.FunctionComponent<PostType> = ({
+  id,
   postTitle,
-  postContent,
   createdAt,
   updatedAt,
   postThumnail,
 }) => {
+  const router = useRouter();
+
+  const handlePushViewPost = useCallback(() => {
+    router.push(`/post/${id}`);
+  }, []);
+
   return (
-    <section className={styles.itemWrapper}>
+    <section className={styles.itemWrapper} onClick={handlePushViewPost}>
       <If condition={postThumnail}>
         <Then>
           <img src={postThumnail} alt="" className={styles.thumnail} />
@@ -20,6 +28,15 @@ const PostItem: React.FunctionComponent<PostType> = ({
 
       <div className={styles.meta}>
         <h1 className={styles.postTitle}>{postTitle}</h1>
+
+        <If condition={updatedAt !== createdAt}>
+          <Then>
+            <span>최근 수정됨 : {updatedAt}</span>
+          </Then>
+          <Else>
+            <span>작성일 : {dateFormatter(createdAt)}</span>
+          </Else>
+        </If>
       </div>
     </section>
   );
