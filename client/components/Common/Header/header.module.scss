@@ -5,6 +5,8 @@
   width: 100vw;
   background-color: inherit;
   padding: 1rem 3rem;
+  user-select: none;
+  cursor: pointer;
 
   .logo {
     line-height: 3rem;

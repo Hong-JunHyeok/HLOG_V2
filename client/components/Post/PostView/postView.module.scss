@@ -1,18 +1,62 @@
 @use "../../../styles/colors.module.scss" as colors;
 
-.meta {
-  .title {
-    font-size: 32px;
-    font-weight: bold;
-    color: colors.$normal_text;
+.container {
+  padding: 1rem 3rem;
+  .meta {
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      color: colors.$normal_text;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+
+      .profileInfo {
+        padding: 1rem;
+        background-color: colors.$gray_text1;
+        border-radius: 10px;
+        margin: 1rem 0;
+        display: flex;
+        height: 200px;
+
+        .profile {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100px;
+          border-radius: 50%;
+          .profileImage {
+            width: 58px;
+            height: 58px;
+          }
+          .username {
+            font-weight: bold;
+          }
+        }
+
+        .intro {
+          flex: 8;
+          margin: 0;
+          font-style: italic;
+          padding-left: 2rem;
+          font-size: 1.3rem;
+          color: colors.$normal_text;
+          height: 100%;
+          overflow-y: auto;
+        }
+      }
+
+      .date {
+      }
+    }
   }
 
-  .info {
+  .content {
   }
-}
 
-.content {
-}
-
-.footer {
+  .footer {
+  }
 }

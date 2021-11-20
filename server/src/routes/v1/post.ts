@@ -105,6 +105,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
         "posts.postThumnail",
         "posts.postTitle",
         "user.username",
+        "user.selfIntroduction",
         "user.id",
         "user.profileUrl",
       ])

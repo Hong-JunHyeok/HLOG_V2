@@ -31,7 +31,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
 
         <If condition={updatedAt !== createdAt}>
           <Then>
-            <span>최근 수정됨 : {updatedAt}</span>
+            <span>최근 수정됨 : {dateFormatter(updatedAt)}</span>
           </Then>
           <Else>
             <span>작성일 : {dateFormatter(createdAt)}</span>

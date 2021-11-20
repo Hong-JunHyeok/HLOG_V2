@@ -7,5 +7,5 @@ export interface PostType {
   postContent: string;
   createdAt: string;
   updatedAt: string;
-  author: UserType;
+  user: UserType;
 }
