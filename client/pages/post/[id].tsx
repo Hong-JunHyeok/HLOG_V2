@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { GetServerSidePropsContext } from "next";
+import PostView from "../../components/Post/PostView";
 import React from "react";
 import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
@@ -9,7 +10,7 @@ interface IPostViewProps {
   post: PostType;
 }
 
-const PostView = (
+const PostViewPage = (
   props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { post } = props;
@@ -17,7 +18,7 @@ const PostView = (
   return (
     <React.Fragment>
       <Header />
-      {post.postTitle}
+      <PostView post={post} />
     </React.Fragment>
   );
 };
@@ -36,4 +37,4 @@ export const getServerSideProps: GetServerSideProps = async (
   };
 };
 
-export default PostView;
+export default PostViewPage;

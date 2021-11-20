@@ -91,14 +91,26 @@ router.get(
 );
 
 router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+  const id = Number(req.params.id);
 
   const postRepository = getRepository(Post);
 
   try {
-    const post = await postRepository.findOne({
-      where: { id },
-    });
+    const post = await postRepository
+      .createQueryBuilder("posts")
+      .select([
+        "posts.id",
+        "posts.createdAt",
+        "posts.updatedAt",
+        "posts.postThumnail",
+        "posts.postTitle",
+        "user.username",
+        "user.id",
+        "user.profileUrl",
+      ])
+      .leftJoin("posts.user", "user")
+      .where("posts.id = :id", { id })
+      .getOne();
 
     setJsonResponser(res, {
       code: 200,

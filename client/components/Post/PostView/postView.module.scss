@@ -1,0 +1,18 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.meta {
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    color: colors.$normal_text;
+  }
+
+  .info {
+  }
+}
+
+.content {
+}
+
+.footer {
+}
