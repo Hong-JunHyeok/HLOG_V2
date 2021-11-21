@@ -1,8 +1,8 @@
-import axios from "axios";
+import customAxios from "../utils/customAxios";
 
 export const getPostsResponse = async () => {
   try {
-    const response = await axios.get("/post/posts");
+    const response = await customAxios.get("/post/posts");
     return response.data;
   } catch (error) {
     return error.response;
@@ -11,7 +11,7 @@ export const getPostsResponse = async () => {
 
 export const getPostResponse = async (postId: number) => {
   try {
-    const response = await axios.get(`/post/${postId}`);
+    const response = await customAxios.get(`/post/${postId}`);
     return response.data;
   } catch (error) {
     return error.response;

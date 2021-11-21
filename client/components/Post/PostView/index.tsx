@@ -3,6 +3,8 @@ import { If, Else, Then } from "react-if";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./postView.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
+import CommentInput from "../../Comment/CommentInput";
+import CommentList from "../../Comment/CommentList";
 
 interface IPostViewProps {
   post: PostType;
@@ -54,6 +56,9 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
             }}
           />
         </section>
+
+        <CommentInput />
+        <CommentList comments={[]} />
       </main>
     </>
   );

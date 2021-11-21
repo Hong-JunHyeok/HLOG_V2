@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { GetServerSidePropsContext } from "next";
+import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
 import React from "react";
 import { getPostResponse } from "../../apis/post";
@@ -9,17 +10,27 @@ import Footer from "../../components/Common/Footer";
 
 interface IPostViewProps {
   post: PostType;
+  error: Error;
 }
 
 const PostViewPage = (
   props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-  const { post } = props;
+  console.log(props);
+
+  const { post, error } = props;
 
   return (
     <React.Fragment>
       <Header />
-      <PostView post={post} />
+      <If condition={!!error}>
+        <Then>
+          <h1>오류가 발생했습니다.</h1>
+        </Then>
+        <Else>
+          <PostView post={post} />
+        </Else>
+      </If>
       <Footer />
     </React.Fragment>
   );
@@ -29,14 +40,18 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { id } = context.params;
-  let postResponse: any;
-  if (typeof id === "string") {
-    postResponse = await getPostResponse(parseInt(id, 10));
-  }
 
-  return {
-    props: { post: postResponse.payload },
-  };
+  try {
+    const postResponse = await getPostResponse(parseInt(id as string, 10));
+
+    return {
+      props: { post: postResponse.payload, error: null },
+    };
+  } catch (error) {
+    return {
+      props: { post: null, error: error },
+    };
+  }
 };
 
 export default PostViewPage;

@@ -1,0 +1,21 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+  background-color: colors.$gray_text2;
+  display: flex;
+  padding: 1rem 0.5rem;
+
+  .commentInput {
+    flex: 9;
+    border: none;
+    outline: none;
+    resize: none;
+  }
+
+  .commentSubmit {
+    flex: 1;
+    background-color: colors.$primary_color;
+    color: colors.$white_text;
+    border: none;
+  }
+}
