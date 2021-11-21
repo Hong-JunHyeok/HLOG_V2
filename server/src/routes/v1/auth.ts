@@ -92,12 +92,13 @@ router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
     const loginData = req.body as LoginTypes;
+    const { email, password } = loginData;
 
     try {
-      if (!loginData.email.trim() || !loginData.password.trim()) {
+      if (!email || !password) {
         return setJsonResponser(res, {
           code: 403,
-          message: "아이디, 비밀번호가 비었습니다.",
+          message: "아이디, 비밀번호를 입력해주세요.",
         });
       }
 

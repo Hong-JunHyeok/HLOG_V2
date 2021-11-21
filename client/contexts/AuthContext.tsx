@@ -13,6 +13,7 @@ function authReducer(state: AuthContextType, action: any): AuthContextType {
         ...state,
         isLoggedIn: false,
         loginLoading: true,
+        loginError: null,
       };
     case "LOGIN_SUCCESS":
       return {
@@ -23,6 +24,7 @@ function authReducer(state: AuthContextType, action: any): AuthContextType {
     case "LOGIN_ERROR":
       return {
         ...state,
+        loginError: action.payload,
       };
   }
 }

@@ -1,9 +1,11 @@
 import { useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import useInput from "../../../hooks/useInput";
 import styles from "./loginForm.module.scss";
 import { loginValidation } from "../../../utils/validator/login";
 import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
+import { loginRequest } from "../../../apis/auth";
 
 type LoginFormProps = {};
 
@@ -11,19 +13,50 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
+  const authState = useAuthState();
   const authDispatch = useAuthDispatch();
 
+  const router = useRouter();
+
+  const login = useCallback(async () => {
+    try {
+      authDispatch({
+        type: "LOGIN",
+      });
+      const loginResponse = await loginRequest({ email, password });
+
+      if (loginResponse.status === 403) {
+        return authDispatch({
+          type: "LOGIN_ERROR",
+          payload: loginResponse.data.message,
+        });
+      }
+
+      localStorage.setItem(
+        "hlog_access_token",
+        loginResponse.payload.accessToken
+      );
+      authDispatch({
+        type: "LOGIN_SUCCESS",
+      });
+    } catch (error) {
+      console.error(error);
+      authDispatch({
+        type: "LOGIN_ERROR",
+        payload: error.response.data.message,
+      });
+    }
+  }, [email, password]);
+
   const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
+    async (event: React.FormEvent) => {
       event.preventDefault();
 
       const validateResult = loginValidation({ email, password });
 
       switch (validateResult.type) {
         case "SUCCESS":
-          authDispatch({
-            type: "LOGIN_SUCCESS",
-          });
+          await login();
           break;
         case "EMPTY":
           alert(validateResult.message);
@@ -35,6 +68,14 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
     },
     [email, password]
   );
+
+  useEffect(() => {
+    authState.loginError && alert(authState.loginError);
+  }, [authState.loginError]);
+
+  useEffect(() => {
+    authState.isLoggedIn && router.back();
+  }, [authState.isLoggedIn]);
 
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
@@ -60,7 +101,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 
       <p className={styles.joinUs}>
         HLOG와 함께해주세요.
-        <Link href="/join">
+        <Link href="/auth/join">
           <a className={styles.joinButton}>회원가입</a>
         </Link>
       </p>

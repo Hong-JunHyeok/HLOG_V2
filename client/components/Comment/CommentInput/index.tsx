@@ -22,7 +22,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
       event.preventDefault();
 
       if (!authState.isLoggedIn) {
-        return alert("로그인이 필요한 서비스입니다.");
+        return router.push("/auth/login");
       }
 
       const postId = Number(getPostId());
