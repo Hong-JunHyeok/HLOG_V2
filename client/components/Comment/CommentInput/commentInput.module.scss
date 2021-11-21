@@ -1,15 +1,22 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .container {
-  background-color: colors.$gray_text2;
   display: flex;
   padding: 1rem 0.5rem;
+  border-radius: 10px;
 
   .commentInput {
     flex: 9;
     border: none;
     outline: none;
     resize: none;
+    padding: 1rem 0.8rem;
+    height: 300px;
+    border-radius: 10px 0 0 10px;
+    background-color: colors.$gray_text1;
+    &::placeholder {
+      color: colors.$normal_text;
+    }
   }
 
   .commentSubmit {
@@ -17,5 +24,6 @@
     background-color: colors.$primary_color;
     color: colors.$white_text;
     border: none;
+    border-radius: 0 10px 10px 0;
   }
 }

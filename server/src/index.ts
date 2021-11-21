@@ -5,7 +5,7 @@ import { createConnection } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import logger from "morgan";
-import { userRouter, authRouter, postRouter } from "./routes/v1";
+import { userRouter, authRouter, postRouter, commentRouter } from "./routes/v1";
 import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
@@ -38,6 +38,7 @@ setImmediate(async () => {
 app.use("/", userRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
+app.use("/comment", commentRouter);
 
 //! Error handler
 app.use((error: Error, req: Request, res: Response, next: NextFunction) =>

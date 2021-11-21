@@ -1,7 +1,7 @@
 import React from "react";
 import { CommentType } from "../../../types/Comment";
 import CommentItem from "../CommentItem";
-import styles from "./comment.module.scss";
+import styles from "./commentList.module.scss";
 
 interface ICommentProps {
   comments: CommentType[];

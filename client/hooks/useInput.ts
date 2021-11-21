@@ -11,7 +11,7 @@ const useInput = (
   logging: boolean = false
 ): [
   string,
-  ChangeEventHandler<HTMLInputElement>,
+  ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
   Dispatch<SetStateAction<string>>
 ] => {
   const [value, setValue] = useState(initialValue);

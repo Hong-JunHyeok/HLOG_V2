@@ -47,7 +47,7 @@ router.post(
       await postRepository.save(newPost);
 
       return setJsonResponser(res, {
-        code: 200,
+        code: 201,
         message: "성공적으로 게시글을 작성하였습니다.",
       });
     } catch (error) {

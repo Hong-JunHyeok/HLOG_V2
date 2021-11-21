@@ -16,8 +16,6 @@ interface IPostViewProps {
 const PostViewPage = (
   props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-  console.log(props);
-
   const { post, error } = props;
 
   return (
@@ -45,11 +43,11 @@ export const getServerSideProps: GetServerSideProps = async (
     const postResponse = await getPostResponse(parseInt(id as string, 10));
 
     return {
-      props: { post: postResponse.payload, error: null },
+      props: { post: postResponse.payload },
     };
   } catch (error) {
     return {
-      props: { post: null, error: error },
+      props: { error: error },
     };
   }
 };
