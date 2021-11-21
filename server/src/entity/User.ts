@@ -2,6 +2,7 @@ import { Entity, Column, Index, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 import { IUserJoin } from "../types/JoinTypes";
+import { Comment } from "./Comment";
 
 require("dotenv").config();
 
@@ -29,6 +30,14 @@ export class User extends Common {
   @OneToMany((Type) => Post, (post) => post.user, {
     nullable: true,
     onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   })
   posts: Post[];
+
+  @OneToMany((Type) => Comment, (comment) => comment.user, {
+    nullable: false,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  comments: Comment[];
 }

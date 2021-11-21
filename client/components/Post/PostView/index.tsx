@@ -38,6 +38,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                   className={styles.profileImage}
                 />
                 <span className={styles.username}>{post.user.username}</span>
+                <button className={styles.subscribe}>구독</button>
               </div>
               <p className={styles.intro}>{post.user.selfIntroduction}</p>
             </div>
