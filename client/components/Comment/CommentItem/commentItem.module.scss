@@ -54,5 +54,13 @@
     padding: 1rem;
     border-radius: 0 0 20px 20px;
     background-color: colors.$gray_text1;
+    user-select: none;
+    & > svg {
+      cursor: pointer;
+    }
+    .ment {
+      margin-left: 1rem;
+      font-weight: bold;
+    }
   }
 }

@@ -5,7 +5,7 @@ const useToggle = <T = boolean>(
   initialState = false
 ): [
   boolean,
-  MouseEventHandler<HTMLDivElement>,
+  MouseEventHandler<any>,
   React.Dispatch<React.SetStateAction<T | boolean>>
 ] => {
   const [isToggle, setIsToggle] = useState<boolean>(initialState);

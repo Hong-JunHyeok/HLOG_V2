@@ -1,13 +1,15 @@
 import React, { useCallback, useMemo } from "react";
 import { If, Else, Then } from "react-if";
 import { delteCommentRequest } from "../../../apis/comment";
-import DefaultProfile from "../../../assets/svg/default_profile.svg";
-import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
+import { useAuthState } from "../../../contexts/AuthContext";
 import { usePostDispatch } from "../../../contexts/PostContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./commentItem.module.scss";
+
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import DefaultProfile from "../../../assets/svg/default_profile.svg";
 
 interface ICommentProps {
   comment: CommentType;
@@ -18,6 +20,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
   const { myInfo, isLoggedIn } = useAuthState();
   const postDispatch = usePostDispatch();
 
+  const [isLiked, toggleLike] = useToggle(false);
   const [isEditMode, toggleEditMode] = useToggle(false);
 
   const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
@@ -32,14 +35,16 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
     }
   }, []);
 
-  const handleEdit = useCallback(() => {}, []);
+  const handleEdit = useCallback(async () => {
+    // TODO: 수정기능
+  }, []);
 
   return (
     <React.Fragment>
       <div
         className={styles.container}
-        onMouseEnter={toggleEditMode}
-        onMouseLeave={toggleEditMode}
+        onMouseEnter={isMyComment ? toggleEditMode : null}
+        onMouseLeave={isMyComment ? toggleEditMode : null}
       >
         <header className={styles.meta}>
           <img
@@ -74,7 +79,21 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
         </header>
 
         <p className={styles.content}>{comment.commentContent}</p>
-        <footer className={styles.emotion}>좋아요</footer>
+        <footer className={styles.emotion}>
+          {isLiked ? (
+            <React.Fragment>
+              <FcLike onClick={toggleLike} />
+              <span className={styles.ment}>
+                {myInfo.username}님 외, 48명이 이 댓글에 공감합니다.
+              </span>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <FcLikePlaceholder onClick={toggleLike} />
+              <span className={styles.ment}>48명이 이 댓글에 공감합니다.</span>
+            </React.Fragment>
+          )}
+        </footer>
       </div>
     </React.Fragment>
   );
