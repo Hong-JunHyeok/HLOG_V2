@@ -1,7 +1,7 @@
-import axios from "axios";
-import React from "react";
-import AuthProvider from "../contexts/AuthContext";
+import React, { useEffect } from "react";
+import AuthProvider, { useAuthDispatch } from "../contexts/AuthContext";
 import "../styles/globals.scss";
+import { ContextDevTool } from "react-context-devtool";
 
 function MyApp({ Component, pageProps }) {
   return (

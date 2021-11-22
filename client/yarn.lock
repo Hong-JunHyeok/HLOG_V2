@@ -2895,6 +2895,11 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-context-devtool@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-context-devtool/-/react-context-devtool-2.0.3.tgz#60d6d8669bc64e32e42069638e961acc8320d77a"
+  integrity sha512-GVpDaQqRsVoofcbViVWelWTUHNjk4CAA81ZU+TVjEwZUTjhwOgKDM4t6yGfLBoEEG8PFYKbp9QqzyWw2BASe5Q==
+
 react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"

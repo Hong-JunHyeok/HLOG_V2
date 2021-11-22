@@ -20,7 +20,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(
   cors({
     origin: [`${process.env.CLIENT_IP}`],
-    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
@@ -35,7 +34,7 @@ setImmediate(async () => {
 });
 
 //* Routes
-app.use("/", userRouter);
+app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);

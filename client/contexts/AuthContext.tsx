@@ -1,9 +1,12 @@
 import React, { createContext, useReducer, useContext } from "react";
+import { UserType } from "../types/User";
 
 export type AuthContextType = {
   isLoggedIn: boolean;
   loginLoading: boolean;
   loginError: Error | null;
+
+  myInfo: null | UserType;
 };
 
 function authReducer(state: AuthContextType, action: any): AuthContextType {
@@ -26,6 +29,22 @@ function authReducer(state: AuthContextType, action: any): AuthContextType {
         ...state,
         loginError: action.payload,
       };
+    case "GET_MY_INFO":
+      return {
+        ...state,
+        myInfo: null,
+      };
+    case "GET_MY_INFO_SUCCESS":
+      return {
+        ...state,
+        myInfo: action.payload,
+        isLoggedIn: true,
+      };
+    case "GET_MY_INFO_ERROR":
+      return {
+        ...state,
+        myInfo: null,
+      };
   }
 }
 
@@ -33,6 +52,8 @@ const initialState = {
   isLoggedIn: false,
   loginError: null,
   loginLoading: false,
+
+  myInfo: null,
 };
 
 export const AuthStateContext = createContext(null);

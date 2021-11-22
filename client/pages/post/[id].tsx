@@ -2,11 +2,13 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { GetServerSidePropsContext } from "next";
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
-import React from "react";
+import React, { useEffect } from "react";
 import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
+import { useAuthDispatch } from "../../contexts/AuthContext";
+import loginInitializer from "../../utils/initializer/loginInitializer";
 
 interface IPostViewProps {
   post: PostType;
@@ -17,6 +19,12 @@ const PostViewPage = (
   props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { post, error } = props;
+
+  const authDispatch = useAuthDispatch();
+
+  useEffect(() => {
+    loginInitializer(authDispatch);
+  }, []);
 
   return (
     <React.Fragment>

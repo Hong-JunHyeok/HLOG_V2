@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Common/Header";
 import { getPostsResponse } from "../apis/post";
 import {
@@ -8,10 +8,18 @@ import {
 } from "next";
 import { PostType } from "../types/Post";
 import PostList from "../components/Post/PostList";
+import { useAuthDispatch } from "../contexts/AuthContext";
+import loginInitializer from "../utils/initializer/loginInitializer";
 
 export default function Index({
   posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const authDispatch = useAuthDispatch();
+
+  useEffect(() => {
+    loginInitializer(authDispatch);
+  }, []);
+
   return (
     <React.Fragment>
       <Header />

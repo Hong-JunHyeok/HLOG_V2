@@ -6,6 +6,21 @@ import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = Router();
 
+router.get("/me", tokenValidator, async (req, res, next) => {
+  const userRepository = getRepository(User);
+
+  const me = await userRepository.findOne({
+    where: { email: req.body.decodedUserPayload.email },
+    select: ["username", "email", "createdAt", "updatedAt", "selfIntroduction"],
+  });
+
+  setJsonResponser(res, {
+    code: 200,
+    message: "내 정보 조회성공",
+    payload: me,
+  });
+});
+
 router.get(
   "/users",
   tokenValidator,
