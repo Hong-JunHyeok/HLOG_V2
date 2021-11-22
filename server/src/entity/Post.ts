@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
+import { Comment } from "./Comment";
 import { User } from "./User";
 
 @Entity({
@@ -18,4 +19,7 @@ export class Post extends Common {
 
   @ManyToOne(() => User, (user) => user.posts)
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  post: Post;
 }

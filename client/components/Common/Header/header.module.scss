@@ -7,6 +7,10 @@
   user-select: none;
   cursor: pointer;
 
+  @media (max-width: 768px) {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+
   .logo {
     line-height: 3rem;
     font-size: 26px;
@@ -22,7 +26,14 @@
     list-style: none;
     display: flex;
 
+    @media (max-width: 768px) {
+      display: none;
+      flex-direction: column;
+    }
+
     & > .menu {
+      width: 80px;
+      text-align: center;
       margin: 1rem 3rem;
       color: colors.$gray_text2;
       cursor: pointer;
