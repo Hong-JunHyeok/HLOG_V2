@@ -13,7 +13,7 @@ const CommentList: React.FunctionComponent<ICommentProps> = (props) => {
   return (
     <React.Fragment>
       {comments.map((comment) => (
-        <CommentItem comment={comment} />
+        <CommentItem comment={comment} key={comment.id} />
       ))}
     </React.Fragment>
   );

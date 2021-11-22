@@ -9,21 +9,36 @@ import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
 import { useAuthDispatch } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
+import { getCommentsRequest } from "../../apis/comment";
+import { CommentType } from "../../types/Comment";
+import { usePostDispatch } from "../../contexts/PostContext";
 
 interface IPostViewProps {
   post: PostType;
+  comments: CommentType;
   error: Error;
 }
 
 const PostViewPage = (
   props: IPostViewProps
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-  const { post, error } = props;
+  const { post, comments, error } = props;
 
   const authDispatch = useAuthDispatch();
+  const postDispatch = usePostDispatch();
 
   useEffect(() => {
     loginInitializer(authDispatch);
+
+    postDispatch({
+      type: "GET_POST_SUCCESS",
+      payload: post,
+    });
+
+    postDispatch({
+      type: "GET_COMMENTS_SUCCESS",
+      payload: comments,
+    });
   }, []);
 
   return (
@@ -49,9 +64,12 @@ export const getServerSideProps: GetServerSideProps = async (
 
   try {
     const postResponse = await getPostResponse(parseInt(id as string, 10));
+    const commentResponse = await getCommentsRequest(
+      parseInt(id as string, 10)
+    );
 
     return {
-      props: { post: postResponse.payload },
+      props: { post: postResponse.payload, comments: commentResponse.payload },
     };
   } catch (error) {
     return {

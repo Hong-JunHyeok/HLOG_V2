@@ -69,7 +69,7 @@ router.get(
       const postRepository = getRepository(Post);
       const commentRepository = getRepository(Comment);
 
-      const exPost = postRepository.find({
+      const exPost = await postRepository.findOne({
         where: { id: postId },
       });
 
@@ -81,7 +81,9 @@ router.get(
       }
 
       const comments = await commentRepository.find({
-        where: {},
+        where: {
+          post: exPost.id,
+        },
       });
 
       setJsonResponser(res, {

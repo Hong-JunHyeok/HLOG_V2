@@ -13,3 +13,12 @@ export const createCommentRequest = async (
     return error.response;
   }
 };
+
+export const getCommentsRequest = async (postId: number) => {
+  try {
+    const response = await customAxios.get(`/comment/${postId}`);
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};

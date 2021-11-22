@@ -9,7 +9,7 @@ interface IPostListPost {
 
 const PostList: React.FunctionComponent<IPostListPost> = ({ posts }) => {
   const postsMap = useMemo(
-    () => posts.map((post) => <PostItem {...post} />),
+    () => posts.map((post) => <PostItem {...post} key={post.id} />),
     []
   );
 
