@@ -24,10 +24,25 @@
       color: colors.$primary_color2;
     }
 
-    .edit {
+    .editMode {
       position: absolute;
       top: 1rem;
       right: 1rem;
+      & > button {
+        background-color: inherit;
+        padding: 0.5rem 0.7rem;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-left: 5px;
+      }
+      .edit {
+        border: 1px solid colors.$safe_color;
+        color: colors.$safe_color;
+      }
+      .delete {
+        border: 1px solid colors.$warning_color;
+        color: colors.$warning_color;
+      }
     }
   }
 

@@ -57,9 +57,13 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
           </If>
 
           {isEditMode && (
-            <div className={styles.edit}>
-              <button onClick={handleEdit}>수정</button>
-              <button onClick={handleDelete}>삭제</button>
+            <div className={styles.editMode}>
+              <button onClick={handleEdit} className={styles.edit}>
+                수정
+              </button>
+              <button onClick={handleDelete} className={styles.delete}>
+                삭제
+              </button>
             </div>
           )}
         </header>
