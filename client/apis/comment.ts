@@ -22,3 +22,12 @@ export const getCommentsRequest = async (postId: number) => {
     return error.response;
   }
 };
+
+export const delteCommentRequest = async (commentId: number) => {
+  try {
+    const response = await customAxios.delete(`/comment/${commentId}`);
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};

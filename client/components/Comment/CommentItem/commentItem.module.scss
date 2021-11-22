@@ -5,6 +5,7 @@
   background-color: white;
   border-radius: 20px;
   color: colors.$normal_text;
+  position: relative;
   .meta {
     padding: 1rem 2rem;
     display: flex;
@@ -21,6 +22,12 @@
 
     .date {
       color: colors.$primary_color2;
+    }
+
+    .edit {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
     }
   }
 

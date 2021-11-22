@@ -19,7 +19,7 @@
         border-radius: 10px;
         margin: 1rem 0;
         display: flex;
-        height: 200px;
+        height: 300px;
 
         .profile {
           flex: 1;
@@ -55,6 +55,9 @@
           color: colors.$normal_text;
           height: 100%;
           overflow-y: auto;
+          & > p {
+            margin: 0;
+          }
         }
       }
 

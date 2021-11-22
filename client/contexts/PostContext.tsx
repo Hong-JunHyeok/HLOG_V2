@@ -24,6 +24,13 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         ...state,
         comments: [action.payload as CommentType, ...state.comments],
       };
+    case "DELETE_COMMENT":
+      return {
+        ...state,
+        comments: state.comments.filter(
+          (comment) => comment.id !== action.payload
+        ),
+      };
     default:
       return { ...state };
   }

@@ -6,7 +6,6 @@ import useInput from "../../../hooks/useInput";
 import { createCommentRequest } from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
 import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
-import { createDeflate } from "zlib";
 
 interface ICommentProps {}
 
@@ -14,7 +13,10 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
   const authState = useAuthState();
   const postState = usePostState();
   const postDispatch = usePostDispatch();
-  const [commentState, onChangeCommentState] = useInput("", true);
+  const [commentState, onChangeCommentState, setCommentState] = useInput(
+    "",
+    true
+  );
   const router = useRouter();
 
   const getPostId = useCallback(() => {
@@ -49,6 +51,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
             },
           },
         });
+        setCommentState("");
       } catch (error) {
         alert(error.response.message);
       }

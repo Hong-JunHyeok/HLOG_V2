@@ -36,7 +36,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                 </span>
               </Else>
             </If>
-            <div className={styles.profileInfo}>
+            <div className={`${styles.profileInfo}`}>
               <div className={styles.profile}>
                 <img
                   src={post.user.profileUrl || DefaultProfile}
@@ -46,7 +46,10 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                 <span className={styles.username}>{post.user.username}</span>
                 <button className={styles.subscribe}>구독</button>
               </div>
-              <p className={styles.intro}>{post.user.selfIntroduction}</p>
+
+              <div className={`${styles.intro}`}>
+                <p>{post.user.selfIntroduction}</p>
+              </div>
             </div>
           </div>
         </div>

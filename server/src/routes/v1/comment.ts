@@ -8,6 +8,68 @@ import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = express.Router();
 
+router.delete(
+  "/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const commentRepository = getRepository(Comment);
+      const userRepository = getRepository(User);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      const comment = await commentRepository
+        .createQueryBuilder("comments")
+        .select([
+          "comments.id",
+          "comments.createdAt",
+          "comments.updatedAt",
+          "comments.commentContent",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("comments.user", "user")
+        .getOne();
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      if (me.id !== comment.user.id) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
+        });
+      }
+
+      await commentRepository
+        .createQueryBuilder()
+        .delete()
+        .from(Comment)
+        .where("id = :id", { id: commentId })
+        .execute();
+
+      setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 댓글을 삭제했습니다.",
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.post(
   "/:postId",
   tokenValidator,
@@ -92,6 +154,8 @@ router.get(
           "user.profileUrl",
         ])
         .leftJoin("comments.user", "user")
+        .orderBy("comments.createdAt", "DESC")
+        .orderBy("comments.updatedAt", "DESC")
         .getMany();
 
       setJsonResponser(res, {

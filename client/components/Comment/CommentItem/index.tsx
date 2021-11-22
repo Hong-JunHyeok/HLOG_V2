@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { If, Else, Then } from "react-if";
+import { delteCommentRequest } from "../../../apis/comment";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
+import { usePostDispatch } from "../../../contexts/PostContext";
+import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./commentItem.module.scss";
@@ -11,10 +14,28 @@ interface ICommentProps {
 
 const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
   const { comment } = props;
+  const postDispatch = usePostDispatch();
+
+  const [isEditMode, toggleEditMode] = useToggle(false);
+
+  const handleDelete = useCallback(async () => {
+    if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
+      await delteCommentRequest(comment.id);
+      postDispatch({
+        type: "DELETE_COMMENT",
+        payload: comment.id,
+      });
+    }
+  }, []);
+  const handleEdit = useCallback(() => {}, []);
 
   return (
     <React.Fragment>
-      <div className={styles.container}>
+      <div
+        className={styles.container}
+        onMouseEnter={toggleEditMode}
+        onMouseLeave={toggleEditMode}
+      >
         <header className={styles.meta}>
           <img
             src={comment.user.profileUrl || DefaultProfile}
@@ -34,6 +55,13 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
               </span>
             </Else>
           </If>
+
+          {isEditMode && (
+            <div className={styles.edit}>
+              <button onClick={handleEdit}>수정</button>
+              <button onClick={handleDelete}>삭제</button>
+            </div>
+          )}
         </header>
 
         <p className={styles.content}>{comment.commentContent}</p>
