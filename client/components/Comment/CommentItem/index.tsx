@@ -1,6 +1,6 @@
 import React from "react";
 import { CommentType } from "../../../types/Comment";
-import styles from "./comment.module.scss";
+import styles from "./commentItem.module.scss";
 
 interface ICommentProps {
   comment: CommentType;
@@ -11,7 +11,16 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
   return (
     <React.Fragment>
-      <p>{comment.commentContent}</p>
+      <div>
+        <header>
+          <img src={comment.user.profileUrl} alt="" />
+          <h3>{comment.user.username}</h3>
+          <span>{comment.createdAt}</span>
+        </header>
+
+        <p>{comment.commentContent}</p>
+        <footer>좋아요</footer>
+      </div>
     </React.Fragment>
   );
 };

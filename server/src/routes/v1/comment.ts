@@ -80,15 +80,23 @@ router.get(
         });
       }
 
-      const comments = await commentRepository.find({
-        where: {
-          post: exPost.id,
-        },
-      });
+      const comments = await commentRepository
+        .createQueryBuilder("comments")
+        .select([
+          "comments.id",
+          "comments.createdAt",
+          "comments.updatedAt",
+          "comments.commentContent",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("comments.user", "user")
+        .getMany();
 
       setJsonResponser(res, {
         code: 200,
-        message: `${postId}번 게시글 조회성공`,
+        message: `${postId}번 게시글 댓글 조회성공`,
         payload: comments,
       });
     } catch (error) {
