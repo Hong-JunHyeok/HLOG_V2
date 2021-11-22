@@ -41,5 +41,31 @@
         color: colors.$normal_text;
       }
     }
+
+    .profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      .profileImage {
+        width: 38px;
+        height: 38px;
+      }
+
+      .userDropdown {
+        position: absolute;
+        top: 50px;
+        border-radius: 10px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        overflow: hidden;
+        & > li {
+          padding: 0.8rem 1.2rem;
+          &:hover {
+            background-color: colors.$gray_text1;
+          }
+        }
+      }
+    }
   }
 }
