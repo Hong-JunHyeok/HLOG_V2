@@ -1,7 +1,9 @@
 import React from "react";
+import { Else, If, Then } from "react-if";
 import { CommentType } from "../../../types/Comment";
 import CommentItem from "../CommentItem";
 import styles from "./commentList.module.scss";
+import NoData from "../../../assets/svg/no_data.svg";
 
 interface ICommentProps {
   comments: CommentType[];
@@ -12,11 +14,21 @@ const CommentList: React.FunctionComponent<ICommentProps> = (props) => {
 
   return (
     <React.Fragment>
-      <div className={styles.container}>
-        {comments.map((comment) => (
-          <CommentItem comment={comment} key={comment.id} />
-        ))}
-      </div>
+      <If condition={comments.length > 0}>
+        <Then>
+          <div className={styles.container}>
+            {comments.map((comment) => (
+              <CommentItem comment={comment} key={comment.id} />
+            ))}
+          </div>
+        </Then>
+        <Else>
+          <div className={styles.noData}>
+            <img src={NoData} alt="" draggable={false} />이 게시글에 댓글이
+            없습니다.
+          </div>
+        </Else>
+      </If>
     </React.Fragment>
   );
 };

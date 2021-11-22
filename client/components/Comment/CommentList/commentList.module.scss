@@ -4,3 +4,15 @@
   background-color: colors.$gray_text2;
   padding: 1rem;
 }
+
+.noData {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 0;
+  img {
+    width: 500px;
+  }
+}

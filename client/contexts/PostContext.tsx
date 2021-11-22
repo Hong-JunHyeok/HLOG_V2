@@ -19,6 +19,11 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         ...state,
         comments: action.payload,
       };
+    case "CREATE_COMMENT_SUCCESS":
+      return {
+        ...state,
+        comments: [action.payload as CommentType, ...state.comments],
+      };
     default:
       return { ...state };
   }

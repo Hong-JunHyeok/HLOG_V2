@@ -5,11 +5,15 @@ import TextareaAutosize from "react-textarea-autosize";
 import useInput from "../../../hooks/useInput";
 import { createCommentRequest } from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
+import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
+import { createDeflate } from "zlib";
 
 interface ICommentProps {}
 
 const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
   const authState = useAuthState();
+  const postState = usePostState();
+  const postDispatch = usePostDispatch();
   const [commentState, onChangeCommentState] = useInput("", true);
   const router = useRouter();
 
@@ -29,6 +33,22 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
 
       try {
         await createCommentRequest(postId, commentState);
+
+        const now = new Date();
+        postDispatch({
+          type: "CREATE_COMMENT_SUCCESS",
+          payload: {
+            id: postState.comments.length + 2,
+            commentContent: commentState,
+            createdAt: now,
+            updatedAt: now,
+            user: {
+              id: authState.myInfo.id,
+              profileUrl: authState.myInfo.profileUrl,
+              username: authState.myInfo.username,
+            },
+          },
+        });
       } catch (error) {
         alert(error.response.message);
       }
