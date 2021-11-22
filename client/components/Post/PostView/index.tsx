@@ -6,6 +6,7 @@ import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
 import { usePostState } from "../../../contexts/PostContext";
+import React from "react";
 
 interface IPostViewProps {
   post: PostType;
@@ -18,7 +19,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
   const { comments } = usePostState();
 
   return (
-    <>
+    <React.Fragment>
       <main className={styles.container}>
         <div className={styles.meta}>
           <h1 className={styles.title}>{postTitle}</h1>
@@ -59,11 +60,10 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
             }}
           />
         </section>
-
-        <CommentInput />
-        <CommentList comments={comments} />
       </main>
-    </>
+      <CommentInput />
+      <CommentList comments={comments} />
+    </React.Fragment>
   );
 };
 

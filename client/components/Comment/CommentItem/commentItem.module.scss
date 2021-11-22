@@ -1,0 +1,36 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+  margin: 1rem 0;
+  background-color: white;
+  border-radius: 20px;
+  color: colors.$normal_text;
+  .meta {
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    .username {
+      margin: 0;
+      padding: 0 1rem;
+    }
+    .profileImage {
+      border-radius: 50%;
+      width: 58px;
+      height: 58px;
+    }
+
+    .date {
+      color: colors.$primary_color2;
+    }
+  }
+
+  .content {
+    padding: 0 2rem;
+  }
+
+  .emotion {
+    padding: 1rem;
+    border-radius: 0 0 20px 20px;
+    background-color: colors.$gray_text1;
+  }
+}

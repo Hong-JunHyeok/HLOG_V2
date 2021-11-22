@@ -1,0 +1,6 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+  background-color: colors.$gray_text2;
+  padding: 1rem;
+}
