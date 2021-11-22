@@ -7,7 +7,7 @@ import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
-import { useAuthDispatch } from "../../contexts/AuthContext";
+import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
@@ -24,6 +24,7 @@ const PostViewPage = (
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { post, comments, error } = props;
 
+  const authState = useAuthState();
   const authDispatch = useAuthDispatch();
   const postDispatch = usePostDispatch();
 

@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { If, Else, Then } from "react-if";
 import { delteCommentRequest } from "../../../apis/comment";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
+import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
 import { usePostDispatch } from "../../../contexts/PostContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
@@ -14,9 +15,12 @@ interface ICommentProps {
 
 const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
   const { comment } = props;
+  const { myInfo, isLoggedIn } = useAuthState();
   const postDispatch = usePostDispatch();
 
   const [isEditMode, toggleEditMode] = useToggle(false);
+
+  const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
   const handleDelete = useCallback(async () => {
     if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
@@ -27,6 +31,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
       });
     }
   }, []);
+
   const handleEdit = useCallback(() => {}, []);
 
   return (
@@ -56,7 +61,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
             </Else>
           </If>
 
-          {isEditMode && (
+          {isMyComment && isEditMode && isLoggedIn && (
             <div className={styles.editMode}>
               <button onClick={handleEdit} className={styles.edit}>
                 수정

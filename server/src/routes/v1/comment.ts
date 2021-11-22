@@ -36,6 +36,7 @@ router.delete(
           "user.profileUrl",
         ])
         .leftJoin("comments.user", "user")
+        .where("user.id = :id", { id: me.id })
         .getOne();
 
       if (!me) {
@@ -45,6 +46,7 @@ router.delete(
         });
       }
 
+      console.log(me, comment.user);
       if (me.id !== comment.user.id) {
         return setJsonResponser(res, {
           code: 403,
@@ -90,7 +92,7 @@ router.post(
       const postRepository = getRepository(Post);
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { id: req.body.decodedUserPayload.id },
       });
 
       const exPost = await postRepository.findOne({
@@ -115,6 +117,7 @@ router.post(
       return setJsonResponser(res, {
         code: 201,
         message: "성공적으로 댓글을 작성하였습니다.",
+        payload: newComment,
       });
     } catch (error) {
       next(error);

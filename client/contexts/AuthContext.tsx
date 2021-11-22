@@ -7,6 +7,7 @@ export type AuthContextType = {
   loginError: Error | null;
 
   myInfo: null | UserType;
+  getMyInfoLoading: boolean;
 };
 
 function authReducer(state: AuthContextType, action: any): AuthContextType {
@@ -33,17 +34,21 @@ function authReducer(state: AuthContextType, action: any): AuthContextType {
       return {
         ...state,
         myInfo: null,
+        getMyInfoLoading: true,
       };
     case "GET_MY_INFO_SUCCESS":
       return {
         ...state,
         myInfo: action.payload,
         isLoggedIn: true,
+        getMyInfoLoading: false,
       };
     case "GET_MY_INFO_ERROR":
       return {
         ...state,
         myInfo: null,
+        isLoggedIn: false,
+        getMyInfoLoading: false,
       };
   }
 }
@@ -54,6 +59,7 @@ const initialState = {
   loginLoading: false,
 
   myInfo: null,
+  getMyInfoLoading: false,
 };
 
 export const AuthStateContext = createContext(null);

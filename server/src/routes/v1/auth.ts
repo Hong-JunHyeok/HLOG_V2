@@ -10,27 +10,6 @@ import tokenValidator from "../../middlewares/tokenValidator";
 
 const router = Router();
 
-router.get("/test", async (req: Request, res: Response, next: NextFunction) => {
-  const accessToken = Token.createAccessToken({
-    email: "test",
-    nickname: "test",
-  });
-  const refreshToken = Token.createRefreshToken();
-
-  setJsonResponser(res, {
-    code: 200,
-    message: "테스트 성공",
-    payload: {
-      accessToken,
-      refreshToken,
-    },
-  });
-});
-
-router.post("/validation", tokenValidator, (req, res, next) => {
-  res.send("성공");
-});
-
 router.post(
   "/join",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -129,8 +108,8 @@ router.post(
       }
 
       const accessToken = Token.createAccessToken({
-        email: loginData.email,
-        nickname: loginData.password,
+        email: existUser.email,
+        id: existUser.id,
       });
 
       setJsonResponser(res, {

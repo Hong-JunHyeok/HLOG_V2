@@ -11,7 +11,14 @@ router.get("/me", tokenValidator, async (req, res, next) => {
 
   const me = await userRepository.findOne({
     where: { email: req.body.decodedUserPayload.email },
-    select: ["username", "email", "createdAt", "updatedAt", "selfIntroduction"],
+    select: [
+      "id",
+      "username",
+      "email",
+      "createdAt",
+      "updatedAt",
+      "selfIntroduction",
+    ],
   });
 
   setJsonResponser(res, {
