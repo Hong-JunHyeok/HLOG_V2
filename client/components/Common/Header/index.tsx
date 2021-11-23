@@ -1,51 +1,91 @@
-import React, { useCallback, useState } from "react";
-import { useAuthState } from "../../../contexts/AuthContext";
-import { useRouter } from "next/router";
+import React, { useCallback } from "react";
+import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
 import styles from "./header.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useToggle from "../../../hooks/useToggle";
+import Router from "../../../lib/Router";
 
 interface HeaderProps {}
 
 const Header: React.FunctionComponent<HeaderProps> = () => {
   const authState = useAuthState();
-  const router = useRouter();
+  const authDispatch = useAuthDispatch();
 
   const [isUserDropOpen, toggleUserDrop] = useToggle(false);
-  const handlePushHome = () => router.push("/");
+  const router = new Router();
+
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem("hlog_access_token");
+    authDispatch({
+      type: "LOGOUT",
+    });
+  }, []);
 
   return (
     <React.Fragment>
       <header className={styles.header}>
-        <div className={styles.logo} onClick={handlePushHome}>
+        <div className={styles.logo} onClick={() => router.handlePushLink("/")}>
           HLOG
         </div>
 
-        {authState.isLoggedIn && (
-          <nav className={styles.menus}>
-            <li className={styles.menu}>메인</li>
-            <li className={styles.menu}>인기 게시글</li>
-            <li className={styles.menu}>최근 게시글</li>
-            <li className={styles.menu}>설정</li>
-            <li className={styles.profile}>
-              <img
-                onClick={toggleUserDrop}
-                src={authState.myInfo.profileUrl || DefaultProfile}
-                alt=""
-                className={styles.profileImage}
-                draggable={false}
-              />
-              {isUserDropOpen && (
-                <div className={styles.userDropdown}>
-                  <li>내 프로필</li>
-                  <li>로그아웃</li>
-                </div>
-              )}
-
-              {/* TODO: Dropdown 메뉴 구현하기 */}
+        <nav className={styles.menus}>
+          {authState.isLoggedIn && (
+            <React.Fragment>
+              <li
+                className={styles.menu}
+                onClick={() => router.handlePushLink("/popular")}
+              >
+                인기 게시글
+              </li>
+              <li
+                className={styles.menu}
+                onClick={() => router.handlePushLink("/")}
+              >
+                최근 게시글
+              </li>
+              <li
+                className={styles.menu}
+                onClick={() => router.handlePushLink("/setting")}
+              >
+                설정
+              </li>
+              <li
+                className={styles.menu}
+                onClick={() => router.handlePushLink("/setting")}
+              >
+                글쓰기
+              </li>
+              <li className={styles.profile}>
+                <img
+                  onClick={toggleUserDrop}
+                  src={authState.myInfo.profileUrl || DefaultProfile}
+                  alt=""
+                  className={styles.profileImage}
+                  draggable={false}
+                />
+                {isUserDropOpen && (
+                  <div className={styles.userDropdown}>
+                    <li
+                      onClick={() =>
+                        router.handlePushLink(`/profile/${authState.myInfo.id}`)
+                      }
+                    >
+                      내 프로필
+                    </li>
+                    <li onClick={handleLogout}>로그아웃</li>
+                  </div>
+                )}
+              </li>
+            </React.Fragment>
+          )}
+          {!authState.isLoggedIn && (
+            <li className={styles.menu}>
+              <button onClick={() => router.handlePushLink("/auth/login")}>
+                로그인
+              </button>
             </li>
-          </nav>
-        )}
+          )}
+        </nav>
       </header>
     </React.Fragment>
   );

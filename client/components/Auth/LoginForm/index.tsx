@@ -25,7 +25,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
       });
       const loginResponse = await loginRequest({ email, password });
 
-      if (loginResponse.status === 403) {
+      if (loginResponse.code === 403) {
         return authDispatch({
           type: "LOGIN_ERROR",
           payload: loginResponse.data.message,
@@ -38,6 +38,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
       );
       authDispatch({
         type: "LOGIN_SUCCESS",
+        payload: loginResponse.payload.user,
       });
     } catch (error) {
       console.error(error);

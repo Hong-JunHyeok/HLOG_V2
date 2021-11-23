@@ -18,6 +18,7 @@ router.get("/me", tokenValidator, async (req, res, next) => {
       "createdAt",
       "updatedAt",
       "selfIntroduction",
+      "profileUrl",
     ],
   });
 

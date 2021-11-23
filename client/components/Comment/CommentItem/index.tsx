@@ -27,7 +27,8 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
   const handleDelete = useCallback(async () => {
     if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
-      await delteCommentRequest(comment.id);
+      const response = await delteCommentRequest(comment.id);
+
       postDispatch({
         type: "DELETE_COMMENT",
         payload: comment.id,

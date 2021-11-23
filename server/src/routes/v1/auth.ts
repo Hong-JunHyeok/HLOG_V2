@@ -6,7 +6,6 @@ import { getRepository } from "typeorm";
 import { LoginTypes } from "../../types/LoginTypes";
 import bcrypt from "bcrypt";
 import { Token } from "../../utils/token";
-import tokenValidator from "../../middlewares/tokenValidator";
 
 const router = Router();
 
@@ -117,6 +116,14 @@ router.post(
         message: "로그인 성공",
         payload: {
           accessToken,
+          user: {
+            id: existUser.id,
+            createdAt: existUser.createdAt,
+            updatedAt: existUser.updatedAt,
+            username: existUser.username,
+            selfIntroduction: existUser.selfIntroduction,
+            email: existUser.email,
+          },
         },
       });
     } catch (error) {

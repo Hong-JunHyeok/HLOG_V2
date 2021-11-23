@@ -34,13 +34,15 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
       const postId = Number(getPostId());
 
       try {
-        await createCommentRequest(postId, commentState);
+        const {
+          payload: { id: comment_id },
+        } = await createCommentRequest(postId, commentState);
 
         const now = new Date();
         postDispatch({
           type: "CREATE_COMMENT_SUCCESS",
           payload: {
-            id: postState.comments.length + 2,
+            id: comment_id,
             commentContent: commentState,
             createdAt: now,
             updatedAt: now,

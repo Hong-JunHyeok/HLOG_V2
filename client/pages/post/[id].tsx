@@ -1,5 +1,8 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { GetServerSidePropsContext } from "next";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  GetServerSidePropsContext,
+} from "next";
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
 import React, { useEffect } from "react";
@@ -7,7 +10,7 @@ import { getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
-import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
+import { useAuthDispatch } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
@@ -24,7 +27,6 @@ const PostViewPage = (
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { post, comments, error } = props;
 
-  const authState = useAuthState();
   const authDispatch = useAuthDispatch();
   const postDispatch = usePostDispatch();
 
