@@ -21,13 +21,13 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
   const postDispatch = usePostDispatch();
 
   const [isLiked, toggleLike] = useToggle(false);
-  const [isEditMode, toggleEditMode] = useToggle(false);
+  const [isEditMode, , editOpen, editClose] = useToggle(false);
 
   const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
   const handleDelete = useCallback(async () => {
     if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
-      const response = await delteCommentRequest(comment.id);
+      await delteCommentRequest(comment.id);
 
       postDispatch({
         type: "DELETE_COMMENT",
@@ -44,8 +44,8 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
     <React.Fragment>
       <div
         className={styles.container}
-        onMouseEnter={isMyComment ? toggleEditMode : null}
-        onMouseLeave={isMyComment ? toggleEditMode : null}
+        onMouseEnter={editOpen}
+        onMouseLeave={editClose}
       >
         <header className={styles.meta}>
           <img
