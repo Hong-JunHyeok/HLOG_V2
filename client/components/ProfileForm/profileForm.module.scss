@@ -1,0 +1,26 @@
+@use "../../styles/colors.module.scss" as colors;
+
+.profile_header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .profile {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: colors.$gray_text1;
+  }
+
+  .username {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .intro {
+    padding: 1rem 5rem;
+    font-style: italic;
+    background-color: colors.$gray_text2;
+    color: colors.$normal_text;
+    font-size: 1.2rem;
+  }
+}

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import Header from "../../components/Common/Header";
-import NoData from "../../assets/svg/no_data.svg";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { useAuthDispatch } from "../../contexts/AuthContext";
+import ProfileForm from "../../components/ProfileForm";
+import { GetServerSidePropsContext } from "next";
 
 export default function Profile() {
   const authDispatch = useAuthDispatch();
@@ -14,21 +15,16 @@ export default function Profile() {
   return (
     <React.Fragment>
       <Header />
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <h1>프로필 페이지는 개발중입니다.</h1>
-        <img
-          src={NoData}
-          alt=""
-          style={{
-            width: "500px",
-          }}
-        />
-      </div>
+      <ProfileForm />
       {/* <Footer /> */}
     </React.Fragment>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  return {
+    props: {},
+  };
+};
