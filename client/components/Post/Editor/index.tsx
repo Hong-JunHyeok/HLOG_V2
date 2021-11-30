@@ -30,6 +30,8 @@ const Editor = () => {
   const [title, onChangeTitle, setTitle] = useInput("");
   const [code, onChangeCode, setCode] = useInput("");
   const [editorMode, setEditorMode] = useState<"EDIT" | "PREVIEW">("EDIT");
+  const [createPostSuccess, setCreatePostSuccess] = useState(false);
+
   const authState = useAuthState();
 
   const handleSubmit = useCallback(async () => {
@@ -39,12 +41,16 @@ const Editor = () => {
     };
     const data = await createPostRequest(postData);
 
+    setCreatePostSuccess(true);
+    setTitle("");
+    setCode("");
+
     localStorage.removeItem("editorContent");
   }, [title, code]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (title || code) {
+      if ((title || code) && !createPostSuccess) {
         const editorData = JSON.stringify({
           title,
           code,
@@ -55,13 +61,17 @@ const Editor = () => {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [code]);
+  }, [title, code, createPostSuccess]);
 
   useEffect(() => {
     const savedCode: {
       title: string;
       code: string;
     } = JSON.parse(localStorage.getItem("editorContent"));
+
+    if (!savedCode) {
+      return;
+    }
 
     if (savedCode.title) {
       setTitle(savedCode.title);
@@ -119,7 +129,7 @@ const Editor = () => {
           <If condition={editorMode === "PREVIEW"}>
             <Then>
               <div
-                className={`${styles.preview} markdown-body`}
+                className={`${styles.preview}`}
                 dangerouslySetInnerHTML={{ __html: markdownIt.render(code) }}
               />
             </Then>

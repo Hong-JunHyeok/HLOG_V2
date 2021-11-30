@@ -70,6 +70,11 @@
 
   .content {
     width: 100%;
+    .postThumnail {
+      width: 100%;
+      height: 500px;
+      object-fit: contain;
+    }
 
     padding: 1rem 6rem;
     img {

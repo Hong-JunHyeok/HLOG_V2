@@ -1,6 +1,7 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .header {
+  width: 100%;
   display: flex;
   background-color: inherit;
   padding: 1rem 3rem;

@@ -77,9 +77,13 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
         </div>
 
         <section className={styles.content}>
-          <img src={post.postThumnail} alt={post.postTitle} />
+          <img
+            src={post.postThumnail}
+            className={styles.postThumnail}
+            alt={post.postTitle}
+          />
           <div
-            className={styles.text}
+            className={`${styles.text}`}
             dangerouslySetInnerHTML={{
               __html: markdownIt.render(post.postContent),
             }}
