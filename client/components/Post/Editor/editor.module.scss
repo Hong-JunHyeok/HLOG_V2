@@ -1,3 +1,5 @@
+@use "../../../styles/colors.module.scss" as colors;
+
 .container {
   padding: 1rem;
 
@@ -98,6 +100,46 @@
         &::placeholder {
           color: #6e7781;
         }
+      }
+    }
+  }
+  .options {
+    margin-top: 1rem;
+
+    & > button {
+      border: 1px solid #1b1f2426;
+      position: relative;
+      display: inline-block;
+      padding: 5px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 6px;
+      margin-right: 5px;
+      transition: ease-in-out 0.2s;
+    }
+
+    .notAllow {
+      background-color: #7babe1;
+      color: colors.$gray_text1;
+      -webkit-backdrop-filter: grayscale(0.8);
+      backdrop-filter: grayscale(0.8);
+      cursor: no-drop;
+    }
+    .submit {
+      background-color: colors.$primary_color;
+      color: colors.$gray_text1;
+    }
+    .cancel {
+      color: colors.$warning_color;
+
+      &:hover {
+        background-color: colors.$warning_color;
+        color: colors.$gray_text1;
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./editor.module.scss";
 import { BsCode, BsEyeFill } from "react-icons/bs";
 import { If, Then } from "react-if";
@@ -25,10 +25,15 @@ const Editor = () => {
     },
   });
 
+  const [isEmptyContent, setIsEmptyContent] = useState<boolean>(true);
   const [title, onChangeTitle, setTitle] = useInput("");
   const [code, onChangeCode, setCode] = useInput("");
   const [editorMode, setEditorMode] = useState<"EDIT" | "PREVIEW">("EDIT");
   const authState = useAuthState();
+
+  const handleSubmit = useCallback(() => {
+    alert("Hello");
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,6 +63,14 @@ const Editor = () => {
       setCode(savedCode.code);
     }
   }, []);
+
+  useEffect(() => {
+    if (title && code) {
+      setIsEmptyContent(false);
+    } else {
+      setIsEmptyContent(true);
+    }
+  }, [title, code]);
 
   if (!authState.myInfo) {
     return null;
@@ -124,6 +137,16 @@ const Editor = () => {
                 value={title}
                 onChange={onChangeTitle}
               />
+            </div>
+            <div className={styles.options}>
+              <button
+                className={isEmptyContent ? styles.notAllow : styles.submit}
+                onClick={handleSubmit}
+                disabled={isEmptyContent}
+              >
+                출간하기
+              </button>
+              <button className={styles.cancel}>취소</button>
             </div>
           </div>
         </div>
