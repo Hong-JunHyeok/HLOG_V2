@@ -15,6 +15,7 @@ import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
 import { usePostDispatch } from "../../contexts/PostContext";
+import Head from "next/head";
 
 interface IPostViewProps {
   post: PostType;
@@ -46,6 +47,9 @@ const PostViewPage = (
 
   return (
     <React.Fragment>
+      <Head>
+        <title>HLOG - {post.postTitle}</title>
+      </Head>
       <Header />
       <If condition={!!error}>
         <Then>

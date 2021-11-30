@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect } from "react";
 import Header from "../components/Common/Header";
 import { useAuthDispatch } from "../contexts/AuthContext";
@@ -14,6 +15,9 @@ const Setting: React.FunctionComponent<SettingProps> = () => {
 
   return (
     <React.Fragment>
+      <Head>
+        <title>HLOG - 설정</title>
+      </Head>
       <Header />
     </React.Fragment>
   );

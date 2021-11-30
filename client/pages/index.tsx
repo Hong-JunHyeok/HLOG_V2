@@ -11,6 +11,7 @@ import PostList from "../components/Post/PostList";
 import { useAuthDispatch } from "../contexts/AuthContext";
 import loginInitializer from "../utils/initializer/loginInitializer";
 import Footer from "../components/Common/Footer";
+import Head from "next/head";
 
 export default function Index({
   posts,
@@ -23,6 +24,9 @@ export default function Index({
 
   return (
     <React.Fragment>
+      <Head>
+        <title>HLOG - 개발을 공유하다.</title>
+      </Head>
       <Header />
       <PostList posts={posts} />
       <Footer />
