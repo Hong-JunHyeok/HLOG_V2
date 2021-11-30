@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import express from "express";
+import multer from "multer";
+import path from "path";
 import setJsonResponser from "../../utils/setJsonResponser";
 import { getRepository } from "typeorm";
 import { Post } from "../../entity/Post";
@@ -7,6 +9,37 @@ import tokenValidator from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
 
 const router = express.Router();
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, "thumnail/");
+    },
+    filename: (req, file, callback) => {
+      callback(null, new Date().valueOf() + path.extname(file.originalname));
+    },
+  }),
+});
+
+router.post(
+  "/thumnail",
+  tokenValidator,
+  upload.single("thumnail"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log(req.file);
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "Good worked",
+        payload: req.file,
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
 
 router.post(
   "/",

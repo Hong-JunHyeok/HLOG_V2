@@ -45,6 +45,27 @@
       }
     }
 
+    .login {
+      display: flex;
+      align-items: center;
+      border: 1px solid #1b1f2426;
+      position: relative;
+      display: inline-block;
+      padding: 5px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 6px;
+      margin-right: 5px;
+      transition: ease-in-out 0.2s;
+      background-color: colors.$primary_color;
+      color: colors.$gray_text1;
+    }
+
     .write {
       display: flex;
       align-items: center;

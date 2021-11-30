@@ -84,11 +84,12 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
             </React.Fragment>
           )}
           {!authState.isLoggedIn && (
-            <li className={styles.menu}>
-              <button onClick={() => router.handlePushLink("/auth/login")}>
-                로그인
-              </button>
-            </li>
+            <button
+              onClick={() => router.handlePushLink("/auth/login")}
+              className={styles.login}
+            >
+              로그인
+            </button>
           )}
         </nav>
       </header>
