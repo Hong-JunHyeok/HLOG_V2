@@ -1,15 +1,18 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { If, Else, Then } from "react-if";
-import { delteCommentRequest } from "../../../apis/comment";
+import {
+  deleteCommentRequest,
+  editCommentRequest,
+} from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
 import { usePostDispatch } from "../../../contexts/PostContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./commentItem.module.scss";
-
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
+import useInput from "../../../hooks/useInput";
 
 interface ICommentProps {
   comment: CommentType;
@@ -22,12 +25,17 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
   const [isLiked, toggleLike] = useToggle(false);
   const [isEditMode, , editOpen, editClose] = useToggle(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [editText, onChangeEditText, setEditText] = useInput(
+    comment.commentContent
+  );
+  const [isEmptyContent, setIsEmptyContent] = useState(false);
 
   const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
   const handleDelete = useCallback(async () => {
     if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
-      await delteCommentRequest(comment.id);
+      await deleteCommentRequest(comment.id);
 
       postDispatch({
         type: "DELETE_COMMENT",
@@ -36,9 +44,37 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
     }
   }, []);
 
-  const handleEdit = useCallback(async () => {
-    // TODO: 수정기능
+  const openEditMode = useCallback(async () => {
+    setIsEdit(true);
   }, []);
+
+  const closeEditMode = useCallback(async () => {
+    setEditText(comment.commentContent);
+    setIsEdit(false);
+  }, []);
+
+  const handleEditComment = useCallback(async () => {
+    try {
+      const response = await editCommentRequest(comment.id, editText);
+
+      postDispatch({
+        type: "EDIT_COMMENT",
+        payload: {
+          id: comment.id,
+          commentContent: response.payload.commentContent,
+        },
+      });
+
+      closeEditMode();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [editText, editCommentRequest, closeEditMode, comment]);
+
+  useEffect(() => {
+    if (editText.length === 0) setIsEmptyContent(true);
+    else setIsEmptyContent(false);
+  }, [editText, setIsEmptyContent]);
 
   return (
     <React.Fragment>
@@ -67,9 +103,9 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
             </Else>
           </If>
 
-          {isMyComment && isEditMode && isLoggedIn && (
+          {isMyComment && isEditMode && isLoggedIn && !isEdit && (
             <div className={styles.editMode}>
-              <button onClick={handleEdit} className={styles.edit}>
+              <button onClick={openEditMode} className={styles.edit}>
                 수정
               </button>
               <button onClick={handleDelete} className={styles.delete}>
@@ -79,7 +115,33 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
           )}
         </header>
 
-        <p className={styles.content}>{comment.commentContent}</p>
+        <If condition={isEdit}>
+          <Then>
+            <div className={styles.editContainer}>
+              <textarea
+                className={styles.editInput}
+                value={editText}
+                onChange={onChangeEditText}
+              />
+
+              <div className={styles.options}>
+                <button
+                  className={isEmptyContent ? styles.notAllow : styles.submit}
+                  onClick={handleEditComment}
+                  disabled={isEmptyContent}
+                >
+                  출간하기
+                </button>
+                <button className={styles.cancel} onClick={closeEditMode}>
+                  취소
+                </button>
+              </div>
+            </div>
+          </Then>
+          <Else>
+            <p className={styles.content}>{comment.commentContent}</p>
+          </Else>
+        </If>
         <footer className={styles.emotion}>
           {isLiked ? (
             <React.Fragment>

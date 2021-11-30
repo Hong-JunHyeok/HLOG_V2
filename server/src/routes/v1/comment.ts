@@ -46,7 +46,6 @@ router.delete(
         });
       }
 
-      console.log(me, comment.user);
       if (me.id !== comment.user.id) {
         return setJsonResponser(res, {
           code: 403,
@@ -120,6 +119,72 @@ router.post(
         payload: newComment,
       });
     } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.patch(
+  "/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+    const { commentContent } = req.body;
+
+    if (!commentContent.trim()) {
+      return setJsonResponser(res, {
+        code: 403,
+        message: "수정된 내용이 없습니다.",
+      });
+    }
+
+    try {
+      const commentRepository = getRepository(Comment);
+      const userRepository = getRepository(User);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      const comment = await commentRepository
+        .createQueryBuilder("comments")
+        .select(["comments.id", "user.id"])
+        .leftJoin("comments.user", "user")
+        .where("user.id = :id", { id: me.id })
+        .getOne();
+
+      if (me.id !== comment.user.id) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "자기가 쓴 댓글만 수정할 수 있습니다.",
+        });
+      }
+
+      await commentRepository
+        .createQueryBuilder()
+        .update()
+        .set({ commentContent })
+        .where("id = :id", { id: commentId })
+        .execute();
+
+      setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 댓글을 수정했습니다.",
+        payload: {
+          commentContent,
+        },
+      });
+    } catch (error) {
+      console.error(error);
       next(error);
     }
   }

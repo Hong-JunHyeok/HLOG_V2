@@ -31,6 +31,20 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           (comment) => comment.id !== action.payload
         ),
       };
+    case "EDIT_COMMENT":
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.id === action.payload.id) {
+            return {
+              ...comment,
+              commentContent: action.payload.commentContent,
+            };
+          }
+          return comment;
+        }),
+      };
+
     default:
       return { ...state };
   }

@@ -47,9 +47,13 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                 <button className={styles.subscribe}>구독</button>
               </div>
 
-              <div className={`${styles.intro}`}>
-                <p>{post.user.selfIntroduction}</p>
-              </div>
+              <If condition={post.user.selfIntroduction}>
+                <Then>
+                  <div className={`${styles.intro}`}>
+                    <p>{post.user.selfIntroduction}</p>
+                  </div>
+                </Then>
+              </If>
             </div>
           </div>
         </div>
