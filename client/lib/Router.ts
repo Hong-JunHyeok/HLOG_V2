@@ -10,6 +10,10 @@ class Router {
   public handlePushLink(link: string) {
     this.router.push(link);
   }
+
+  public getCurrentParam(): string {
+    return this.router.pathname;
+  }
 }
 
 export default Router;

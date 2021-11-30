@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
+import React, { CSSProperties, useCallback } from "react";
 import { useAuthDispatch, useAuthState } from "../../../contexts/AuthContext";
 import styles from "./header.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useToggle from "../../../hooks/useToggle";
 import Router from "../../../lib/Router";
+import { BsPencilFill } from "react-icons/bs";
 
 interface HeaderProps {}
 
@@ -13,6 +14,10 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
 
   const [isUserDropOpen, toggleUserDrop] = useToggle(false);
   const router = new Router();
+
+  const activeStyle: CSSProperties = {
+    color: "#333d4b",
+  };
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("hlog_access_token");
@@ -33,26 +38,39 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
             <React.Fragment>
               <li
                 className={styles.menu}
+                style={
+                  router.getCurrentParam() === "/popular" ? activeStyle : null
+                }
                 onClick={() => router.handlePushLink("/popular")}
               >
                 인기 게시글
               </li>
               <li
                 className={styles.menu}
+                style={router.getCurrentParam() === "/" ? activeStyle : null}
                 onClick={() => router.handlePushLink("/")}
               >
                 최근 게시글
               </li>
               <li
                 className={styles.menu}
+                style={
+                  router.getCurrentParam() === "/setting" ? activeStyle : null
+                }
                 onClick={() => router.handlePushLink("/setting")}
               >
                 설정
               </li>
               <li
-                className={styles.menu}
+                className={styles.write}
+                style={
+                  router.getCurrentParam() === "/post/create"
+                    ? activeStyle
+                    : null
+                }
                 onClick={() => router.handlePushLink("/post/create")}
               >
+                <BsPencilFill className={styles.writeIcon} />
                 글쓰기
               </li>
               <li className={styles.profile}>

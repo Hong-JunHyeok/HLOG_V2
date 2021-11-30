@@ -10,8 +10,11 @@ import "github-markdown-css";
 import { useAuthState } from "../../../contexts/AuthContext";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import { createPostRequest } from "../../../apis/post";
+import { useRouter } from "next/router";
 
 const Editor = () => {
+  const router = useRouter();
+
   const markdownIt = new MarkdownIt({
     highlight: (str, lang) => {
       if (lang && hljs.getLanguage(lang)) {
@@ -46,6 +49,8 @@ const Editor = () => {
     setCode("");
 
     localStorage.removeItem("editorContent");
+
+    router.push("/");
   }, [title, code]);
 
   useEffect(() => {

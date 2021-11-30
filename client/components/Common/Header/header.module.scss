@@ -34,10 +34,10 @@
       flex-direction: column;
     }
 
-    & > .menu {
+    .menu {
       width: 80px;
-      text-align: center;
       margin: 1rem 3rem;
+      text-align: center;
       color: colors.$gray_text2;
       cursor: pointer;
       &:hover {
@@ -46,6 +46,20 @@
 
       .write {
         color: colors.$primary_color;
+      }
+    }
+
+    .write {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      border: 1px solid black;
+      text-align: center;
+      margin: 1rem 3rem;
+      border-radius: 8px;
+      .writeIcon {
+        margin-right: 10px;
       }
     }
 

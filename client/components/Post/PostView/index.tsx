@@ -77,11 +77,16 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
         </div>
 
         <section className={styles.content}>
-          <img
-            src={post.postThumnail}
-            className={styles.postThumnail}
-            alt={post.postTitle}
-          />
+          <If condition={post.postThumnail}>
+            <Then>
+              <img
+                src={post.postThumnail}
+                className={styles.postThumnail}
+                alt={post.postTitle}
+              />
+            </Then>
+          </If>
+
           <div
             className={`${styles.text}`}
             dangerouslySetInnerHTML={{
