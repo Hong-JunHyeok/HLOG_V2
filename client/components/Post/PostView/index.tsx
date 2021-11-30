@@ -7,12 +7,30 @@ import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
 import { usePostState } from "../../../contexts/PostContext";
 import React from "react";
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
+import "github-markdown-css";
 
 interface IPostViewProps {
   post: PostType;
 }
 
 const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
+  const markdownIt = new MarkdownIt({
+    highlight: (str, lang) => {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang }).value;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return "";
+    },
+  });
+
   const { post } = props;
   const { postTitle, createdAt, updatedAt } = post;
 
@@ -63,7 +81,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
           <p
             className={styles.text}
             dangerouslySetInnerHTML={{
-              __html: post.postContent,
+              __html: markdownIt.render(post.postContent),
             }}
           />
         </section>
