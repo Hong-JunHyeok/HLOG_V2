@@ -52,22 +52,9 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
               >
                 최근 게시글
               </li>
-              <li
-                className={styles.menu}
-                style={
-                  router.getCurrentParam() === "/setting" ? activeStyle : null
-                }
-                onClick={() => router.handlePushLink("/setting")}
-              >
-                설정
-              </li>
+
               <li
                 className={styles.write}
-                style={
-                  router.getCurrentParam() === "/post/create"
-                    ? activeStyle
-                    : null
-                }
                 onClick={() => router.handlePushLink("/post/create")}
               >
                 <BsPencilFill className={styles.writeIcon} />

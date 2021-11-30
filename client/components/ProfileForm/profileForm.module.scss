@@ -4,10 +4,10 @@
   width: 100%;
   background-color: colors.$gray_text1;
   padding: 1rem;
-  height: 90vh;
+  min-height: 90vh;
   .wrapper {
     width: 500px;
-    height: 80%;
+
     margin: 0 auto;
     background-color: #fff;
     border-radius: 10px;
@@ -45,6 +45,9 @@
         &:hover {
           background-color: colors.$gray_text1;
         }
+      }
+      .mode {
+        color: black;
       }
       .changeAccount {
         color: colors.$primary_color;

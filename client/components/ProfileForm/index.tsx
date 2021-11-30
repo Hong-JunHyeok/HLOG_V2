@@ -1,11 +1,10 @@
 import React from "react";
+import { CgDarkMode } from "react-icons/cg";
 import { BsPencilFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { MdSupervisorAccount } from "react-icons/md";
 import DefaultProfile from "../../assets/svg/default_profile.svg";
 import { useAuthState } from "../../contexts/AuthContext";
-import useToggle from "../../hooks/useToggle";
-import stringCutter from "../../utils/formatter/string-cutter";
 import styles from "./profileForm.module.scss";
 
 interface IProfileForm {}
@@ -36,6 +35,18 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
           </div>
 
           <footer className={styles.footer}>
+            <h3>Settings</h3>
+            <ul>
+              <li className={styles.mode}>
+                <CgDarkMode />
+                라이트 / 다크모드
+              </li>
+              {/* <li className={styles.logout}>
+                <FiLogOut />
+                로그아웃
+              </li> */}
+            </ul>
+
             <h3>My Account</h3>
             <ul>
               <li className={styles.changeAccount}>

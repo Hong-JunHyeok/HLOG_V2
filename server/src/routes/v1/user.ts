@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
+import multer from "multer";
+import path from "path";
 import { getRepository } from "typeorm";
 import { User } from "../../entity/User";
 import tokenValidator from "../../middlewares/tokenValidator";
@@ -28,6 +30,32 @@ router.get("/me", tokenValidator, async (req, res, next) => {
     payload: me,
   });
 });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, "profiles/");
+    },
+    filename: (req, file, callback) => {
+      callback(null, new Date().valueOf() + path.extname(file.originalname));
+    },
+  }),
+});
+
+router.patch(
+  "/profile/:userId",
+  upload.single("profile"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log(req.file);
+
+      return setJsonResponser(res, { code: 201, message: "Good worked" });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
 
 router.get(
   "/users",

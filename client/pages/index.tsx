@@ -10,6 +10,7 @@ import { PostType } from "../types/Post";
 import PostList from "../components/Post/PostList";
 import { useAuthDispatch } from "../contexts/AuthContext";
 import loginInitializer from "../utils/initializer/loginInitializer";
+import Footer from "../components/Common/Footer";
 
 export default function Index({
   posts,
@@ -24,6 +25,7 @@ export default function Index({
     <React.Fragment>
       <Header />
       <PostList posts={posts} />
+      <Footer />
     </React.Fragment>
   );
 }

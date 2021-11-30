@@ -3,6 +3,7 @@ require("dotenv").config();
 
 import { createConnection } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
+import path from "path";
 import cors from "cors";
 import logger from "morgan";
 import { userRouter, authRouter, postRouter, commentRouter } from "./routes/v1";
@@ -14,9 +15,10 @@ app.set("PORT", process.env.PORT || 8003);
 
 //* middlewares
 app.use(logger("dev"));
+app.use("/profiles", express.static("profiles"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(__dirname + "/public"));
+
 app.use(
   cors({
     origin: [`${process.env.CLIENT_IP}`],

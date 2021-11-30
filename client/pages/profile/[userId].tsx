@@ -16,7 +16,6 @@ export default function Profile() {
     <React.Fragment>
       <Header />
       <ProfileForm />
-      {/* <Footer /> */}
     </React.Fragment>
   );
 }
