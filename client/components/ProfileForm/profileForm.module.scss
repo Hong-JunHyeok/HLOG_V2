@@ -3,12 +3,14 @@
 .profile_header {
   display: flex;
   align-items: center;
+
   flex-direction: column;
   .profile {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     background-color: colors.$gray_text1;
+    margin-top: 2rem;
   }
 
   .username {

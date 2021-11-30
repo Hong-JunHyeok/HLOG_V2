@@ -4,6 +4,13 @@ type ReturnTypes = {
 };
 
 function stringCutter(str: string, endIndex: number): ReturnTypes {
+  if (!str) {
+    return {
+      cuttedString: "",
+      isCutted: false,
+    };
+  }
+
   const cuttedString = `${str.slice(0, endIndex)}...`;
   let isCutted = true;
 

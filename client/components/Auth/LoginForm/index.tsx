@@ -25,13 +25,6 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
       });
       const loginResponse = await loginRequest({ email, password });
 
-      if (loginResponse.code === 403) {
-        return authDispatch({
-          type: "LOGIN_ERROR",
-          payload: loginResponse.data.message,
-        });
-      }
-
       localStorage.setItem(
         "hlog_access_token",
         loginResponse.payload.accessToken
@@ -42,9 +35,10 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
       });
     } catch (error) {
       console.error(error);
+
       authDispatch({
         type: "LOGIN_ERROR",
-        payload: error.response.data.message,
+        payload: error.message,
       });
     }
   }, [email, password]);

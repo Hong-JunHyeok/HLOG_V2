@@ -1,0 +1,40 @@
+.container {
+  padding: 1rem;
+
+  .header {
+    border-radius: 5px 5px 0 0;
+    border: 1px solid #d0d7de;
+    width: 100%;
+    background-color: #f6f8fa;
+    .menus {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      overflow: hidden;
+
+      .active {
+        background-color: #ffffff;
+        border-radius: 5px 5px 0 0;
+        font-weight: 600;
+
+        border-left: 1px solid #d0d7de;
+        border-right: 1px solid #d0d7de;
+        &:first-child {
+          border-left: none;
+        }
+      }
+
+      & > li {
+        display: flex;
+        align-items: center;
+        padding: 12px 24px;
+        font-size: 14px;
+        cursor: pointer;
+        .icon {
+          margin-right: 0.6rem;
+        }
+      }
+    }
+  }
+}

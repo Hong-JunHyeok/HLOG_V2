@@ -51,7 +51,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
               </li>
               <li
                 className={styles.menu}
-                onClick={() => router.handlePushLink("/setting")}
+                onClick={() => router.handlePushLink("/post/create")}
               >
                 글쓰기
               </li>

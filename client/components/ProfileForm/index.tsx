@@ -26,12 +26,14 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
           className={styles.profile}
         />
         <h1 className={styles.username}>{myInfo.username}</h1>
-        <p className={styles.intro}>
-          <If condition={isCutted}>
-            <Then>{isCutted ? cuttedString : myInfo.selfIntroduction}</Then>
-            <Else>{myInfo.selfIntroduction}</Else>
-          </If>
-        </p>
+        {myInfo.selfIntroduction && (
+          <p className={styles.intro}>
+            <If condition={isCutted}>
+              <Then>{isCutted ? cuttedString : myInfo.selfIntroduction}</Then>
+              <Else>{myInfo.selfIntroduction}</Else>
+            </If>
+          </p>
+        )}
       </header>
     </React.Fragment>
   );
