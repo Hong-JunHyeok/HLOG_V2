@@ -130,7 +130,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
                   onClick={handleEditComment}
                   disabled={isEmptyContent}
                 >
-                  출간하기
+                  수정하기
                 </button>
                 <button className={styles.cancel} onClick={closeEditMode}>
                   취소

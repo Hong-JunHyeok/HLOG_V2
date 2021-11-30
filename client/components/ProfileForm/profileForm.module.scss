@@ -1,28 +1,102 @@
 @use "../../styles/colors.module.scss" as colors;
 
-.profile_header {
-  display: flex;
-  align-items: center;
-
-  flex-direction: column;
-  .profile {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: colors.$gray_text1;
-    margin-top: 2rem;
+.container {
+  width: 100%;
+  background-color: colors.$gray_text1;
+  padding: 1rem;
+  height: 90vh;
+  .wrapper {
+    width: 500px;
+    height: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
-  .username {
-    font-size: 1.2rem;
+  .header {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    flex-direction: column;
+
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 0.5rem 0;
     font-weight: bold;
   }
 
-  .intro {
-    padding: 1rem 5rem;
-    font-style: italic;
-    background-color: colors.$gray_text2;
-    color: colors.$normal_text;
-    font-size: 1.2rem;
+  .footer {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+    user-select: none;
+    h3 {
+      color: colors.$gray_text3;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+
+      li {
+        border-radius: 10px;
+        padding: 1rem 0.3rem;
+        cursor: pointer;
+        &:hover {
+          background-color: colors.$gray_text1;
+        }
+      }
+      .changeAccount {
+        color: colors.$primary_color;
+      }
+      .logout {
+        color: colors.$warning_color;
+      }
+    }
+  }
+
+  .profileContainer {
+    display: flex;
+    padding: 0 2rem;
+    align-items: center;
+
+    .profile {
+      position: relative;
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 2rem 0;
+      }
+      button {
+        cursor: pointer;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        right: 0.1rem;
+        bottom: 2rem;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      }
+    }
+
+    .userInfo {
+      margin-left: 1.5rem;
+      height: 100px;
+      .username {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .intro {
+        padding: 1rem 5rem;
+        font-style: italic;
+        background-color: colors.$gray_text2;
+        color: colors.$normal_text;
+        font-size: 1.2rem;
+      }
+    }
   }
 }
