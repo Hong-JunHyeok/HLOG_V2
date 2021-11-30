@@ -1,17 +1,10 @@
 import React, { CSSProperties, useState } from "react";
 import styles from "./editor.module.scss";
 import { BsCode, BsEyeFill } from "react-icons/bs";
+import { If, Then } from "react-if";
 
 const Editor = () => {
   const [editorMode, setEditorMode] = useState<"EDIT" | "PREVIEW">("EDIT");
-
-  //   const activeStyle: CSSProperties = {
-  //     backgroundColor: "#ffffff",
-  //     borderRadius: "5px 5px 0 0",
-  //     fontWeight: "600",
-  //     borderLeft: "1px solid #d0d7de",
-  //     borderRight: "1px solid #d0d7de",
-  //   };
 
   return (
     <React.Fragment>
@@ -20,7 +13,6 @@ const Editor = () => {
           <ul className={styles.menus}>
             <li
               className={editorMode === "EDIT" ? styles.active : ""}
-              //   style={editorMode === "EDIT" ? activeStyle : null}
               onClick={() => setEditorMode("EDIT")}
             >
               <BsCode className={styles.icon} />
@@ -28,7 +20,6 @@ const Editor = () => {
             </li>
             <li
               className={editorMode === "PREVIEW" ? styles.active : ""}
-              //   style={editorMode === "PREVIEW" ? activeStyle : null}
               onClick={() => setEditorMode("PREVIEW")}
             >
               <BsEyeFill className={styles.icon} />
@@ -36,7 +27,18 @@ const Editor = () => {
             </li>
           </ul>
         </header>
-        <div className={styles.editor}></div>
+
+        <div className={styles.editor}>
+          <If condition={editorMode === "EDIT"}>
+            <Then>
+              <textarea className={styles.codeMirror} />
+            </Then>
+          </If>
+
+          <If condition={editorMode === "PREVIEW"}>
+            <Then></Then>
+          </If>
+        </div>
       </div>
     </React.Fragment>
   );
