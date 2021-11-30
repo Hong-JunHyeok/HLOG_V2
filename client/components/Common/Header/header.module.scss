@@ -43,10 +43,6 @@
       &:hover {
         color: colors.$normal_text;
       }
-
-      .write {
-        color: colors.$primary_color;
-      }
     }
 
     .write {
@@ -58,8 +54,17 @@
       text-align: center;
       margin: 1rem 3rem;
       border-radius: 8px;
+      color: colors.$white_text;
+      background-color: colors.$normal_text;
+      transition: ease-in-out 0.2s;
+
       .writeIcon {
         margin-right: 10px;
+      }
+
+      &:hover {
+        background-color: colors.$white_text;
+        color: colors.$normal_text;
       }
     }
 
