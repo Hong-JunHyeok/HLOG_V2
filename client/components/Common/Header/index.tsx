@@ -58,7 +58,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
               <li className={styles.profile}>
                 <img
                   onClick={toggleUserDrop}
-                  src={authState.myInfo.profileUrl || DefaultProfile}
+                  src={authState?.myInfo?.profileUrl || DefaultProfile}
                   alt=""
                   className={styles.profileImage}
                   draggable={false}

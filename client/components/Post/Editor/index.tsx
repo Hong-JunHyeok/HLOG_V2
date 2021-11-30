@@ -38,7 +38,8 @@ const Editor = () => {
       code,
     };
     const data = await createPostRequest(postData);
-    console.log(data);
+
+    localStorage.removeItem("editorContent");
   }, [title, code]);
 
   useEffect(() => {
