@@ -152,11 +152,13 @@ router.get(
           "comments.createdAt",
           "comments.updatedAt",
           "comments.commentContent",
+          "comments.postId",
           "user.username",
           "user.id",
           "user.profileUrl",
         ])
         .leftJoin("comments.user", "user")
+        .where("comments.postId = :id", { id: postId })
         .orderBy("comments.createdAt", "DESC")
         .orderBy("comments.updatedAt", "DESC")
         .getMany();

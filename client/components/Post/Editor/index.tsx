@@ -9,6 +9,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import { useAuthState } from "../../../contexts/AuthContext";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
+import { createPostRequest } from "../../../apis/post";
 
 const Editor = () => {
   const markdownIt = new MarkdownIt({
@@ -31,9 +32,14 @@ const Editor = () => {
   const [editorMode, setEditorMode] = useState<"EDIT" | "PREVIEW">("EDIT");
   const authState = useAuthState();
 
-  const handleSubmit = useCallback(() => {
-    alert("Hello");
-  }, []);
+  const handleSubmit = useCallback(async () => {
+    const postData = {
+      title,
+      code,
+    };
+    const data = await createPostRequest(postData);
+    console.log(data);
+  }, [title, code]);
 
   useEffect(() => {
     const interval = setInterval(() => {

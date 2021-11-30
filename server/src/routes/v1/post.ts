@@ -75,6 +75,8 @@ router.get(
           "user.profileUrl",
         ])
         .leftJoin("posts.user", "user")
+        .orderBy("posts.createdAt", "DESC")
+        .orderBy("posts.updatedAt", "DESC")
         .getMany();
 
       setJsonResponser(res, {

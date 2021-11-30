@@ -1,3 +1,4 @@
+import { title } from "process";
 import customAxios from "../utils/customAxios";
 
 export const getPostsResponse = async () => {
@@ -12,6 +13,22 @@ export const getPostsResponse = async () => {
 export const getPostResponse = async (postId: number) => {
   try {
     const response = await customAxios.get(`/post/${postId}`);
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const createPostRequest = async (postData: {
+  title: string;
+  code: string;
+}) => {
+  try {
+    const response = await customAxios.post(`/post`, {
+      postTitle: postData.title,
+      postContent: postData.code,
+    });
+
     return response.data;
   } catch (error) {
     return error.response;
