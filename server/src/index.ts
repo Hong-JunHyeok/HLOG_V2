@@ -15,12 +15,14 @@ app.set("PORT", process.env.PORT || 8003);
 //* middlewares
 app.use(logger("dev"));
 app.use("/profiles", express.static("profiles"));
+app.use("/thumnails", express.static("thumnails"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(
   cors({
-    origin: [`${process.env.CLIENT_IP}`],
+    origin: true,
+    // [`${process.env.CLIENT_IP}`]
   })
 );
 

@@ -16,8 +16,9 @@ const upload = multer({
       callback(null, "thumnails/");
     },
     filename: (req, file, callback) => {
-      const ext = path.extname(file.originalname); // 확장자 추출(png)
+      const ext = path.extname(file.originalname);
       const basename = path.basename(file.originalname, ext);
+
       callback(null, basename + "_" + new Date().getTime() + ext);
     },
   }),
@@ -29,7 +30,6 @@ router.post(
   tokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
-
     try {
       const postRepository = getRepository(Post);
 
@@ -39,12 +39,14 @@ router.post(
         },
       });
 
-      if (existPost) {
+      if (!existPost) {
         return setJsonResponser(res, {
           code: 403,
           message: "게시글 정보가 없습니다.",
         });
       }
+
+      console.log(req.file);
 
       await postRepository
         .createQueryBuilder()
@@ -108,6 +110,9 @@ router.post(
       return setJsonResponser(res, {
         code: 201,
         message: "성공적으로 게시글을 작성하였습니다.",
+        payload: {
+          postId: newPost.id,
+        },
       });
     } catch (error) {
       console.error(error);

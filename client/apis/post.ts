@@ -1,4 +1,3 @@
-import { title } from "process";
 import customAxios from "../utils/customAxios";
 
 export const getPostsResponse = async () => {
@@ -29,6 +28,20 @@ export const createPostRequest = async (postData: {
       postContent: postData.code,
     });
 
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const createPostThumnail = async (
+  postId: number,
+  thumnailData: FormData
+) => {
+  try {
+    const response = await customAxios.post(`/post/thumnail/${postId}`, {
+      thumnailData,
+    });
     return response.data;
   } catch (error) {
     return error.response;

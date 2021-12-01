@@ -37,6 +37,8 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 
   const { comments } = usePostState();
 
+  console.log(post.postThumnail);
+
   return (
     <React.Fragment>
       <main className={styles.container}>
@@ -85,7 +87,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
           <If condition={post.postThumnail}>
             <Then>
               <img
-                src={post.postThumnail}
+                src={imageFormat(post.postThumnail)}
                 className={styles.postThumnail}
                 alt={post.postTitle}
               />
