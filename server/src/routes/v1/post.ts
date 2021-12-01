@@ -7,6 +7,7 @@ import { getRepository } from "typeorm";
 import { Post } from "../../entity/Post";
 import tokenValidator from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
+import { Like } from "../../entity/Like";
 
 const router = express.Router();
 
@@ -190,5 +191,59 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 });
+
+router.post(
+  "/like/:postId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const postRepository = getRepository(Post);
+      const likeRepository = getRepository(Like);
+
+      const existPost = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existPost) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      const newLike = new Like();
+
+      newLike.user = user;
+      newLike.post = existPost;
+
+      await likeRepository.save(newLike);
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 성공",
+        payload: {
+          newLike,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  "/unnlike/:",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {}
+);
 
 export default router;
