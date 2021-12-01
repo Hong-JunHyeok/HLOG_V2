@@ -15,7 +15,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import { useAuthState } from "../../../contexts/AuthContext";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
-import { createPostRequest, createPostThumnail } from "../../../apis/post";
+import { createPostRequest, patchPostThumnail } from "../../../apis/post";
 import { useRouter } from "next/router";
 import imageFormat from "../../../utils/formatter/image-format";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -68,9 +68,10 @@ const Editor = () => {
 
       const formData = new FormData();
 
+      console.log(thumnail);
       formData.append("thumnail", thumnail);
 
-      await createPostThumnail(postId, formData);
+      await patchPostThumnail(postId, formData);
 
       setCreatePostSuccess(true);
       setTitle("");
@@ -82,7 +83,7 @@ const Editor = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [title, code]);
+  }, [title, code, thumnail, router]);
 
   const handleOpenThumnailInput = useCallback(() => {
     thumnailInputRef.current.click();

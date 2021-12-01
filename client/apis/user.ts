@@ -1,4 +1,3 @@
-import { errorMonitor } from "events";
 import customAxios from "../utils/customAxios";
 
 export const getMyInfoRequest = async () => {
@@ -20,7 +19,7 @@ export const patchMyProfileRequest = async (
       profileData
     );
 
-    return response;
+    return response.data;
   } catch (error) {
     return error.response;
   }

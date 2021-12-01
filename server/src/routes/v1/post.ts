@@ -24,7 +24,7 @@ const upload = multer({
   }),
 });
 
-router.post(
+router.patch(
   "/thumnail/:postId",
   upload.single("thumnail"),
   tokenValidator,

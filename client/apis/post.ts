@@ -34,14 +34,15 @@ export const createPostRequest = async (postData: {
   }
 };
 
-export const createPostThumnail = async (
+export const patchPostThumnail = async (
   postId: number,
   thumnailData: FormData
 ) => {
   try {
-    const response = await customAxios.post(`/post/thumnail/${postId}`, {
-      thumnailData,
-    });
+    const response = await customAxios.patch(
+      `/post/thumnail/${postId}`,
+      thumnailData
+    );
     return response.data;
   } catch (error) {
     return error.response;
