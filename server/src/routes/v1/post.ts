@@ -13,26 +13,52 @@ const router = express.Router();
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
-      callback(null, "thumnail/");
+      callback(null, "thumnails/");
     },
     filename: (req, file, callback) => {
-      callback(null, new Date().valueOf() + path.extname(file.originalname));
+      const ext = path.extname(file.originalname); // 확장자 추출(png)
+      const basename = path.basename(file.originalname, ext);
+      callback(null, basename + "_" + new Date().getTime() + ext);
     },
   }),
 });
 
 router.post(
-  "/thumnail",
-  tokenValidator,
+  "/thumnail/:postId",
   upload.single("thumnail"),
+  tokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
     try {
-      console.log(req.file);
+      const postRepository = getRepository(Post);
+
+      const existPost = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (existPost) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      await postRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          postThumnail: res.req.file.path,
+        })
+        .where("id = :id", { id: Number(postId) })
+        .execute();
 
       return setJsonResponser(res, {
         code: 201,
-        message: "Good worked",
-        payload: req.file,
+        message: "포스트의 썸네일을 수정했습니다.",
+        payload: res.req.file.path,
       });
     } catch (error) {
       console.error(error);

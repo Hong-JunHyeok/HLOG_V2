@@ -97,10 +97,6 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
                 <CgDarkMode />
                 라이트 / 다크모드
               </li>
-              {/* <li className={styles.logout}>
-                <FiLogOut />
-                로그아웃
-              </li> */}
             </ul>
 
             <h3>My Account</h3>
