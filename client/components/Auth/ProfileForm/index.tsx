@@ -14,6 +14,7 @@ interface IProfileForm {}
 const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
   const { myInfo } = useAuthState();
 
+  const [prevProfileImage, setPrevProfileImage] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const editProfileRef = useRef<HTMLInputElement | null>(null);
@@ -41,6 +42,11 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
     if (profileImage && window.confirm("프로필사진을 변경하시겠습니까?")) {
       changeProfile();
     }
+
+    if (profileImage) {
+      console.log(profileImage);
+      setPrevProfileImage(URL.createObjectURL(profileImage));
+    }
   }, [profileImage]);
 
   if (!myInfo) {
@@ -56,7 +62,9 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
             <div className={styles.profile}>
               <img
                 src={
-                  myInfo?.profileUrl
+                  prevProfileImage
+                    ? prevProfileImage
+                    : myInfo?.profileUrl
                     ? imageFormat(myInfo?.profileUrl)
                     : DefaultProfile
                 }
