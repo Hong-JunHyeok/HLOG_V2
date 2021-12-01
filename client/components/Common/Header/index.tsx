@@ -5,6 +5,7 @@ import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useToggle from "../../../hooks/useToggle";
 import Router from "../../../lib/Router";
 import { BsPencilFill } from "react-icons/bs";
+import imageFormat from "../../../utils/formatter/image-format";
 
 interface HeaderProps {}
 
@@ -38,19 +39,19 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
             <React.Fragment>
               <li
                 className={styles.menu}
+                style={router.getCurrentParam() === "/" ? activeStyle : null}
+                onClick={() => router.handlePushLink("/")}
+              >
+                최근 게시글
+              </li>
+              <li
+                className={styles.menu}
                 style={
                   router.getCurrentParam() === "/popular" ? activeStyle : null
                 }
                 onClick={() => router.handlePushLink("/popular")}
               >
                 인기 게시글
-              </li>
-              <li
-                className={styles.menu}
-                style={router.getCurrentParam() === "/" ? activeStyle : null}
-                onClick={() => router.handlePushLink("/")}
-              >
-                최근 게시글
               </li>
 
               <li
@@ -63,13 +64,17 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
               <li className={styles.profile}>
                 <img
                   onClick={toggleUserDrop}
-                  src={authState?.myInfo?.profileUrl || DefaultProfile}
+                  src={
+                    authState.myInfo?.profileUrl
+                      ? imageFormat(authState.myInfo?.profileUrl)
+                      : DefaultProfile
+                  }
                   alt=""
                   className={styles.profileImage}
                   draggable={false}
                 />
                 {isUserDropOpen && (
-                  <div className={styles.userDropdown}>
+                  <ul className={styles.userDropdown}>
                     <li
                       onClick={() =>
                         router.handlePushLink(`/profile/${authState.myInfo.id}`)
@@ -78,7 +83,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
                       내 프로필
                     </li>
                     <li onClick={handleLogout}>로그아웃</li>
-                  </div>
+                  </ul>
                 )}
               </li>
             </React.Fragment>

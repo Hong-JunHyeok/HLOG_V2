@@ -1,4 +1,4 @@
-@use "../../styles/colors.module.scss" as colors;
+@use "../../../styles/colors.module.scss" as colors;
 
 .container {
   width: 100%;
@@ -65,6 +65,10 @@
 
     .profile {
       position: relative;
+
+      .profileInput {
+        display: none;
+      }
       img {
         width: 100px;
         height: 100px;

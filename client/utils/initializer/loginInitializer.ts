@@ -8,7 +8,9 @@ const loginInitializer = (authDispatch: Function) => {
     return;
   }
 
-  getMyInfoRequest(accessToken)
+  customAxios.defaults.headers.common["authorization"] = accessToken;
+
+  getMyInfoRequest()
     .then((response) => {
       if (response.status === 401) {
         alert("토큰이 만료되었습니다.");

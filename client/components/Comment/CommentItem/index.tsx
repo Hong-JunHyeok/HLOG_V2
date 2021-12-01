@@ -13,6 +13,7 @@ import styles from "./commentItem.module.scss";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useInput from "../../../hooks/useInput";
+import imageFormat from "../../../utils/formatter/image-format";
 
 interface ICommentProps {
   comment: CommentType;
@@ -85,7 +86,11 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
       >
         <header className={styles.meta}>
           <img
-            src={comment.user.profileUrl || DefaultProfile}
+            src={
+              comment.user.profileUrl
+                ? imageFormat(comment.user.profileUrl)
+                : DefaultProfile
+            }
             alt={comment.user.username}
             className={styles.profileImage}
           />

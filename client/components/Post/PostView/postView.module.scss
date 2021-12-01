@@ -2,6 +2,7 @@
 
 .container {
   padding: 1rem 3rem;
+
   .meta {
     .title {
       font-size: 32px;
@@ -28,6 +29,7 @@
           align-items: center;
           justify-content: center;
           width: 100px;
+          height: 100px;
           border-radius: 50%;
           .profileImage {
             width: 58px;
@@ -77,6 +79,10 @@
     }
 
     padding: 1rem 6rem;
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+    }
     img {
       width: 100%;
       border-radius: 10px;

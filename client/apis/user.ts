@@ -1,11 +1,26 @@
+import { errorMonitor } from "events";
 import customAxios from "../utils/customAxios";
 
-export const getMyInfoRequest = async (accessToken: string) => {
+export const getMyInfoRequest = async () => {
   try {
-    const response = await customAxios.get(`/user/me`, {
-      headers: { authorization: accessToken },
-    });
+    const response = await customAxios.get(`/user/me`);
     return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const patchMyProfileRequest = async (
+  userId: number,
+  profileData: FormData
+) => {
+  try {
+    const response = await customAxios.patch(
+      `/user/profile/${userId}`,
+      profileData
+    );
+
+    return response;
   } catch (error) {
     return error.response;
   }

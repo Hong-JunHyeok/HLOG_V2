@@ -11,6 +11,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
   createdAt,
   updatedAt,
   postThumnail,
+  user: { username },
 }) => {
   const router = useRouter();
 
@@ -28,7 +29,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
 
       <div className={styles.meta}>
         <h1 className={styles.postTitle}>{postTitle}</h1>
-
+        <span className={styles.userName}>{username} 님</span>
         <If condition={updatedAt !== createdAt}>
           <Then>
             <span>최근 수정됨 : {dateFormatter(updatedAt)}</span>

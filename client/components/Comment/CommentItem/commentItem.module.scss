@@ -13,15 +13,27 @@
     .username {
       margin: 0;
       padding: 0 1rem;
+      @media (max-width: 768px) {
+        font-size: 14px;
+        padding: 0;
+      }
     }
+
     .profileImage {
       border-radius: 50%;
       width: 58px;
       height: 58px;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
 
     .date {
       color: colors.$primary_color2;
+      @media (max-width: 768px) {
+        font-size: 12px;
+      }
     }
 
     .editMode {
@@ -48,6 +60,10 @@
 
   .content {
     padding: 0 2rem;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 
   .editContainer {
@@ -107,6 +123,9 @@
   }
 
   .emotion {
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
     padding: 1rem;
     border-radius: 0 0 20px 20px;
     background-color: colors.$gray_text1;

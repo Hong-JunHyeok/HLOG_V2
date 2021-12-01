@@ -11,6 +11,7 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
+import imageFormat from "../../../utils/formatter/image-format";
 
 interface IPostViewProps {
   post: PostType;
@@ -57,7 +58,11 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
             <div className={`${styles.profileInfo}`}>
               <div className={styles.profile}>
                 <img
-                  src={post.user.profileUrl || DefaultProfile}
+                  src={
+                    post.user.profileUrl
+                      ? imageFormat(post.user.profileUrl)
+                      : DefaultProfile
+                  }
                   alt={post.user.username}
                   className={styles.profileImage}
                 />

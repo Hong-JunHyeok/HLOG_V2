@@ -102,14 +102,19 @@
       }
 
       .userDropdown {
+        list-style: none;
         position: absolute;
         top: 50px;
         border-radius: 10px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         overflow: hidden;
         background-color: white;
+        margin: 0;
+        padding: 0;
+        z-index: 999;
         & > li {
           transition: ease-in-out 0.2s;
+          margin: 0;
           padding: 0.8rem 1.2rem;
           &:hover {
             background-color: colors.$gray_text1;

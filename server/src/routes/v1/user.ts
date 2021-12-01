@@ -37,7 +37,9 @@ const upload = multer({
       callback(null, "profiles/");
     },
     filename: (req, file, callback) => {
-      callback(null, new Date().valueOf() + path.extname(file.originalname));
+      const ext = path.extname(file.originalname); // 확장자 추출(png)
+      const basename = path.basename(file.originalname, ext);
+      callback(null, basename + "_" + new Date().getTime() + ext);
     },
   }),
 });
@@ -45,11 +47,40 @@ const upload = multer({
 router.patch(
   "/profile/:userId",
   upload.single("profile"),
+  tokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.file);
+      const userRepository = getRepository(User);
 
-      return setJsonResponser(res, { code: 201, message: "Good worked" });
+      console.log(req.body);
+
+      const me = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      await userRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          profileUrl: res.req.file.path,
+        })
+        .where("id = :id", { id: me.id })
+        .execute();
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "프로필 이미지를 변경했습니다.",
+        payload: {
+          profileImage: res.req.file.path,
+        },
+      });
     } catch (error) {
       console.error(error);
       next(error);

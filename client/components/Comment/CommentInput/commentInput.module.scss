@@ -25,5 +25,8 @@
     color: colors.$white_text;
     border: none;
     border-radius: 0 10px 10px 0;
+    @media (max-width: 768px) {
+      flex: 2;
+    }
   }
 }
