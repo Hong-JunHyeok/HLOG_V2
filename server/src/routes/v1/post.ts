@@ -265,13 +265,13 @@ router.delete(
       const postRepository = getRepository(Post);
       const likeRepository = getRepository(Like);
 
-      const existPost = await postRepository.findOne({
+      const post = await postRepository.findOne({
         where: {
           id: Number(postId),
         },
       });
 
-      if (!existPost) {
+      if (!post) {
         return setJsonResponser(res, {
           code: 403,
           message: "게시글 정보가 없습니다.",
@@ -282,7 +282,20 @@ router.delete(
         where: { email: req.body.decodedUserPayload.email },
       });
 
-      //TODO: 삭제 로직 작성
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          post: post,
+        },
+      });
+
+      if (!alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "좋아요를 하지않은 상태에서 취소를 할 수 없습니다.",
+        });
+      }
+
       await likeRepository
         .createQueryBuilder()
         .delete()
