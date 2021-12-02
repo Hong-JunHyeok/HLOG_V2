@@ -1,0 +1,10 @@
+.container {
+  position: fixed;
+  padding: 0.3rem;
+  border-radius: 50%;
+  background-color: black;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}

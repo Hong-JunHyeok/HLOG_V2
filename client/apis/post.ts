@@ -48,3 +48,23 @@ export const patchPostThumnail = async (
     return error.response;
   }
 };
+
+export const likeRequest = async (postId: number) => {
+  try {
+    const response = await customAxios.post(`/post/like/${postId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const unlikeRequest = async (postId: number) => {
+  try {
+    const response = await customAxios.delete(`/post/unlike/${postId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};

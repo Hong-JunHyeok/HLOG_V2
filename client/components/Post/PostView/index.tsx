@@ -12,6 +12,7 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
+import Like from "../Like";
 
 interface IPostViewProps {
   post: PostType;

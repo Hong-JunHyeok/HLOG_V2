@@ -1,7 +1,13 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .container {
-  padding: 1rem 3rem;
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 
   .meta {
     .title {
@@ -78,11 +84,6 @@
       object-fit: contain;
     }
 
-    padding: 1rem 6rem;
-
-    @media (max-width: 768px) {
-      padding: 1rem;
-    }
     img {
       width: 100%;
       border-radius: 10px;

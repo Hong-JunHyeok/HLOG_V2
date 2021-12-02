@@ -2,9 +2,14 @@
 
 .container {
   display: flex;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0rem;
   border-radius: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
 
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
   .commentInput {
     flex: 9;
     border: none;
