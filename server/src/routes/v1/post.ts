@@ -203,13 +203,13 @@ router.post(
       const postRepository = getRepository(Post);
       const likeRepository = getRepository(Like);
 
-      const existPost = await postRepository.findOne({
+      const post = await postRepository.findOne({
         where: {
           id: Number(postId),
         },
       });
 
-      if (!existPost) {
+      if (!post) {
         return setJsonResponser(res, {
           code: 403,
           message: "게시글 정보가 없습니다.",
@@ -220,10 +220,24 @@ router.post(
         where: { email: req.body.decodedUserPayload.email },
       });
 
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          post: post,
+        },
+      });
+
+      if (alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "이미 좋아요를 했습니다.",
+        });
+      }
+
       const newLike = new Like();
 
       newLike.user = user;
-      newLike.post = existPost;
+      newLike.post = post;
 
       await likeRepository.save(newLike);
 
@@ -241,9 +255,48 @@ router.post(
 );
 
 router.delete(
-  "/unnlike/:",
+  "/unlike/:postId",
   tokenValidator,
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const postRepository = getRepository(Post);
+      const likeRepository = getRepository(Like);
+
+      const existPost = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existPost) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      //TODO: 삭제 로직 작성
+      await likeRepository
+        .createQueryBuilder()
+        .delete()
+        .where("user = :userId", { userId: user.id })
+        .execute();
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 취소 성공",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 );
 
 export default router;
