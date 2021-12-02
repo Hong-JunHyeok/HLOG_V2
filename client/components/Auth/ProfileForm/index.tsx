@@ -41,11 +41,11 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
   useEffect(() => {
     if (profileImage && window.confirm("프로필사진을 변경하시겠습니까?")) {
       changeProfile();
-    }
 
-    if (profileImage) {
-      console.log(profileImage);
-      setPrevProfileImage(URL.createObjectURL(profileImage));
+      if (profileImage) {
+        console.log(profileImage);
+        setPrevProfileImage(URL.createObjectURL(profileImage));
+      }
     }
   }, [profileImage]);
 
