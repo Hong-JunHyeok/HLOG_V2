@@ -14,7 +14,7 @@ import { useAuthDispatch } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
-import { usePostDispatch, usePostState } from "../../contexts/PostContext";
+import { usePostDispatch } from "../../contexts/PostContext";
 import Head from "next/head";
 
 interface IPostViewProps {
