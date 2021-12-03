@@ -1,29 +1,28 @@
 .container {
   padding: 0.3rem;
   border-radius: 50%;
-  border: 1px solid gray;
+  border: 1px solid rgb(173, 181, 189);
   display: flex;
   align-items: center;
   background: white;
-  border: 1px solid rgb(173, 181, 189);
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  display: flex;
   -webkit-box-align: center;
   align-items: center;
-  height: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 50%;
   outline: none;
   user-select: none;
   position: relative;
   cursor: pointer;
+  color: rgb(173, 181, 189);
+
+  .unlikeBtn {
+    display: flex;
+    cursor: pointer;
+    font-size: 2rem;
+  }
 
   .likeBtn {
     display: flex;
     cursor: pointer;
-    margin-right: 0.5rem;
-  }
-
-  .likers {
+    font-size: 2rem;
   }
 }

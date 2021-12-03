@@ -1,47 +1,44 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./like.module.scss";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import useToggle from "../../../hooks/useToggle";
 import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
-import { getIsLikedPostRequest } from "../../../apis/post";
+import { likeRequest, unlikeRequest } from "../../../apis/post";
 
 interface LikeInterface {
-  isLiked: boolean;
   likeNumber: number;
 }
 
-const Like: React.FunctionComponent<LikeInterface> = ({
-  isLiked = false,
-  likeNumber = 0,
-}) => {
+const Like: React.FunctionComponent<LikeInterface> = ({ likeNumber = 0 }) => {
+  const { post } = usePostState();
   const postDispatch = usePostDispatch();
 
-  const [likeToggleState, onChangeToggleState, , , setLikeToggleState] =
-    useToggle(isLiked);
+  const like = async () => {
+    await likeRequest(post.id);
 
-  const like = useCallback(() => {
     postDispatch({
       type: "LIKE",
     });
-  }, []);
+  };
 
-  const unlike = useCallback(() => {
+  const unlike = async () => {
+    await unlikeRequest(post.id);
+
     postDispatch({
       type: "UNLIKE",
     });
-  }, []);
+  };
+
+  if (!post) {
+    return null;
+  }
 
   return (
     <React.Fragment>
-      <div className={styles.container} onClick={onChangeToggleState}>
-        <div
-          className={styles.likeBtn}
-          onClick={likeToggleState ? unlike : like}
-        >
-          {likeToggleState ? <FcLike /> : <FcLikePlaceholder />}
+      <div className={styles.container} onClick={post.isLiked ? unlike : like}>
+        <div className={post.isLiked ? styles.unlikeBtn : styles.likeBtn}>
+          {post.isLiked ? <FcLike /> : <FcLikePlaceholder />}
         </div>
-
-        <span className={styles.likers}>{likeNumber}</span>
       </div>
     </React.Fragment>
   );

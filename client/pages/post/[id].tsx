@@ -31,8 +31,6 @@ const PostViewPage = (
   const authDispatch = useAuthDispatch();
   const postDispatch = usePostDispatch();
 
-  const postState = usePostState();
-
   useEffect(() => {
     loginInitializer(authDispatch);
   }, []);
@@ -61,7 +59,9 @@ const PostViewPage = (
         <Then>
           <h1>오류가 발생했습니다.</h1>
         </Then>
-        <Else>{postState.post && <PostView post={postState.post} />}</Else>
+        <Else>
+          <PostView post={post} />
+        </Else>
       </If>
       <Footer />
     </React.Fragment>
@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
     return {
       props: {
-        post: { ...postResponse.payload },
+        post: { ...postResponse.payload, isLiked: false, likeNumber: 0 },
         comments: commentResponse.payload,
       },
     };

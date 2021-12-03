@@ -53,6 +53,7 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         ...state,
         post: {
           ...state.post,
+          isLiked: true,
           likeNumber: state.post.likeNumber + 1,
         },
       };
@@ -61,6 +62,7 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         ...state,
         post: {
           ...state.post,
+          isLiked: false,
           likeNumber: state.post.likeNumber - 1,
         },
       };

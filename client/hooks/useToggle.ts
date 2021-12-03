@@ -15,6 +15,7 @@ const useToggle = <T = boolean>(
   const handleToggleOpen = useCallback(() => {
     setIsToggle(true);
   }, [setIsToggle]);
+
   const handleToggleClose = useCallback(() => {
     setIsToggle(false);
   }, [setIsToggle]);
