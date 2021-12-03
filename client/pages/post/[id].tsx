@@ -14,7 +14,7 @@ import { useAuthDispatch } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
-import { usePostDispatch } from "../../contexts/PostContext";
+import { usePostDispatch, usePostState } from "../../contexts/PostContext";
 import Head from "next/head";
 
 interface IPostViewProps {
@@ -30,6 +30,8 @@ const PostViewPage = (
 
   const authDispatch = useAuthDispatch();
   const postDispatch = usePostDispatch();
+
+  const postState = usePostState();
 
   useEffect(() => {
     loginInitializer(authDispatch);
@@ -59,9 +61,7 @@ const PostViewPage = (
         <Then>
           <h1>오류가 발생했습니다.</h1>
         </Then>
-        <Else>
-          <PostView post={post} />
-        </Else>
+        <Else>{postState.post && <PostView post={postState.post} />}</Else>
       </If>
       <Footer />
     </React.Fragment>

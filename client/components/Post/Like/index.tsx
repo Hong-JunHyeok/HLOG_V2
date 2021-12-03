@@ -5,14 +5,19 @@ import useToggle from "../../../hooks/useToggle";
 import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
 import { getIsLikedPostRequest } from "../../../apis/post";
 
-const Like: React.FunctionComponent = () => {
-  const { post } = usePostState();
+interface LikeInterface {
+  isLiked: boolean;
+  likeNumber: number;
+}
+
+const Like: React.FunctionComponent<LikeInterface> = ({
+  isLiked = false,
+  likeNumber = 0,
+}) => {
   const postDispatch = usePostDispatch();
 
-  console.log(post);
-
   const [likeToggleState, onChangeToggleState, , , setLikeToggleState] =
-    useToggle(false);
+    useToggle(isLiked);
 
   const like = useCallback(() => {
     postDispatch({
@@ -26,16 +31,6 @@ const Like: React.FunctionComponent = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (post) {
-      setLikeToggleState(post.isLiked);
-    }
-  }, [post]);
-
-  if (!post) {
-    return null;
-  }
-
   return (
     <React.Fragment>
       <div className={styles.container} onClick={onChangeToggleState}>
@@ -46,7 +41,7 @@ const Like: React.FunctionComponent = () => {
           {likeToggleState ? <FcLike /> : <FcLikePlaceholder />}
         </div>
 
-        <span className={styles.likers}>{post?.likeNumber}</span>
+        <span className={styles.likers}>{likeNumber}</span>
       </div>
     </React.Fragment>
   );
