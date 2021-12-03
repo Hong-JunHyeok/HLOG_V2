@@ -3,10 +3,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import setJsonResponser from "../../utils/setJsonResponser";
-import {
-  getRepository,
-  UsingJoinColumnOnlyOnOneSideAllowedError,
-} from "typeorm";
+import { getRepository } from "typeorm";
 import { Post } from "../../entity/Post";
 import tokenValidator from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
@@ -140,13 +137,14 @@ router.get(
           "user.username",
           "user.id",
           "user.profileUrl",
-          "like.user",
         ])
         .leftJoin("posts.user", "user")
         .leftJoinAndSelect("posts.like", "like")
         .orderBy("posts.createdAt", "DESC")
         .orderBy("posts.updatedAt", "DESC")
         .getMany();
+
+      console.log(posts[0]);
 
       setJsonResponser(res, {
         code: 200,
@@ -350,6 +348,50 @@ router.delete(
       return setJsonResponser(res, {
         code: 201,
         message: "좋아요 취소 성공",
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
+router.get(
+  "/posts/popular",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const postRepository = getRepository(Post);
+
+    try {
+      const posts = await postRepository
+        .createQueryBuilder("posts")
+        .select([
+          "posts.id",
+          "posts.createdAt",
+          "posts.updatedAt",
+          "posts.postThumnail",
+          "posts.postTitle",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .addSelect((qb) => {
+          return qb
+            .select("COUNT(*) AS count")
+            .from(Like, "like")
+            .where("post = posts.id");
+        }, "likeCount")
+        .leftJoin("posts.user", "user")
+        .leftJoinAndSelect("posts.like", "likes")
+        .orderBy("likeCount", "DESC")
+        .getMany();
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "인기 포스터조회 성공",
+        payload: {
+          posts,
+        },
       });
     } catch (error) {
       console.error(error);
