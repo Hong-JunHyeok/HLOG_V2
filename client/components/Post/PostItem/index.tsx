@@ -5,6 +5,7 @@ import styles from "./postItem.module.scss";
 import { useRouter } from "next/router";
 import dateFormatter from "../../../utils/formatter/date-format";
 import imageFormat from "../../../utils/formatter/image-format";
+import { FcLike } from "react-icons/fc";
 
 type IPostType = {
   id: number;
@@ -14,6 +15,10 @@ type IPostType = {
   postThumnail: string | null;
   user: { username: string };
   overviewMode?: boolean;
+  like: Array<{
+    id: number;
+    userId: number;
+  }>;
 };
 
 const PostItem: React.FunctionComponent<IPostType> = ({
@@ -24,6 +29,7 @@ const PostItem: React.FunctionComponent<IPostType> = ({
   postThumnail,
   user: { username },
   overviewMode = false,
+  like,
 }) => {
   const router = useRouter();
 
@@ -48,16 +54,24 @@ const PostItem: React.FunctionComponent<IPostType> = ({
 
       <div className={styles.meta}>
         <h1 className={styles.postTitle}>{postTitle}</h1>
-        <span className={styles.userName}>{username} 님</span>
 
-        <If condition={updatedAt !== createdAt}>
-          <Then>
-            <span>최근 수정됨 : {dateFormatter(updatedAt)}</span>
-          </Then>
-          <Else>
-            <span>작성일 : {dateFormatter(createdAt)}</span>
-          </Else>
-        </If>
+        <div className={styles.row}>
+          <span className={styles.userName}>{username}</span>
+
+          <If condition={updatedAt !== createdAt}>
+            <Then>
+              <span className={styles.date}>{dateFormatter(updatedAt)}</span>
+            </Then>
+            <Else>
+              <span className={styles.date}>{dateFormatter(createdAt)}</span>
+            </Else>
+          </If>
+
+          <div className={styles.like}>
+            <FcLike />
+            {like.length}
+          </div>
+        </div>
       </div>
     </section>
   );

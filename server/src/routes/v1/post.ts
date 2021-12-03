@@ -3,7 +3,10 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import setJsonResponser from "../../utils/setJsonResponser";
-import { getRepository } from "typeorm";
+import {
+  getRepository,
+  UsingJoinColumnOnlyOnOneSideAllowedError,
+} from "typeorm";
 import { Post } from "../../entity/Post";
 import tokenValidator from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
@@ -137,8 +140,10 @@ router.get(
           "user.username",
           "user.id",
           "user.profileUrl",
+          "like.user",
         ])
         .leftJoin("posts.user", "user")
+        .leftJoinAndSelect("posts.like", "like")
         .orderBy("posts.createdAt", "DESC")
         .orderBy("posts.updatedAt", "DESC")
         .getMany();
@@ -151,6 +156,8 @@ router.get(
         },
       });
     } catch (error) {
+      console.error(error);
+
       next(error);
     }
   }

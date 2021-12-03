@@ -1,9 +1,10 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .itemWrapper {
+  position: relative;
   width: 300px;
   height: 350px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
   transition: ease-in-out 0.2s;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -15,12 +16,21 @@
   .thumnail {
     width: 100%;
     height: 200px;
-    border-radius: 20px 20px 0 0;
+    border-radius: 5px 5px 0 0;
     object-fit: cover;
   }
 
   .meta {
     padding: 1rem;
+    .row {
+      padding-bottom: 10px;
+      position: absolute;
+      bottom: 0;
+      left: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
     .postTitle {
       width: 100%;
       overflow: hidden;
@@ -32,9 +42,22 @@
       color: colors.$normal_text;
     }
     .userName {
-      display: block;
+      display: inline-block;
       font-weight: bold;
       color: colors.$primary_color;
+    }
+    .date {
+      font-size: 0.75rem;
+      color: rgb(134, 142, 150);
+    }
+    .like {
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 1.5rem;
+      font-size: 0.7rem;
     }
   }
 

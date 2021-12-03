@@ -6,7 +6,10 @@
   grid-auto-rows: auto;
   justify-items: center;
 
-  @media (max-width: 968px) {
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   }
   @media (max-width: 768px) {

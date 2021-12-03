@@ -37,9 +37,15 @@ export default function Index({
 export const getServerSideProps: GetServerSideProps<{
   posts: Array<PostType>;
 }> = async (context: GetServerSidePropsContext) => {
-  const postsResponse = await getPostsResponse();
+  try {
+    const postsResponse = await getPostsResponse();
 
-  return {
-    props: { posts: postsResponse.payload.posts },
-  };
+    return {
+      props: { posts: postsResponse.payload.posts },
+    };
+  } catch (error) {
+    return {
+      props: { posts: [] },
+    };
+  }
 };

@@ -4,6 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from "typeorm";
 import { Comment } from "./Comment";
 import { Post } from "./Post";
@@ -19,8 +20,11 @@ export class Like {
   id: number;
 
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
-  @JoinColumn({ name: "user" })
+  @JoinColumn({ name: "userId" })
   user: User;
+
+  @RelationId((like: Like) => like.user)
+  userId: number;
 
   @ManyToOne(() => Post, (post) => post.id, { nullable: true })
   @JoinColumn({ name: "post" })
