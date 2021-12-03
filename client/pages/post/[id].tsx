@@ -6,7 +6,7 @@ import {
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
 import React, { useEffect } from "react";
-import { getPostResponse } from "../../apis/post";
+import { getIsLikedPostRequest, getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
@@ -33,15 +33,19 @@ const PostViewPage = (
 
   useEffect(() => {
     loginInitializer(authDispatch);
+  }, []);
 
-    postDispatch({
-      type: "GET_POST_SUCCESS",
-      payload: post,
-    });
+  useEffect(() => {
+    getIsLikedPostRequest(post.id).then((response) => {
+      postDispatch({
+        type: "GET_POST_SUCCESS",
+        payload: { ...post, isLiked: response.payload },
+      });
 
-    postDispatch({
-      type: "GET_COMMENTS_SUCCESS",
-      payload: comments,
+      postDispatch({
+        type: "GET_COMMENTS_SUCCESS",
+        payload: comments,
+      });
     });
   }, []);
 
@@ -76,7 +80,10 @@ export const getServerSideProps: GetServerSideProps = async (
     );
 
     return {
-      props: { post: postResponse.payload, comments: commentResponse.payload },
+      props: {
+        post: { ...postResponse.payload },
+        comments: commentResponse.payload,
+      },
     };
   } catch (error) {
     return {

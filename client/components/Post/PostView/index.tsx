@@ -38,8 +38,6 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 
   const { comments } = usePostState();
 
-  console.log(post.postThumnail);
-
   return (
     <React.Fragment>
       <main className={styles.container}>

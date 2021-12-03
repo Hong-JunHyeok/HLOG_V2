@@ -8,4 +8,6 @@ export interface PostType {
   createdAt: string;
   updatedAt: string;
   user: UserType;
+  likeNumber: number;
+  isLiked: boolean;
 }

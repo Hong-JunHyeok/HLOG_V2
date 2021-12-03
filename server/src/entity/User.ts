@@ -27,14 +27,14 @@ export class User extends Common {
   @Column({ nullable: false, comment: "사용자의 비밀번호", type: "varchar" })
   password: string;
 
-  @OneToMany((Type) => Post, (post) => post.user, {
+  @OneToMany(() => Post, (post) => post.user, {
     nullable: true,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
   posts: Post[];
 
-  @OneToMany((Type) => Comment, (comment) => comment.user, {
+  @OneToMany(() => Comment, (comment) => comment.user, {
     nullable: false,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

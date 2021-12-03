@@ -48,7 +48,22 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           return comment;
         }),
       };
-
+    case "LIKE":
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          likeNumber: state.post.likeNumber + 1,
+        },
+      };
+    case "UNLIKE":
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          likeNumber: state.post.likeNumber - 1,
+        },
+      };
     default:
       return { ...state };
   }

@@ -162,6 +162,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const id = Number(req.params.id);
 
   const postRepository = getRepository(Post);
+  const likeRepository = getRepository(Like);
 
   try {
     const post = await postRepository
@@ -182,15 +183,55 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
       .where("posts.id = :id", { id })
       .getOne();
 
+    const likeNumber = await likeRepository.find({
+      where: {
+        post,
+      },
+    });
+
     setJsonResponser(res, {
       code: 200,
       message: "포스트 조회성공",
-      payload: post,
+      payload: { ...post, likeNumber: likeNumber.length },
     });
   } catch (error) {
     next(error);
   }
 });
+
+router.get(
+  "/like/:postId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const likeRepository = getRepository(Like);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user: me,
+          post: postId,
+        },
+      });
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "좋아요 여부 조회성공",
+        payload: !!alreadyLiked,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.post(
   "/like/:postId",

@@ -68,3 +68,13 @@ export const unlikeRequest = async (postId: number) => {
     return error.response;
   }
 };
+
+export const getIsLikedPostRequest = async (postId: number) => {
+  try {
+    const response = await customAxios.get(`/post/like/${postId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};

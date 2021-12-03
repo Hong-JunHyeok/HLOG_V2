@@ -1,21 +1,52 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import styles from "./like.module.scss";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import useToggle from "../../../hooks/useToggle";
+import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
+import { getIsLikedPostRequest } from "../../../apis/post";
 
 const Like: React.FunctionComponent = () => {
-  const [likeToggleState, onChangeToggleState] = useToggle(false);
+  const { post } = usePostState();
+  const postDispatch = usePostDispatch();
 
-  const likeNumber = 999;
+  console.log(post);
+
+  const [likeToggleState, onChangeToggleState, , , setLikeToggleState] =
+    useToggle(false);
+
+  const like = useCallback(() => {
+    postDispatch({
+      type: "LIKE",
+    });
+  }, []);
+
+  const unlike = useCallback(() => {
+    postDispatch({
+      type: "UNLIKE",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (post) {
+      setLikeToggleState(post.isLiked);
+    }
+  }, [post]);
+
+  if (!post) {
+    return null;
+  }
 
   return (
     <React.Fragment>
       <div className={styles.container} onClick={onChangeToggleState}>
-        <div className={styles.likeBtn}>
+        <div
+          className={styles.likeBtn}
+          onClick={likeToggleState ? unlike : like}
+        >
           {likeToggleState ? <FcLike /> : <FcLikePlaceholder />}
         </div>
 
-        <span className={styles.likers}>{likeNumber}</span>
+        <span className={styles.likers}>{post?.likeNumber}</span>
       </div>
     </React.Fragment>
   );
