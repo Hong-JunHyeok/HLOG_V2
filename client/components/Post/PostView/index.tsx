@@ -13,6 +13,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
+import { useAuthState } from "../../../contexts/AuthContext";
 
 interface IPostViewProps {
   post: PostType;
@@ -36,6 +37,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
   const { post } = props;
   const { postTitle, createdAt, updatedAt } = post;
 
+  const { isLoggedIn } = useAuthState();
   const { comments } = usePostState();
 
   return (
@@ -58,7 +60,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                   </span>
                 </Else>
               </If>
-              <Like />
+              {isLoggedIn && <Like />}
             </div>
             <div className={`${styles.profileInfo}`}>
               <div className={styles.profile}>

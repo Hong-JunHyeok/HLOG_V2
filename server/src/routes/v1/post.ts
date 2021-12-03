@@ -331,7 +331,7 @@ router.delete(
       const alreadyLiked = await likeRepository.findOne({
         where: {
           user,
-          post: post,
+          post,
         },
       });
 
@@ -342,18 +342,18 @@ router.delete(
         });
       }
 
-      await likeRepository
-        .createQueryBuilder()
-        .delete()
-        .where("user = :userId", { userId: user.id })
-        .where("post = :postId", { postId: parseInt(postId, 10) })
-        .execute();
+      await likeRepository.delete({
+        user,
+        post,
+      });
 
       return setJsonResponser(res, {
         code: 201,
         message: "좋아요 취소 성공",
       });
     } catch (error) {
+      console.error(error);
+
       next(error);
     }
   }

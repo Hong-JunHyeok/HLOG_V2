@@ -10,4 +10,8 @@ export interface PostType {
   user: UserType;
   likeNumber: number;
   isLiked: boolean;
+  like: Array<{
+    id: number;
+    userId: number;
+  }>;
 }
