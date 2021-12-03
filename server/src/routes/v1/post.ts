@@ -47,8 +47,6 @@ router.patch(
         });
       }
 
-      console.log(req.file);
-
       await postRepository
         .createQueryBuilder()
         .update()
@@ -341,6 +339,7 @@ router.delete(
         .createQueryBuilder()
         .delete()
         .where("user = :userId", { userId: user.id })
+        .where("post = :postId", { postId: parseInt(postId, 10) })
         .execute();
 
       return setJsonResponser(res, {

@@ -5,11 +5,7 @@ import useToggle from "../../../hooks/useToggle";
 import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
 import { likeRequest, unlikeRequest } from "../../../apis/post";
 
-interface LikeInterface {
-  likeNumber: number;
-}
-
-const Like: React.FunctionComponent<LikeInterface> = ({ likeNumber = 0 }) => {
+const Like: React.FunctionComponent = () => {
   const { post } = usePostState();
   const postDispatch = usePostDispatch();
 

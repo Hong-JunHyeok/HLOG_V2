@@ -58,7 +58,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                   </span>
                 </Else>
               </If>
-              <Like likeNumber={post.likeNumber} />
+              <Like />
             </div>
             <div className={`${styles.profileInfo}`}>
               <div className={styles.profile}>

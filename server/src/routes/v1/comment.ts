@@ -24,6 +24,13 @@ router.delete(
         },
       });
 
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
       const comment = await commentRepository
         .createQueryBuilder("comments")
         .select([
@@ -38,13 +45,6 @@ router.delete(
         .leftJoin("comments.user", "user")
         .where("user.id = :id", { id: me.id })
         .getOne();
-
-      if (!me) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "유저 정보가 없습니다.",
-        });
-      }
 
       if (me.id !== comment.user.id) {
         return setJsonResponser(res, {
