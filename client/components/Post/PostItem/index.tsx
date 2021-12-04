@@ -67,10 +67,12 @@ const PostItem: React.FunctionComponent<IPostType> = ({
             </Else>
           </If>
 
-          <div className={styles.like}>
-            <FcLike />
-            {like.length}
-          </div>
+          {!overviewMode && (
+            <div className={styles.like}>
+              <FcLike />
+              {like.length}
+            </div>
+          )}
         </div>
       </div>
     </section>

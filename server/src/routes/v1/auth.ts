@@ -61,6 +61,7 @@ router.post(
       });
     } catch (error) {
       console.error(error);
+
       next(error);
     }
   }

@@ -35,25 +35,22 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
         </div>
 
         <nav className={styles.menus}>
+          <li
+            className={styles.menu}
+            style={router.getCurrentParam() === "/" ? activeStyle : null}
+            onClick={() => router.handlePushLink("/")}
+          >
+            최근 게시글
+          </li>
+          <li
+            className={styles.menu}
+            style={router.getCurrentParam() === "/popular" ? activeStyle : null}
+            onClick={() => router.handlePushLink("/popular")}
+          >
+            인기 게시글
+          </li>
           {authState.isLoggedIn && (
             <React.Fragment>
-              <li
-                className={styles.menu}
-                style={router.getCurrentParam() === "/" ? activeStyle : null}
-                onClick={() => router.handlePushLink("/")}
-              >
-                최근 게시글
-              </li>
-              <li
-                className={styles.menu}
-                style={
-                  router.getCurrentParam() === "/popular" ? activeStyle : null
-                }
-                onClick={() => router.handlePushLink("/popular")}
-              >
-                인기 게시글
-              </li>
-
               <li
                 className={styles.write}
                 onClick={() => router.handlePushLink("/post/create")}

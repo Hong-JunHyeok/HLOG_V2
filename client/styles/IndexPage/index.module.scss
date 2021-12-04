@@ -9,4 +9,10 @@
     font-size: 48px;
     white-space: pre-wrap;
   }
+
+  @media (max-width: 1200px) {
+    .mainComment {
+      display: none;
+    }
+  }
 }

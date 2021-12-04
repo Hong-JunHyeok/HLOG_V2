@@ -1,0 +1,52 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+  display: flex;
+  height: 600px;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 10px;
+
+  section {
+    width: 400px;
+    h1 {
+      font-size: 20px;
+      padding: 0;
+      margin: 1rem 0 0 0;
+    }
+    .input {
+      width: 400px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 1rem;
+      padding: 1.1rem 1rem;
+      outline: none;
+      background-color: colors.$gray_text1;
+      &::placeholder {
+        color: colors.$gray_text3;
+      }
+    }
+  }
+
+  .button {
+    margin-top: 3rem;
+    border-radius: 10px;
+    color: colors.$white_text;
+    background-color: colors.$primary_color;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  .joinUs {
+    font-weight: lighter;
+    margin-top: 2rem;
+    text-align: end;
+
+    .joinButton {
+      background-color: #e7f5ff;
+      color: #74c0fc;
+    }
+  }
+}

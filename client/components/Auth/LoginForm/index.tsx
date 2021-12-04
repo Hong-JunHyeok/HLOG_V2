@@ -69,13 +69,13 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
   }, [authState.loginError]);
 
   useEffect(() => {
-    authState.isLoggedIn && router.back();
+    authState.isLoggedIn && router.replace("/");
   }, [authState.isLoggedIn]);
 
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
       <input
-        type="text"
+        type="email"
         className={styles.input}
         autoComplete="off"
         placeholder="이메일을 입력해주세요."
