@@ -10,10 +10,10 @@ import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./commentItem.module.scss";
-import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useInput from "../../../hooks/useInput";
 import imageFormat from "../../../utils/formatter/image-format";
+import Like from "../Like";
 
 interface ICommentProps {
   comment: CommentType;
@@ -24,7 +24,6 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
   const { myInfo, isLoggedIn } = useAuthState();
   const postDispatch = usePostDispatch();
 
-  const [isLiked, toggleLike] = useToggle(false);
   const [isEditMode, , editOpen, editClose] = useToggle(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editText, onChangeEditText, setEditText] = useInput(
@@ -148,19 +147,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
           </Else>
         </If>
         <footer className={styles.emotion}>
-          {isLiked ? (
-            <React.Fragment>
-              <FcLike onClick={toggleLike} />
-              <span className={styles.ment}>
-                {myInfo.username}님 외, 48명이 이 댓글에 공감합니다.
-              </span>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <FcLikePlaceholder onClick={toggleLike} />
-              <span className={styles.ment}>48명이 이 댓글에 공감합니다.</span>
-            </React.Fragment>
-          )}
+          <Like />
         </footer>
       </div>
     </React.Fragment>
