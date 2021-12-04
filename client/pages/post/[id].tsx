@@ -19,7 +19,7 @@ import Head from "next/head";
 
 interface IPostViewProps {
   post: PostType;
-  comments: CommentType;
+  comments: CommentType[];
   error: Error;
 }
 
@@ -44,7 +44,13 @@ const PostViewPage = (
 
       postDispatch({
         type: "GET_COMMENTS_SUCCESS",
-        payload: comments,
+        payload: comments.map((comment) => {
+          return {
+            ...comment,
+            isLiked: false,
+            likeNumber: 0,
+          };
+        }),
       });
     });
   }, []);

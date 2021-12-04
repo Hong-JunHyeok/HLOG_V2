@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { If, Else, Then } from "react-if";
 import {
   deleteCommentRequest,
@@ -147,7 +147,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
           </Else>
         </If>
         <footer className={styles.emotion}>
-          <Like />
+          <Like comment={comment} />
         </footer>
       </div>
     </React.Fragment>

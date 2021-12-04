@@ -3,25 +3,25 @@ import styles from "./like.module.scss";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import useToggle from "../../../hooks/useToggle";
 import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
-import { likeRequest, unlikeRequest } from "../../../apis/post";
+import { postLikeRequest, postUnlikeRequest } from "../../../apis/post";
 
 const Like: React.FunctionComponent = () => {
   const { post } = usePostState();
   const postDispatch = usePostDispatch();
 
   const like = async () => {
-    await likeRequest(post.id);
+    await postLikeRequest(post.id);
 
     postDispatch({
-      type: "LIKE",
+      type: "POST_LIKE",
     });
   };
 
   const unlike = async () => {
-    await unlikeRequest(post.id);
+    await postUnlikeRequest(post.id);
 
     postDispatch({
-      type: "UNLIKE",
+      type: "POST_UNLIKE",
     });
   };
 

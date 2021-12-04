@@ -58,7 +58,7 @@ export const patchPostThumnail = async (
   }
 };
 
-export const likeRequest = async (postId: number) => {
+export const postLikeRequest = async (postId: number) => {
   try {
     const response = await customAxios.post(`/post/like/${postId}`);
 
@@ -68,7 +68,7 @@ export const likeRequest = async (postId: number) => {
   }
 };
 
-export const unlikeRequest = async (postId: number) => {
+export const postUnlikeRequest = async (postId: number) => {
   try {
     const response = await customAxios.delete(`/post/unlike/${postId}`);
 
@@ -81,6 +81,38 @@ export const unlikeRequest = async (postId: number) => {
 export const getIsLikedPostRequest = async (postId: number) => {
   try {
     const response = await customAxios.get(`/post/like/${postId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+// *
+
+export const commentLikeRequest = async (commentId: number) => {
+  try {
+    const response = await customAxios.post(`/comment/like/${commentId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const commentUnlikeRequest = async (commentId: number) => {
+  try {
+    const response = await customAxios.delete(`/comment/unlike/${commentId}`);
+
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export const getIsLikedCommentRequest = async (commentId: number) => {
+  try {
+    const response = await customAxios.get(`/comment/like/${commentId}`);
 
     return response.data;
   } catch (error) {

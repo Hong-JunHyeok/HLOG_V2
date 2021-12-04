@@ -17,8 +17,8 @@ const CommentList: React.FunctionComponent<ICommentProps> = (props) => {
       <If condition={comments.length > 0}>
         <Then>
           <div className={styles.container}>
-            {comments.map((comment) => (
-              <CommentItem comment={comment} key={comment.id} />
+            {comments.map((comment, index) => (
+              <CommentItem comment={comment} key={comment.id} data-id={index} />
             ))}
           </div>
         </Then>

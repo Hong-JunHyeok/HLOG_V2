@@ -48,7 +48,7 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           return comment;
         }),
       };
-    case "LIKE":
+    case "POST_LIKE":
       return {
         ...state,
         post: {
@@ -57,7 +57,7 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           likeNumber: state.post.likeNumber + 1,
         },
       };
-    case "UNLIKE":
+    case "POST_UNLIKE":
       return {
         ...state,
         post: {
@@ -66,6 +66,42 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           likeNumber: state.post.likeNumber - 1,
         },
       };
+    case "COMMENT_LIKE": {
+      const newCommentList = state.comments.map((comment) => {
+        if (comment.id === action.payload) {
+          return {
+            ...comment,
+            isLiked: true,
+            likeNumber: comment.likeNumber + 1,
+          };
+        } else {
+          return comment;
+        }
+      });
+
+      return {
+        ...state,
+        comments: newCommentList,
+      };
+    }
+
+    case "COMMENT_UNLIKE": {
+      const newCommentList = state.comments.map((comment) => {
+        if (comment.id === action.payload) {
+          return {
+            ...comment,
+            isLiked: false,
+            likeNumber: comment.likeNumber - 1,
+          };
+        } else {
+          return comment;
+        }
+      });
+      return {
+        ...state,
+        comments: newCommentList,
+      };
+    }
     default:
       return { ...state };
   }

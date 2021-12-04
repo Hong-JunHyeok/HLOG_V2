@@ -6,4 +6,10 @@ export interface CommentType {
   createdAt: string;
   updatedAt: string;
   user: UserType;
+  likeNumber: number;
+  isLiked: boolean;
+  like: Array<{
+    id: number;
+    userId: number;
+  }>;
 }
