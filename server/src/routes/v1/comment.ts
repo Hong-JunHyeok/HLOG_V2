@@ -302,4 +302,63 @@ router.post(
   }
 );
 
+router.delete(
+  "/unlike/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const commentRepository = getRepository(Comment);
+      const likeRepository = getRepository(Like);
+
+      const comment = await commentRepository.findOne({
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      if (!comment) {
+        return setJsonResponser(res, {
+          code: 404,
+          message: "댓글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          comment,
+        },
+      });
+
+      if (!alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "좋아요를 하지않은 상태에서 취소를 할 수 없습니다.",
+        });
+      }
+
+      await likeRepository.delete({
+        user,
+        comment,
+      });
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 취소 성공",
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
 export default router;
