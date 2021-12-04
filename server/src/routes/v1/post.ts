@@ -267,7 +267,7 @@ router.post(
       const alreadyLiked = await likeRepository.findOne({
         where: {
           user,
-          post: post,
+          post,
         },
       });
 

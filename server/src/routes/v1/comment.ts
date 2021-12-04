@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { Comment } from "../../entity/Comment";
 import { Post } from "../../entity/Post";
 import { User } from "../../entity/User";
+import { Like } from "../../entity/Like";
 import tokenValidator from "../../middlewares/tokenValidator";
 import setJsonResponser from "../../utils/setJsonResponser";
 
@@ -232,6 +233,68 @@ router.get(
         code: 200,
         message: `${postId}번 게시글 댓글 조회성공`,
         payload: comments,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/like/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const commentRepository = getRepository(Comment);
+      const likeRepository = getRepository(Like);
+
+      const comment = await commentRepository.findOne({
+        where: {
+          id: Number(commentId),
+        },
+      });
+
+      if (!comment) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "댓글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          comment,
+        },
+      });
+
+      if (alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "이미 좋아요를 했습니다.",
+        });
+      }
+
+      const newLike = new Like();
+
+      newLike.user = user;
+      newLike.comment = comment;
+
+      await likeRepository.save(newLike);
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 성공",
+        payload: {
+          newLike,
+        },
       });
     } catch (error) {
       next(error);
