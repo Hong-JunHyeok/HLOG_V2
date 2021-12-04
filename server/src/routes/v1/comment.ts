@@ -240,6 +240,40 @@ router.get(
   }
 );
 
+router.get(
+  "/like/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const likeRepository = getRepository(Like);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user: me,
+          comment: commentId,
+        },
+      });
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "좋아요 여부 조회성공",
+        payload: !!alreadyLiked,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.post(
   "/like/:commentId",
   tokenValidator,
