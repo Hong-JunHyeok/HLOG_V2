@@ -35,24 +35,28 @@ const PostViewPage = (
     loginInitializer(authDispatch);
   }, []);
 
-  useEffect(() => {
-    getIsLikedPostRequest(post.id).then((response) => {
-      postDispatch({
-        type: "GET_POST_SUCCESS",
-        payload: { ...post, isLiked: response.payload },
-      });
-
-      postDispatch({
-        type: "GET_COMMENTS_SUCCESS",
-        payload: comments.map((comment) => {
-          return {
-            ...comment,
-            isLiked: false,
-            likeNumber: 0,
-          };
-        }),
-      });
+  const pageInitialize = async () => {
+    const postResponse = await getIsLikedPostRequest(post.id);
+    postDispatch({
+      type: "GET_POST_SUCCESS",
+      payload: { ...post, isLiked: postResponse.payload },
     });
+
+    postDispatch({
+      type: "GET_COMMENTS_SUCCESS",
+      payload: comments.map((comment) => {
+        console.log(comment.isLiked);
+
+        return {
+          ...comment,
+          likeNumber: comment.like.length,
+        };
+      }),
+    });
+  };
+
+  useEffect(() => {
+    pageInitialize();
   }, []);
 
   return (

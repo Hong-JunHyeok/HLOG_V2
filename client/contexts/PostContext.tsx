@@ -78,7 +78,6 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           return comment;
         }
       });
-
       return {
         ...state,
         comments: newCommentList,
@@ -97,6 +96,24 @@ function postReducer(state: PostContextType, action: any): PostContextType {
           return comment;
         }
       });
+      return {
+        ...state,
+        comments: newCommentList,
+      };
+    }
+
+    case "COMMENT_INIT_LIKE": {
+      const newCommentList = state.comments.map((comment) => {
+        if (comment.id === action.payload.id) {
+          return {
+            ...comment,
+            isLiked: action.payload.status,
+          };
+        } else {
+          return comment;
+        }
+      });
+
       return {
         ...state,
         comments: newCommentList,

@@ -4,6 +4,7 @@ import styles from "./header.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useToggle from "../../../hooks/useToggle";
 import Router from "../../../lib/Router";
+import { useRouter } from "next/router";
 import { BsPencilFill } from "react-icons/bs";
 import imageFormat from "../../../utils/formatter/image-format";
 
@@ -14,7 +15,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
   const authDispatch = useAuthDispatch();
 
   const [isUserDropOpen, toggleUserDrop] = useToggle(false);
-  const router = new Router();
+  const router = useRouter();
 
   const activeStyle: CSSProperties = {
     color: "#333d4b",
@@ -25,27 +26,29 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
     authDispatch({
       type: "LOGOUT",
     });
+
+    router.replace("/");
   }, []);
 
   return (
     <React.Fragment>
       <header className={styles.header}>
-        <div className={styles.logo} onClick={() => router.handlePushLink("/")}>
+        <div className={styles.logo} onClick={() => router.push("/")}>
           HLOG
         </div>
 
         <nav className={styles.menus}>
           <li
             className={styles.menu}
-            style={router.getCurrentParam() === "/" ? activeStyle : null}
-            onClick={() => router.handlePushLink("/")}
+            style={router.pathname === "/" ? activeStyle : null}
+            onClick={() => router.push("/")}
           >
             최근 게시글
           </li>
           <li
             className={styles.menu}
-            style={router.getCurrentParam() === "/popular" ? activeStyle : null}
-            onClick={() => router.handlePushLink("/popular")}
+            style={router.pathname === "/popular" ? activeStyle : null}
+            onClick={() => router.push("/popular")}
           >
             인기 게시글
           </li>
@@ -53,7 +56,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
             <React.Fragment>
               <li
                 className={styles.write}
-                onClick={() => router.handlePushLink("/post/create")}
+                onClick={() => router.push("/post/create")}
               >
                 <BsPencilFill className={styles.writeIcon} />
                 글쓰기
@@ -74,7 +77,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
                   <ul className={styles.userDropdown}>
                     <li
                       onClick={() =>
-                        router.handlePushLink(`/profile/${authState.myInfo.id}`)
+                        router.push(`/profile/${authState.myInfo.id}`)
                       }
                     >
                       내 프로필
@@ -87,7 +90,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
           )}
           {!authState.isLoggedIn && (
             <button
-              onClick={() => router.handlePushLink("/auth/login")}
+              onClick={() => router.push("/auth/login")}
               className={styles.login}
             >
               로그인

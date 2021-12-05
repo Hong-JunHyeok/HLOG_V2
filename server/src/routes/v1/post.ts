@@ -144,8 +144,6 @@ router.get(
         .orderBy("posts.updatedAt", "DESC")
         .getMany();
 
-      console.log(posts[0]);
-
       setJsonResponser(res, {
         code: 200,
         message: "모든 포스터조회 성공",

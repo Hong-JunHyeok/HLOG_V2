@@ -5,13 +5,12 @@ import TextareaAutosize from "react-textarea-autosize";
 import useInput from "../../../hooks/useInput";
 import { createCommentRequest } from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
+import { usePostDispatch } from "../../../contexts/PostContext";
 
 interface ICommentProps {}
 
-const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
+const CommentInput: React.FunctionComponent<ICommentProps> = () => {
   const authState = useAuthState();
-  const postState = usePostState();
   const postDispatch = usePostDispatch();
   const [commentState, onChangeCommentState, setCommentState] = useInput(
     "",
@@ -46,6 +45,8 @@ const CommentInput: React.FunctionComponent<ICommentProps> = (props) => {
             commentContent: commentState,
             createdAt: now,
             updatedAt: now,
+            isLiked: false,
+            likeNumber: 0,
             user: {
               id: authState.myInfo.id,
               profileUrl: authState.myInfo.profileUrl,

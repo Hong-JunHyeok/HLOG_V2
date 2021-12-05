@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 import { User } from "./User";
+import { Like } from "./Like";
 
 @Entity({
   name: "comments",
@@ -16,4 +17,11 @@ export class Comment extends Common {
 
   @ManyToOne(() => Post, (post) => post.id)
   post: Post;
+
+  @OneToMany(() => Like, (like) => like.comment, {
+    nullable: true,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  like: Like[];
 }

@@ -224,10 +224,13 @@ router.get(
           "user.profileUrl",
         ])
         .leftJoin("comments.user", "user")
+        .leftJoinAndSelect("comments.like", "like")
         .where("comments.postId = :id", { id: postId })
         .orderBy("comments.createdAt", "DESC")
         .orderBy("comments.updatedAt", "DESC")
         .getMany();
+
+      console.log(comments[0]);
 
       setJsonResponser(res, {
         code: 200,
@@ -235,6 +238,8 @@ router.get(
         payload: comments,
       });
     } catch (error) {
+      console.error(error);
+
       next(error);
     }
   }
