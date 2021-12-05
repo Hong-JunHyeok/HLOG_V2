@@ -13,100 +13,105 @@ import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useAuthState } from "../../../contexts/AuthContext";
+import { usePostState } from "../../../contexts/PostContext";
 
 interface IPostViewProps {
-  post: PostType;
+	post: PostType;
 }
 
 const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
-  const markdownIt = new MarkdownIt({
-    highlight: (str, lang) => {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return hljs.highlight(str, { language: lang }).value;
-        } catch (error) {
-          console.error(error);
-        }
-      }
+	const markdownIt = new MarkdownIt({
+		highlight: (str, lang) => {
+			if (lang && hljs.getLanguage(lang)) {
+				try {
+					return hljs.highlight(str, { language: lang }).value;
+				} catch (error) {
+					console.error(error);
+				}
+			}
 
-      return "";
-    },
-  });
+			return "";
+		},
+	});
 
-  const { post } = props;
-  const { postTitle, createdAt, updatedAt } = post;
+	const { post } = props;
+	const { postTitle, createdAt, updatedAt } = post;
 
-  const { myInfo, isLoggedIn } = useAuthState();
+	const { myInfo, isLoggedIn } = useAuthState();
+	const { postLoading } = usePostState();
 
-  return (
-    <React.Fragment>
-      <main className={styles.container}>
-        <div className={styles.meta}>
-          <h1 className={styles.title}>{postTitle}</h1>
-          <div className={styles.info}>
-            <div className={styles.flex}>
-              <div className={styles.profile}>
-                <img
-                  src={
-                    post.user.profileUrl
-                      ? imageFormat(post.user.profileUrl)
-                      : DefaultProfile
-                  }
-                  alt={post.user.username}
-                  className={styles.profileImage}
-                />
-                <span className={styles.username}>{post.user.username}</span>
-              </div>
+	return (
+		<React.Fragment>
+			<main className={styles.container}>
+				<div className={styles.meta}>
+					<h1 className={styles.title}>{postTitle}</h1>
+					<div className={styles.info}>
+						<div className={styles.flex}>
+							<div className={styles.profile}>
+								<img
+									src={
+										post.user.profileUrl
+											? imageFormat(post.user.profileUrl)
+											: DefaultProfile
+									}
+									alt={post.user.username}
+									className={styles.profileImage}
+								/>
+								<span className={styles.username}>{post.user.username}</span>
+							</div>
 
-              {isLoggedIn && <Like />}
-            </div>
-            <div className={`${styles.profileInfo}`}>
-              <If condition={updatedAt !== createdAt}>
-                <Then>
-                  <span className={styles.date}>
-                    최근 수정됨 : {dateFormatter(updatedAt)}
-                  </span>
-                </Then>
-                <Else>
-                  <span className={styles.date}>
-                    작성일 : {dateFormatter(createdAt)}
-                  </span>
-                </Else>
-              </If>
-              <If condition={post.user.selfIntroduction}>
-                <Then>
-                  <div className={`${styles.intro}`}>
-                    <p>{post.user.selfIntroduction}</p>
-                  </div>
-                </Then>
-              </If>
-            </div>
-          </div>
-        </div>
+							{isLoggedIn && <Like />}
+						</div>
+						<div className={`${styles.profileInfo}`}>
+							<If condition={updatedAt !== createdAt}>
+								<Then>
+									<span className={styles.date}>
+										최근 수정됨 : {dateFormatter(updatedAt)}
+									</span>
+								</Then>
+								<Else>
+									<span className={styles.date}>
+										작성일 : {dateFormatter(createdAt)}
+									</span>
+								</Else>
+							</If>
+							<If condition={post.user.selfIntroduction}>
+								<Then>
+									<div className={`${styles.intro}`}>
+										<p>{post.user.selfIntroduction}</p>
+									</div>
+								</Then>
+							</If>
+						</div>
+					</div>
+				</div>
 
-        <section className={styles.content}>
-          <If condition={post.postThumnail}>
-            <Then>
-              <img
-                src={imageFormat(post.postThumnail)}
-                className={styles.postThumnail}
-                alt={post.postTitle}
-              />
-            </Then>
-          </If>
+				<section className={styles.content}>
+					<If condition={post.postThumnail}>
+						<Then>
+							<img
+								src={imageFormat(post.postThumnail)}
+								className={styles.postThumnail}
+								alt={post.postTitle}
+							/>
+						</Then>
+					</If>
 
-          <div
-            className={`${styles.text}`}
-            dangerouslySetInnerHTML={{
-              __html: markdownIt.render(post.postContent),
-            }}
-          />
-        </section>
-      </main>
-      <CommentInput />
-      {myInfo && <CommentList />}
-    </React.Fragment>
-  );
+					<div
+						className={`${styles.text}`}
+						dangerouslySetInnerHTML={{
+							__html: markdownIt.render(post.postContent),
+						}}
+					/>
+				</section>
+			</main>
+			<CommentInput />
+			<If condition={postLoading}>
+				<Then>{/* TODO: Skeleton UI */}</Then>
+				<Else>{myInfo && <CommentList />}</Else>
+			</If>
+		</React.Fragment>
+	);
 };
 
 export default PostView;

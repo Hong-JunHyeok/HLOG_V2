@@ -10,7 +10,7 @@ import { getIsLikedPostRequest, getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
-import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
+import { useAuthDispatch } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
@@ -28,11 +28,14 @@ const PostViewPage = (
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
 	const { post, comments, error } = props;
 
-	const { getMyInfoLoading } = useAuthState();
 	const authDispatch = useAuthDispatch();
 	const postDispatch = usePostDispatch();
 
 	const pageInitialize = async () => {
+		postDispatch({
+			type: "GET_POST",
+		});
+
 		const postResponse = await getIsLikedPostRequest(post.id);
 
 		postDispatch({
@@ -51,10 +54,6 @@ const PostViewPage = (
 		pageInitialize();
 	}, []);
 
-	if (getMyInfoLoading) {
-		return <>로딩중</>;
-	}
-
 	return (
 		<React.Fragment>
 			<Head>
@@ -69,7 +68,6 @@ const PostViewPage = (
 					<PostView post={post} />
 				</Else>
 			</If>
-
 			<Footer />
 		</React.Fragment>
 	);

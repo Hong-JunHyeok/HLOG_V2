@@ -217,7 +217,6 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const id = Number(req.params.id);
 
   const postRepository = getRepository(Post);
-  const likeRepository = getRepository(Like);
 
   try {
     const post = await postRepository
@@ -238,16 +237,10 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
       .where("posts.id = :id", { id })
       .getOne();
 
-    const likeNumber = await likeRepository.find({
-      where: {
-        post,
-      },
-    });
-
     setJsonResponser(res, {
       code: 200,
       message: "포스트 조회성공",
-      payload: { ...post, likeNumber: likeNumber.length },
+      payload: post,
     });
   } catch (error) {
     next(error);
