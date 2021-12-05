@@ -30,7 +30,10 @@ export class Like {
   @JoinColumn({ name: "post" })
   post: Post;
 
-  @ManyToOne(() => Comment, (comment) => comment.id, { nullable: true })
+  @ManyToOne(() => Comment, (comment) => comment.id, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "comment" })
   comment: Comment;
 }
