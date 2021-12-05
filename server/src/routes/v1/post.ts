@@ -25,6 +25,60 @@ const upload = multer({
   }),
 });
 
+router.delete(
+  "/:postId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+    try {
+      const postRepository = getRepository(Post);
+      const userRepository = getRepository(User);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      const post = await postRepository
+        .createQueryBuilder("posts")
+        .select(["posts.id", "user.id"])
+        .leftJoin("posts.user", "user")
+        .getOne();
+
+      if (me.id !== post.user.id) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
+        });
+      }
+
+      await postRepository
+        .createQueryBuilder()
+        .delete()
+        .from(Post)
+        .where("id = :id", {
+          id: postId,
+        })
+        .execute();
+
+      setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 게시글을 삭제했습니다.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.patch(
   "/thumnail/:postId",
   upload.single("thumnail"),
