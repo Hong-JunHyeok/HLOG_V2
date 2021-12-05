@@ -4,7 +4,7 @@ import styles from "./postItem.module.scss";
 import { useRouter } from "next/router";
 import dateFormatter from "../../../utils/formatter/date-format";
 import imageFormat from "../../../utils/formatter/image-format";
-import { FcLike } from "react-icons/fc";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 type IPostType = {
   id: number;
@@ -68,8 +68,13 @@ const PostItem: React.FunctionComponent<IPostType> = ({
 
           {!overviewMode && (
             <div className={styles.like}>
-              <FcLike />
-              {like.length}
+              <FcLikePlaceholder
+                className={styles.likeIcon}
+                style={{
+                  color: "black",
+                }}
+              />
+              <span className={styles.likeText}>{like.length}</span>
             </div>
           )}
         </div>
