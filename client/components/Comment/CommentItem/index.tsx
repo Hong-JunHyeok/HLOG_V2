@@ -89,6 +89,10 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    setEditText(comment.commentContent);
+  }, [comment.commentContent]);
+
   return (
     <React.Fragment>
       <div
