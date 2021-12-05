@@ -37,17 +37,31 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
   const { post } = props;
   const { postTitle, createdAt, updatedAt } = post;
 
-  const { isLoggedIn } = useAuthState();
-  const { comments } = usePostState();
+  const { myInfo, isLoggedIn } = useAuthState();
 
   return (
     <React.Fragment>
       <main className={styles.container}>
         <div className={styles.meta}>
           <h1 className={styles.title}>{postTitle}</h1>
-
           <div className={styles.info}>
             <div className={styles.flex}>
+              <div className={styles.profile}>
+                <img
+                  src={
+                    post.user.profileUrl
+                      ? imageFormat(post.user.profileUrl)
+                      : DefaultProfile
+                  }
+                  alt={post.user.username}
+                  className={styles.profileImage}
+                />
+                <span className={styles.username}>{post.user.username}</span>
+              </div>
+
+              {isLoggedIn && <Like />}
+            </div>
+            <div className={`${styles.profileInfo}`}>
               <If condition={updatedAt !== createdAt}>
                 <Then>
                   <span className={styles.date}>
@@ -60,23 +74,6 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
                   </span>
                 </Else>
               </If>
-              {isLoggedIn && <Like />}
-            </div>
-            <div className={`${styles.profileInfo}`}>
-              <div className={styles.profile}>
-                <img
-                  src={
-                    post.user.profileUrl
-                      ? imageFormat(post.user.profileUrl)
-                      : DefaultProfile
-                  }
-                  alt={post.user.username}
-                  className={styles.profileImage}
-                />
-                <span className={styles.username}>{post.user.username}</span>
-                <button className={styles.subscribe}>구독</button>
-              </div>
-
               <If condition={post.user.selfIntroduction}>
                 <Then>
                   <div className={`${styles.intro}`}>
@@ -108,7 +105,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
         </section>
       </main>
       <CommentInput />
-      <CommentList comments={comments} />
+      {myInfo && <CommentList />}
     </React.Fragment>
   );
 };

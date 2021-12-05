@@ -4,13 +4,12 @@ import { CommentType } from "../../../types/Comment";
 import CommentItem from "../CommentItem";
 import styles from "./commentList.module.scss";
 import NoData from "../../../assets/svg/no_data.svg";
+import { usePostState } from "../../../contexts/PostContext";
+import { useAuthState } from "../../../contexts/AuthContext";
 
-interface ICommentProps {
-  comments: CommentType[];
-}
-
-const CommentList: React.FunctionComponent<ICommentProps> = (props) => {
-  const { comments } = props;
+const CommentList: React.FunctionComponent = () => {
+  const { myInfo } = useAuthState();
+  const { comments } = usePostState();
 
   return (
     <React.Fragment>

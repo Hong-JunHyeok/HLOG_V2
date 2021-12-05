@@ -10,7 +10,7 @@ import { getIsLikedPostRequest, getPostResponse } from "../../apis/post";
 import Header from "../../components/Common/Header";
 import { PostType } from "../../types/Post";
 import Footer from "../../components/Common/Footer";
-import { useAuthDispatch } from "../../contexts/AuthContext";
+import { useAuthDispatch, useAuthState } from "../../contexts/AuthContext";
 import loginInitializer from "../../utils/initializer/loginInitializer";
 import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
@@ -28,15 +28,13 @@ const PostViewPage = (
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { post, comments, error } = props;
 
+  const { myInfo, getMyInfoLoading } = useAuthState();
   const authDispatch = useAuthDispatch();
   const postDispatch = usePostDispatch();
 
-  useEffect(() => {
-    loginInitializer(authDispatch);
-  }, []);
-
   const pageInitialize = async () => {
     const postResponse = await getIsLikedPostRequest(post.id);
+
     postDispatch({
       type: "GET_POST_SUCCESS",
       payload: { ...post, isLiked: postResponse.payload },
@@ -44,20 +42,18 @@ const PostViewPage = (
 
     postDispatch({
       type: "GET_COMMENTS_SUCCESS",
-      payload: comments.map((comment) => {
-        console.log(comment.isLiked);
-
-        return {
-          ...comment,
-          likeNumber: comment.like.length,
-        };
-      }),
+      payload: comments,
     });
   };
 
   useEffect(() => {
+    loginInitializer(authDispatch);
     pageInitialize();
   }, []);
+
+  if (getMyInfoLoading) {
+    return <>로딩중</>;
+  }
 
   return (
     <React.Fragment>
@@ -73,6 +69,7 @@ const PostViewPage = (
           <PostView post={post} />
         </Else>
       </If>
+
       <Footer />
     </React.Fragment>
   );

@@ -47,6 +47,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = () => {
             updatedAt: now,
             isLiked: false,
             likeNumber: 0,
+            like: [],
             user: {
               id: authState.myInfo.id,
               profileUrl: authState.myInfo.profileUrl,

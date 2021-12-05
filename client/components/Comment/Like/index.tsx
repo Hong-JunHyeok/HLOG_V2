@@ -2,13 +2,9 @@ import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { Else, If, Then } from "react-if";
-import {
-  commentLikeRequest,
-  commentUnlikeRequest,
-  getIsLikedCommentRequest,
-} from "../../../apis/post";
+import { commentLikeRequest, commentUnlikeRequest } from "../../../apis/post";
 import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostDispatch, usePostState } from "../../../contexts/PostContext";
+import { usePostDispatch } from "../../../contexts/PostContext";
 import { CommentType } from "../../../types/Comment";
 import styles from "./like.module.scss";
 
@@ -49,21 +45,18 @@ const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
     });
   };
 
-  const initCommentLikeStatus = useCallback(async () => {
-    const likeResponse = await getIsLikedCommentRequest(comment.id);
+  // const initCommentLikeStatus = useCallback(() => {
+  //   console.log("Hello");
 
-    postDispatch({
-      type: "COMMENT_INIT_LIKE",
-      payload: {
-        id: comment.id,
-        status: likeResponse.payload,
-      },
-    });
-  }, []);
+  // }, [postDispatch, comment, myInfo]);
 
-  useEffect(() => {
-    initCommentLikeStatus();
-  }, []);
+  // useEffect(() => {
+  //   console.table(comment);
+  // }, [comment]);
+
+  // useEffect(() => {
+  //   initCommentLikeStatus();
+  // }, []);
 
   return (
     <React.Fragment>

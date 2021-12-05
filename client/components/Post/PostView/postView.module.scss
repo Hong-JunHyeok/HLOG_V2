@@ -11,7 +11,7 @@
 
   .meta {
     .title {
-      font-size: 32px;
+      font-size: 36px;
       font-weight: bold;
       color: colors.$normal_text;
     }
@@ -21,24 +21,14 @@
       flex-direction: column;
       .flex {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-      }
-
-      .profileInfo {
-        padding: 1rem 0;
-        border-radius: 10px;
-        margin: 1rem 0;
-        display: flex;
-        height: 120px;
 
         .profile {
-          // flex: 1;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          // width: 100px;
-          height: 100px;
           border-radius: 50%;
           .profileImage {
             width: 58px;
@@ -47,6 +37,7 @@
           }
           .username {
             font-weight: bold;
+            color: colors.$normal_text;
           }
           .subscribe {
             background-color: inherit;
@@ -57,6 +48,12 @@
             cursor: pointer;
           }
         }
+      }
+
+      .profileInfo {
+        border-radius: 10px;
+        display: flex;
+        height: 120px;
 
         .intro {
           flex: 8;
@@ -74,7 +71,9 @@
       }
 
       .date {
-        color: colors.$normal_text;
+        margin-top: 1.5rem;
+        font-weight: bold;
+        color: colors.$primary_color;
       }
     }
   }

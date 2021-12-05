@@ -107,7 +107,8 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         if (comment.id === action.payload.id) {
           return {
             ...comment,
-            isLiked: action.payload.status,
+            likeNumber: action.payload.data.likeNumber,
+            isLiked: action.payload.data.status,
           };
         } else {
           return comment;

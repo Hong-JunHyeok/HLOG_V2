@@ -76,6 +76,19 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
     else setIsEmptyContent(false);
   }, [editText, setIsEmptyContent]);
 
+  useEffect(() => {
+    postDispatch({
+      type: "COMMENT_INIT_LIKE",
+      payload: {
+        id: comment.id,
+        data: {
+          status: comment.like.some((like) => myInfo.id === like.userId),
+          likeNumber: comment.like.length,
+        },
+      },
+    });
+  }, []);
+
   return (
     <React.Fragment>
       <div
