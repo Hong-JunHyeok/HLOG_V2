@@ -1,7 +1,7 @@
 import {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  GetServerSidePropsContext,
+	GetServerSideProps,
+	InferGetServerSidePropsType,
+	GetServerSidePropsContext,
 } from "next";
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
@@ -18,85 +18,85 @@ import { usePostDispatch } from "../../contexts/PostContext";
 import Head from "next/head";
 
 interface IPostViewProps {
-  post: PostType;
-  comments: CommentType[];
-  error: Error;
+	post: PostType;
+	comments: CommentType[];
+	error: Error;
 }
 
 const PostViewPage = (
-  props: IPostViewProps
+	props: IPostViewProps,
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-  const { post, comments, error } = props;
+	const { post, comments, error } = props;
 
-  const { myInfo, getMyInfoLoading } = useAuthState();
-  const authDispatch = useAuthDispatch();
-  const postDispatch = usePostDispatch();
+	const { getMyInfoLoading } = useAuthState();
+	const authDispatch = useAuthDispatch();
+	const postDispatch = usePostDispatch();
 
-  const pageInitialize = async () => {
-    const postResponse = await getIsLikedPostRequest(post.id);
+	const pageInitialize = async () => {
+		const postResponse = await getIsLikedPostRequest(post.id);
 
-    postDispatch({
-      type: "GET_POST_SUCCESS",
-      payload: { ...post, isLiked: postResponse.payload },
-    });
+		postDispatch({
+			type: "GET_POST_SUCCESS",
+			payload: { ...post, isLiked: postResponse.payload },
+		});
 
-    postDispatch({
-      type: "GET_COMMENTS_SUCCESS",
-      payload: comments,
-    });
-  };
+		postDispatch({
+			type: "GET_COMMENTS_SUCCESS",
+			payload: comments,
+		});
+	};
 
-  useEffect(() => {
-    loginInitializer(authDispatch);
-    pageInitialize();
-  }, []);
+	useEffect(() => {
+		loginInitializer(authDispatch);
+		pageInitialize();
+	}, []);
 
-  if (getMyInfoLoading) {
-    return <>로딩중</>;
-  }
+	if (getMyInfoLoading) {
+		return <>로딩중</>;
+	}
 
-  return (
-    <React.Fragment>
-      <Head>
-        <title>HLOG - {post.postTitle}</title>
-      </Head>
-      <Header />
-      <If condition={!!error}>
-        <Then>
-          <h1>오류가 발생했습니다.</h1>
-        </Then>
-        <Else>
-          <PostView post={post} />
-        </Else>
-      </If>
+	return (
+		<React.Fragment>
+			<Head>
+				<title>HLOG - {post.postTitle}</title>
+			</Head>
+			<Header />
+			<If condition={!!error}>
+				<Then>
+					<h1>오류가 발생했습니다.</h1>
+				</Then>
+				<Else>
+					<PostView post={post} />
+				</Else>
+			</If>
 
-      <Footer />
-    </React.Fragment>
-  );
+			<Footer />
+		</React.Fragment>
+	);
 };
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
+	context: GetServerSidePropsContext,
 ) => {
-  const { id } = context.params;
+	const { id } = context.params;
 
-  try {
-    const postResponse = await getPostResponse(parseInt(id as string, 10));
-    const commentResponse = await getCommentsRequest(
-      parseInt(id as string, 10)
-    );
+	try {
+		const postResponse = await getPostResponse(parseInt(id as string, 10));
+		const commentResponse = await getCommentsRequest(
+			parseInt(id as string, 10),
+		);
 
-    return {
-      props: {
-        post: { ...postResponse.payload, isLiked: false, likeNumber: 0 },
-        comments: commentResponse.payload,
-      },
-    };
-  } catch (error) {
-    return {
-      props: { error: error },
-    };
-  }
+		return {
+			props: {
+				post: { ...postResponse.payload, isLiked: false, likeNumber: 0 },
+				comments: commentResponse.payload,
+			},
+		};
+	} catch (error) {
+		return {
+			props: { error: error },
+		};
+	}
 };
 
 export default PostViewPage;

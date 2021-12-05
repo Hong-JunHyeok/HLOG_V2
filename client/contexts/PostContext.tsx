@@ -105,10 +105,11 @@ function postReducer(state: PostContextType, action: any): PostContextType {
     case "COMMENT_INIT_LIKE": {
       const newCommentList = state.comments.map((comment) => {
         if (comment.id === action.payload.id) {
+          console.log("A");
           return {
             ...comment,
-            likeNumber: action.payload.data.likeNumber,
-            isLiked: action.payload.data.status,
+            likeNumber: action.payload.likeNumber,
+            isLiked: action.payload.status,
           };
         } else {
           return comment;
@@ -120,8 +121,9 @@ function postReducer(state: PostContextType, action: any): PostContextType {
         comments: newCommentList,
       };
     }
+
     default:
-      return { ...state };
+      throw new Error(`Unhandled Action ${action.type}`);
   }
 }
 

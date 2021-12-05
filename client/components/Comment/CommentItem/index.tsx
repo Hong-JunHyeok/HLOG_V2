@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { If, Else, Then } from "react-if";
 import {
-  deleteCommentRequest,
-  editCommentRequest,
+	deleteCommentRequest,
+	editCommentRequest,
 } from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
 import { usePostDispatch } from "../../../contexts/PostContext";
@@ -16,159 +16,146 @@ import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 
 interface ICommentProps {
-  comment: CommentType;
+	comment: CommentType;
 }
 
 const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
-  const { comment } = props;
-  const { myInfo, isLoggedIn } = useAuthState();
-  const postDispatch = usePostDispatch();
+	const { comment } = props;
+	const { myInfo, isLoggedIn } = useAuthState();
+	const postDispatch = usePostDispatch();
 
-  const [isEditMode, , editOpen, editClose] = useToggle(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editText, onChangeEditText, setEditText] = useInput(
-    comment.commentContent
-  );
-  const [isEmptyContent, setIsEmptyContent] = useState(false);
+	const [isEditMode, , editOpen, editClose] = useToggle(false);
+	const [isEdit, setIsEdit] = useState<boolean>(false);
+	const [editText, onChangeEditText, setEditText] = useInput(
+		comment.commentContent,
+	);
+	const [isEmptyContent, setIsEmptyContent] = useState(false);
 
-  const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
+	const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
-  const handleDelete = useCallback(async () => {
-    if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
-      await deleteCommentRequest(comment.id);
+	const handleDelete = useCallback(async () => {
+		if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
+			await deleteCommentRequest(comment.id);
 
-      postDispatch({
-        type: "DELETE_COMMENT",
-        payload: comment.id,
-      });
-    }
-  }, []);
+			postDispatch({
+				type: "DELETE_COMMENT",
+				payload: comment.id,
+			});
+		}
+	}, []);
 
-  const openEditMode = useCallback(async () => {
-    setIsEdit(true);
-  }, []);
+	const openEditMode = useCallback(async () => {
+		setIsEdit(true);
+	}, []);
 
-  const closeEditMode = useCallback(async () => {
-    setEditText(comment.commentContent);
-    setIsEdit(false);
-  }, []);
+	const closeEditMode = useCallback(async () => {
+		setEditText(comment.commentContent);
+		setIsEdit(false);
+	}, []);
 
-  const handleEditComment = useCallback(async () => {
-    try {
-      const response = await editCommentRequest(comment.id, editText);
+	const handleEditComment = useCallback(async () => {
+		try {
+			const response = await editCommentRequest(comment.id, editText);
 
-      postDispatch({
-        type: "EDIT_COMMENT",
-        payload: {
-          id: comment.id,
-          commentContent: response.payload.commentContent,
-        },
-      });
+			postDispatch({
+				type: "EDIT_COMMENT",
+				payload: {
+					id: comment.id,
+					commentContent: response.payload.commentContent,
+				},
+			});
 
-      closeEditMode();
-    } catch (error) {
-      console.error(error);
-    }
-  }, [editText, editCommentRequest, closeEditMode, comment]);
+			closeEditMode();
+		} catch (error) {
+			console.error(error);
+		}
+	}, [editText, editCommentRequest, closeEditMode, comment]);
 
-  useEffect(() => {
-    if (editText.length === 0) setIsEmptyContent(true);
-    else setIsEmptyContent(false);
-  }, [editText, setIsEmptyContent]);
+	useEffect(() => {
+		if (editText.length === 0) setIsEmptyContent(true);
+		else setIsEmptyContent(false);
+	}, [editText, setIsEmptyContent]);
 
-  useEffect(() => {
-    postDispatch({
-      type: "COMMENT_INIT_LIKE",
-      payload: {
-        id: comment.id,
-        data: {
-          status: comment.like.some((like) => myInfo.id === like.userId),
-          likeNumber: comment.like.length,
-        },
-      },
-    });
-  }, []);
+	useEffect(() => {
+		setEditText(comment.commentContent);
+	}, [comment.commentContent]);
 
-  useEffect(() => {
-    setEditText(comment.commentContent);
-  }, [comment.commentContent]);
+	return (
+		<React.Fragment>
+			<div
+				className={styles.container}
+				onMouseEnter={editOpen}
+				onMouseLeave={editClose}
+			>
+				<header className={styles.meta}>
+					<img
+						src={
+							comment.user.profileUrl
+								? imageFormat(comment.user.profileUrl)
+								: DefaultProfile
+						}
+						alt={comment.user.username}
+						className={styles.profileImage}
+					/>
+					<h3 className={styles.username}>{comment.user.username}</h3>
+					<If condition={comment.updatedAt !== comment.createdAt}>
+						<Then>
+							<span className={styles.date}>
+								최근 수정됨 : {dateFormatter(comment.updatedAt)}
+							</span>
+						</Then>
+						<Else>
+							<span className={styles.date}>
+								작성일 : {dateFormatter(comment.createdAt)}
+							</span>
+						</Else>
+					</If>
 
-  return (
-    <React.Fragment>
-      <div
-        className={styles.container}
-        onMouseEnter={editOpen}
-        onMouseLeave={editClose}
-      >
-        <header className={styles.meta}>
-          <img
-            src={
-              comment.user.profileUrl
-                ? imageFormat(comment.user.profileUrl)
-                : DefaultProfile
-            }
-            alt={comment.user.username}
-            className={styles.profileImage}
-          />
-          <h3 className={styles.username}>{comment.user.username}</h3>
-          <If condition={comment.updatedAt !== comment.createdAt}>
-            <Then>
-              <span className={styles.date}>
-                최근 수정됨 : {dateFormatter(comment.updatedAt)}
-              </span>
-            </Then>
-            <Else>
-              <span className={styles.date}>
-                작성일 : {dateFormatter(comment.createdAt)}
-              </span>
-            </Else>
-          </If>
+					{isMyComment && isEditMode && isLoggedIn && !isEdit && (
+						<div className={styles.editMode}>
+							<button onClick={openEditMode} className={styles.edit}>
+								수정
+							</button>
+							<button onClick={handleDelete} className={styles.delete}>
+								삭제
+							</button>
+						</div>
+					)}
+				</header>
 
-          {isMyComment && isEditMode && isLoggedIn && !isEdit && (
-            <div className={styles.editMode}>
-              <button onClick={openEditMode} className={styles.edit}>
-                수정
-              </button>
-              <button onClick={handleDelete} className={styles.delete}>
-                삭제
-              </button>
-            </div>
-          )}
-        </header>
+				<If condition={isEdit}>
+					<Then>
+						<div className={styles.editContainer}>
+							<textarea
+								className={styles.editInput}
+								value={editText}
+								onChange={onChangeEditText}
+							/>
 
-        <If condition={isEdit}>
-          <Then>
-            <div className={styles.editContainer}>
-              <textarea
-                className={styles.editInput}
-                value={editText}
-                onChange={onChangeEditText}
-              />
-
-              <div className={styles.options}>
-                <button
-                  className={isEmptyContent ? styles.notAllow : styles.submit}
-                  onClick={handleEditComment}
-                  disabled={isEmptyContent}
-                >
-                  수정하기
-                </button>
-                <button className={styles.cancel} onClick={closeEditMode}>
-                  취소
-                </button>
-              </div>
-            </div>
-          </Then>
-          <Else>
-            <p className={styles.content}>{comment.commentContent}</p>
-          </Else>
-        </If>
-        <footer className={styles.emotion}>
-          <Like comment={comment} />
-        </footer>
-      </div>
-    </React.Fragment>
-  );
+							<div className={styles.options}>
+								<button
+									className={isEmptyContent ? styles.notAllow : styles.submit}
+									onClick={handleEditComment}
+									disabled={isEmptyContent}
+								>
+									수정하기
+								</button>
+								<button className={styles.cancel} onClick={closeEditMode}>
+									취소
+								</button>
+							</div>
+						</div>
+					</Then>
+					<Else>
+						<p className={styles.content}>{comment.commentContent}</p>
+					</Else>
+				</If>
+				<footer className={styles.emotion}>
+					<Like comment={comment} />
+				</footer>
+			</div>
+		</React.Fragment>
+	);
 };
 
 export default CommentItem;

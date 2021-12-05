@@ -5,7 +5,6 @@ import styles from "./postView.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
-import { usePostState } from "../../../contexts/PostContext";
 import React from "react";
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
