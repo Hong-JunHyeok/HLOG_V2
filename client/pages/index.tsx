@@ -8,8 +8,10 @@ import loginInitializer from "../utils/initializer/loginInitializer";
 import Footer from "../components/Common/Footer";
 import Head from "next/head";
 import { wrapper } from "../store";
-import { authActions } from "../store/reducers/Auth";
+import allCookies from "next-cookies";
+import cookieSetter from "../utils/initializer/cookieSetter";
 import { getMyInfoRequest } from "../apis/user";
+import { authActions } from "../store/reducers/Auth";
 
 export default function Index({
 	posts,
@@ -33,21 +35,27 @@ export default function Index({
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-	(store) =>
-		async ({ req, res, ...args }) => {
-			try {
-				console.log(req);
-				const postsResponse = await getPostsResponse();
+	(store) => async (context) => {
+		try {
+			cookieSetter(allCookies(context).hlog_access_token);
 
-				return {
-					props: {
-						posts: postsResponse.payload.posts,
-					},
-				};
-			} catch (error) {
-				return {
-					props: error,
-				};
-			}
-		},
+			const myInfoResponse = await getMyInfoRequest();
+			const postsResponse = await getPostsResponse();
+
+			store.dispatch({
+				type: authActions.GET_MY_INFO_SUCCESS,
+				payload: myInfoResponse.payload,
+			});
+
+			return {
+				props: {
+					posts: postsResponse.payload.posts,
+				},
+			};
+		} catch (error) {
+			return {
+				props: error,
+			};
+		}
+	},
 );

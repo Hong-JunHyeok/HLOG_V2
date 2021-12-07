@@ -8,10 +8,12 @@ import { loginRequest } from "../../../apis/auth";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { authActions } from "../../../store/reducers/Auth";
+import { useCookies } from "react-cookie";
 
 type LoginFormProps = {};
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
+	const [cookies, setCookie, removeCookie] = useCookies();
 	const [email, onChangeEmail] = useInput("");
 	const [password, onChangePassword] = useInput("");
 
@@ -27,10 +29,10 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 			});
 			const loginResponse = await loginRequest({ email, password });
 
-			localStorage.setItem(
-				"hlog_access_token",
-				loginResponse.payload.accessToken,
-			);
+			setCookie("hlog_access_token", loginResponse.payload.accessToken, {
+				path: "/",
+			});
+
 			dispatch({
 				type: authActions.LOGIN_SUCCESS,
 				payload: loginResponse.payload.user,
