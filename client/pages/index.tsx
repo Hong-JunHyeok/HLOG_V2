@@ -26,13 +26,17 @@ export default function Index() {
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) => async (context) => {
 		try {
-			cookieSetter(context);
+			const hasToken = cookieSetter(context);
 
 			const postsResponse = await getPostsResponse();
 			store.dispatch({
 				type: postActions.GET_POSTS_SUCCESS,
 				payload: postsResponse.payload.posts,
 			});
+
+			if (!hasToken) {
+				return;
+			}
 
 			const myInfoResponse = await getMyInfoRequest();
 			store.dispatch({

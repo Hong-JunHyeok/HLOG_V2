@@ -4,20 +4,34 @@ import { BsPencilFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { MdSupervisorAccount } from "react-icons/md";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
-import { useAuthState } from "../../../contexts/AuthContext";
 import styles from "./profileForm.module.scss";
 import { patchMyProfileRequest } from "../../../apis/user";
 import imageFormat from "../../../utils/formatter/image-format";
+import { useTypedSelector } from "../../../utils/useTypedSelector";
+import { useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
+import { authActions } from "../../../store/reducers/Auth";
+import { useRouter } from "next/router";
 
-interface IProfileForm {}
-
-const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
-	const { myInfo } = useAuthState();
+const ProfileForm: React.FunctionComponent = () => {
+	const { myInfo } = useTypedSelector((state) => state.auth);
+	const dispatch = useDispatch();
+	const [, , removeCookie] = useCookies();
+	const router = useRouter();
 
 	const [prevProfileImage, setPrevProfileImage] = useState<string | null>(null);
 	const [profileImage, setProfileImage] = useState<File | null>(null);
 
 	const editProfileRef = useRef<HTMLInputElement | null>(null);
+
+	const handleLogout = useCallback((redirect: string) => {
+		removeCookie("hlog_access_token");
+		dispatch({
+			type: authActions.LOGOUT,
+		});
+
+		router.replace(redirect);
+	}, []);
 
 	const handleClickEditProfile = useCallback(() => {
 		editProfileRef.current.click();
@@ -99,11 +113,14 @@ const ProfileForm: React.FunctionComponent<IProfileForm> = ({}) => {
 
 						<h3>My Account</h3>
 						<ul>
-							<li className={styles.changeAccount}>
+							<li
+								className={styles.changeAccount}
+								onClick={() => handleLogout("/auth/login")}
+							>
 								<MdSupervisorAccount />
 								다른 계정으로 로그인
 							</li>
-							<li className={styles.logout}>
+							<li className={styles.logout} onClick={() => handleLogout("/")}>
 								<FiLogOut />
 								로그아웃
 							</li>

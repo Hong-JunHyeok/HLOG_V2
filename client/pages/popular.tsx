@@ -26,27 +26,23 @@ const PopularPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) => async (context) => {
 		try {
-			cookieSetter(context);
+			const hasToken = cookieSetter(context);
 
 			const myInfoResponse = await getMyInfoRequest();
 			const postsResponse = await getPopularPostsRequest();
 
-			if (myInfoResponse.data.code === 401) {
-				store.dispatch({
-					type: authActions.GET_MY_INFO_ERROR,
-				});
-			}
-
-			if (myInfoResponse.data.code === 200) {
-				store.dispatch({
-					type: authActions.GET_MY_INFO_SUCCESS,
-					payload: myInfoResponse.payload,
-				});
-			}
-
 			store.dispatch({
 				type: postActions.GET_POSTS_SUCCESS,
 				payload: postsResponse.payload.posts,
+			});
+
+			if (!hasToken) {
+				return;
+			}
+
+			store.dispatch({
+				type: authActions.GET_MY_INFO_SUCCESS,
+				payload: myInfoResponse.payload,
 			});
 		} catch (error) {
 			return {

@@ -5,12 +5,16 @@ import { ParsedUrlQuery } from "querystring";
 
 const cookieSetter = (
 	context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>,
-): void => {
+): boolean => {
 	const cookies = allCookies(context);
 
 	if (cookies.hlog_access_token) {
 		customAxios.defaults.headers["Authorization"] = cookies.hlog_access_token;
+
+		return true;
 	}
+
+	return false;
 };
 
 export default cookieSetter;
