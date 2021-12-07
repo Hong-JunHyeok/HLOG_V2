@@ -48,13 +48,30 @@ export const getServerSideProps = wrapper.getServerSideProps(
 		const { id } = context.params;
 
 		try {
-			cookieSetter(context);
+			const hasToken = cookieSetter(context);
 
-			const myInfoResponse = await getMyInfoRequest();
 			const postResponse = await getPostResponse(parseInt(id as string, 10));
 			const commentResponse = await getCommentsRequest(
 				parseInt(id as string, 10),
 			);
+
+			store.dispatch({
+				type: postActions.GET_POST_SUCCESS,
+				payload: {
+					...postResponse.payload,
+				},
+			});
+
+			store.dispatch({
+				type: postActions.GET_COMMENTS_SUCCESS,
+				payload: commentResponse.payload,
+			});
+
+			if (!hasToken) {
+				return;
+			}
+
+			const myInfoResponse = await getMyInfoRequest();
 			const isPostLikedResponse = await getIsLikedPostRequest(
 				parseInt(id as string, 10),
 			);
@@ -70,11 +87,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
 			store.dispatch({
 				type: authActions.GET_MY_INFO_SUCCESS,
 				payload: myInfoResponse.payload,
-			});
-
-			store.dispatch({
-				type: postActions.GET_COMMENTS_SUCCESS,
-				payload: commentResponse.payload,
 			});
 
 			return {

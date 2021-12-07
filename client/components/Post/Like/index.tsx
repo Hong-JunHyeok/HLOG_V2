@@ -30,8 +30,6 @@ const Like: React.FunctionComponent = () => {
 		});
 	};
 
-	console.log(post.isLiked);
-
 	if (!post) {
 		return null;
 	}
