@@ -3,6 +3,7 @@ import { CommentType } from "../../../types/Comment";
 import { PostStateType } from "./types";
 
 const postInitialState: PostStateType = {
+	posts: [],
 	post: null,
 
 	postLoading: false,
@@ -27,6 +28,11 @@ function postReducer(
 				...state,
 				postLoading: false,
 				post: action.payload,
+			};
+		case postActions.GET_POSTS_SUCCESS:
+			return {
+				...state,
+				posts: action.payload,
 			};
 		case postActions.GET_COMMENTS_SUCCESS:
 			return {
@@ -127,7 +133,6 @@ function postReducer(
 		case postActions.COMMENT_INIT_LIKE: {
 			const newCommentList = state.comments.map((comment) => {
 				if (comment.id === action.payload.id) {
-					console.log("A");
 					return {
 						...comment,
 						likeNumber: action.payload.likeNumber,

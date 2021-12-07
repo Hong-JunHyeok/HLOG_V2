@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { Else, If, Then } from "react-if";
+import { useDispatch } from "react-redux";
 import { commentLikeRequest, commentUnlikeRequest } from "../../../apis/post";
-import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostDispatch } from "../../../contexts/PostContext";
+import { postActions } from "../../../store/reducers/Post";
 import { CommentType } from "../../../types/Comment";
+import { useTypedSelector } from "../../../utils/useTypedSelector";
 import styles from "./like.module.scss";
 
 interface ILikeProps {
@@ -13,12 +14,11 @@ interface ILikeProps {
 }
 
 const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
-	const postDispatch = usePostDispatch();
+	const dispatch = useDispatch();
 
-	const { myInfo, isLoggedIn } = useAuthState();
+	const { myInfo, isLoggedIn } = useTypedSelector((state) => state.auth);
 
 	const router = useRouter();
-
 	const like = async () => {
 		if (!isLoggedIn) {
 			return router.push("/auth/login");
@@ -26,7 +26,7 @@ const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
 
 		await commentLikeRequest(comment.id);
 
-		postDispatch({
+		dispatch({
 			type: "COMMENT_LIKE",
 			payload: comment.id,
 		});
@@ -39,15 +39,15 @@ const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
 
 		await commentUnlikeRequest(comment.id);
 
-		postDispatch({
-			type: "COMMENT_UNLIKE",
+		dispatch({
+			type: postActions.COMMENT_UNLIKE,
 			payload: comment.id,
 		});
 	};
 
 	useEffect(() => {
-		postDispatch({
-			type: "COMMENT_INIT_LIKE",
+		dispatch({
+			type: postActions.COMMENT_INIT_LIKE,
 			payload: {
 				id: comment.id,
 				status: comment.like.some((like) => myInfo.id === like.userId),

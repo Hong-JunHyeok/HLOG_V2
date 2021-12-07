@@ -115,7 +115,6 @@ function postReducer(state: PostContextType, action: any): PostContextType {
 		case "COMMENT_INIT_LIKE": {
 			const newCommentList = state.comments.map((comment) => {
 				if (comment.id === action.payload.id) {
-					console.log("A");
 					return {
 						...comment,
 						likeNumber: action.payload.likeNumber,

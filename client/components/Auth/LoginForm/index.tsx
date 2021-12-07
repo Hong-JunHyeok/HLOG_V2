@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 type LoginFormProps = {};
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
-	const [cookies, setCookie, removeCookie] = useCookies();
+	const [cookies, setCookie] = useCookies();
 	const [email, onChangeEmail] = useInput("");
 	const [password, onChangePassword] = useInput("");
 

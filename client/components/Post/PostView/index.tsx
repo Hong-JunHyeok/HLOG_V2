@@ -1,4 +1,3 @@
-import { PostType } from "../../../types/Post";
 import { If, Else, Then } from "react-if";
 import dateFormatter from "../../../utils/formatter/date-format";
 import styles from "./postView.module.scss";
@@ -14,11 +13,7 @@ import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 
-interface IPostViewProps {
-	post: PostType;
-}
-
-const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
+const PostView: React.FunctionComponent = () => {
 	const markdownIt = new MarkdownIt({
 		highlight: (str, lang) => {
 			if (lang && hljs.getLanguage(lang)) {
@@ -33,9 +28,8 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 		},
 	});
 
-	const { post } = props;
+	const { post } = useTypedSelector((state) => state.post);
 	const { postTitle, createdAt, updatedAt } = post;
-
 	const { isLoggedIn } = useTypedSelector((state) => state.auth);
 
 	return (
@@ -58,7 +52,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 								<span className={styles.username}>{post.user.username}</span>
 							</div>
 
-							{isLoggedIn && <Like />}
+							<Like />
 						</div>
 						<div className={`${styles.profileInfo}`}>
 							<If condition={updatedAt !== createdAt}>

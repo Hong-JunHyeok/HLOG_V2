@@ -8,12 +8,14 @@ import { BsPencilFill } from "react-icons/bs";
 import imageFormat from "../../../utils/formatter/image-format";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { authActions } from "../../../store/reducers/Auth";
+import { useCookies } from "react-cookie";
 
 interface HeaderProps {}
 
 const Header: React.FunctionComponent<HeaderProps> = () => {
 	const authState = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
+	const [, , removeCookie] = useCookies();
 
 	const [isUserDropOpen, toggleUserDrop] = useToggle(false);
 	const router = useRouter();
@@ -23,7 +25,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
 	};
 
 	const handleLogout = useCallback(() => {
-		localStorage.removeItem("hlog_access_token");
+		removeCookie("hlog_access_token");
 		dispatch({
 			type: authActions.LOGOUT,
 		});

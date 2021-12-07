@@ -4,8 +4,6 @@ import styles from "./commentInput.module.scss";
 import TextareaAutosize from "react-textarea-autosize";
 import useInput from "../../../hooks/useInput";
 import { createCommentRequest } from "../../../apis/comment";
-import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostDispatch } from "../../../contexts/PostContext";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { useDispatch } from "react-redux";
 
