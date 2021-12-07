@@ -16,6 +16,7 @@ import { wrapper } from "../../store";
 import cookieSetter from "../../utils/initializer/cookieSetter";
 import { getMyInfoRequest } from "../../apis/user";
 import { authActions } from "../../store/reducers/Auth";
+import { postActions } from "../../store/reducers/Post";
 
 interface IPostViewProps {
 	post: PostType;
@@ -63,6 +64,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
 			store.dispatch({
 				type: authActions.GET_MY_INFO_SUCCESS,
 				payload: myInfoResponse.payload,
+			});
+
+			store.dispatch({
+				type: postActions.GET_COMMENTS_SUCCESS,
+				payload: commentResponse.payload,
 			});
 
 			return {

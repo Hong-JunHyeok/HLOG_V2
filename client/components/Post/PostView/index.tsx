@@ -12,8 +12,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
-import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostState } from "../../../contexts/PostContext";
+import { useTypedSelector } from "../../../utils/useTypedSelector";
 
 interface IPostViewProps {
 	post: PostType;
@@ -37,8 +36,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 	const { post } = props;
 	const { postTitle, createdAt, updatedAt } = post;
 
-	const { myInfo, isLoggedIn } = useAuthState();
-	const { postLoading } = usePostState();
+	const { isLoggedIn } = useTypedSelector((state) => state.auth);
 
 	return (
 		<React.Fragment>

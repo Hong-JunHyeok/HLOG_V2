@@ -5,7 +5,6 @@ import {
 	editCommentRequest,
 } from "../../../apis/comment";
 import { useAuthState } from "../../../contexts/AuthContext";
-import { usePostDispatch } from "../../../contexts/PostContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
@@ -14,6 +13,8 @@ import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import useInput from "../../../hooks/useInput";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
+import { useDispatch } from "react-redux";
+import { useTypedSelector } from "../../../utils/useTypedSelector";
 
 interface ICommentProps {
 	comment: CommentType;
@@ -21,8 +22,8 @@ interface ICommentProps {
 
 const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 	const { comment } = props;
-	const { myInfo, isLoggedIn } = useAuthState();
-	const postDispatch = usePostDispatch();
+	const { myInfo, isLoggedIn } = useTypedSelector((state) => state.auth);
+	const dispatch = useDispatch();
 
 	const [isEditMode, , editOpen, editClose] = useToggle(false);
 	const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -37,7 +38,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 		if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
 			await deleteCommentRequest(comment.id);
 
-			postDispatch({
+			dispatch({
 				type: "DELETE_COMMENT",
 				payload: comment.id,
 			});
@@ -57,7 +58,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 		try {
 			const response = await editCommentRequest(comment.id, editText);
 
-			postDispatch({
+			dispatch({
 				type: "EDIT_COMMENT",
 				payload: {
 					id: comment.id,
