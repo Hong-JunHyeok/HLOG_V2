@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { CommentType } from "../types/Comment";
 import { PostType } from "../types/Post";
 
-interface PostContextType {
+export interface PostContextType {
 	post: PostType | null;
 	postLoading: boolean;
 

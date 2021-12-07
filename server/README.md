@@ -1,1 +1,21 @@
 # HLOG V2 (API Server)
+
+**.env template**
+
+```
+# DB SETTINGS
+DB_HOST=
+DB_PASSWORD=
+DB_PORT=
+DB_USERNAME=
+DB_NAME=hlog_version2
+
+# IP SETTINGS
+CLIENT_IP=
+
+# Redis SETTINGS
+REDIS_PORT=8080
+
+# JWT SETTINGS
+JWT_SECRET=
+```

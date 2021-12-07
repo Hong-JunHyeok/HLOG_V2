@@ -1,66 +1,66 @@
 @font-face {
-  font-family: "NanumBarunGothic";
-  font-style: normal;
-  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot");
-  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix")
-      format("embedded-opentype"),
-    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff")
-      format("woff"),
-    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf")
-      format("truetype");
+	font-family: "NanumBarunGothic";
+	font-style: normal;
+	src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot");
+	src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix")
+			format("embedded-opentype"),
+		url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff")
+			format("woff"),
+		url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf")
+			format("truetype");
 }
 @font-face {
-  font-family: "ChosunBg";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
+	font-family: "ChosunBg";
+	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff")
+		format("woff");
+	font-weight: normal;
+	font-style: normal;
 }
 @font-face {
-  font-family: "YeolrinGothic-Bold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/YeolrinGothic-Bold.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
+	font-family: "YeolrinGothic-Bold";
+	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/YeolrinGothic-Bold.woff")
+		format("woff");
+	font-weight: normal;
+	font-style: normal;
 }
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Bazier Square, Noto Sans KR,
-    Segoe UI, Apple SD Gothic Neo, Roboto, Helvetica Neue, Arial, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Bazier Square, Noto Sans KR,
+		Segoe UI, Apple SD Gothic Neo, Roboto, Helvetica Neue, Arial, sans-serif,
+		Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
-  font-family: "NanumBarunGothic";
-  font-weight: 400;
-  font-weight: normal;
+	box-sizing: border-box;
+	font-family: "NanumBarunGothic";
+	font-weight: 400;
+	font-weight: normal;
 }
 
 .special_text {
-  color: #0076ffe6;
+	color: #0076ffe6;
 }
 
 pre,
 code {
-  white-space: pre;
-  overflow-x: auto;
+	white-space: pre;
+	overflow-x: auto;
 }
 
 .hljs {
-  display: inline-block;
-  overflow-x: scroll;
-  padding: 0.5em;
-  padding-right: 100%;
-  background: #002b36;
-  color: #839496;
-  -webkit-text-size-adjust: none;
+	display: inline-block;
+	overflow-x: scroll;
+	padding: 0.5em;
+	padding-right: 100%;
+	background: #002b36;
+	color: #839496;
+	-webkit-text-size-adjust: none;
 }

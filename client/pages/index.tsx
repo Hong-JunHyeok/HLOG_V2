@@ -1,51 +1,53 @@
 import React, { useEffect } from "react";
 import Header from "../components/Common/Header";
 import { getPostsResponse } from "../apis/post";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
-import { PostType } from "../types/Post";
+import { InferGetServerSidePropsType } from "next";
 import PostList from "../components/Post/PostList";
 import { useAuthDispatch } from "../contexts/AuthContext";
 import loginInitializer from "../utils/initializer/loginInitializer";
 import Footer from "../components/Common/Footer";
 import Head from "next/head";
+import { wrapper } from "../store";
+import { authActions } from "../store/reducers/Auth";
+import { getMyInfoRequest } from "../apis/user";
 
 export default function Index({
-  posts,
+	posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const authDispatch = useAuthDispatch();
+	const authDispatch = useAuthDispatch();
 
-  useEffect(() => {
-    loginInitializer(authDispatch);
-  }, []);
+	useEffect(() => {
+		loginInitializer(authDispatch);
+	}, []);
 
-  return (
-    <React.Fragment>
-      <Head>
-        <title>HLOG - 개발을 공유하다.</title>
-      </Head>
-      <Header />
-      <PostList posts={posts} />
-      <Footer />
-    </React.Fragment>
-  );
+	return (
+		<React.Fragment>
+			<Head>
+				<title>HLOG - 개발을 공유하다.</title>
+			</Head>
+			<Header />
+			<PostList posts={posts} />
+			<Footer />
+		</React.Fragment>
+	);
 }
 
-export const getServerSideProps: GetServerSideProps<{
-  posts: Array<PostType>;
-}> = async (context: GetServerSidePropsContext) => {
-  try {
-    const postsResponse = await getPostsResponse();
+export const getServerSideProps = wrapper.getServerSideProps(
+	(store) =>
+		async ({ req, res, ...args }) => {
+			try {
+				console.log(req);
+				const postsResponse = await getPostsResponse();
 
-    return {
-      props: { posts: postsResponse.payload.posts },
-    };
-  } catch (error) {
-    return {
-      props: { posts: [] },
-    };
-  }
-};
+				return {
+					props: {
+						posts: postsResponse.payload.posts,
+					},
+				};
+			} catch (error) {
+				return {
+					props: error,
+				};
+			}
+		},
+);
