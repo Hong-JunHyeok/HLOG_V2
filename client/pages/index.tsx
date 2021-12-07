@@ -3,8 +3,6 @@ import Header from "../components/Common/Header";
 import { getPostsResponse } from "../apis/post";
 import { InferGetServerSidePropsType } from "next";
 import PostList from "../components/Post/PostList";
-import { useAuthDispatch } from "../contexts/AuthContext";
-import loginInitializer from "../utils/initializer/loginInitializer";
 import Footer from "../components/Common/Footer";
 import Head from "next/head";
 import { wrapper } from "../store";
@@ -16,12 +14,6 @@ import { authActions } from "../store/reducers/Auth";
 export default function Index({
 	posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-	const authDispatch = useAuthDispatch();
-
-	useEffect(() => {
-		loginInitializer(authDispatch);
-	}, []);
-
 	return (
 		<React.Fragment>
 			<Head>
@@ -37,7 +29,7 @@ export default function Index({
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) => async (context) => {
 		try {
-			cookieSetter(allCookies(context).hlog_access_token);
+			cookieSetter(context);
 
 			const myInfoResponse = await getMyInfoRequest();
 			const postsResponse = await getPostsResponse();

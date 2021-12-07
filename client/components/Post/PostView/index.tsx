@@ -106,10 +106,7 @@ const PostView: React.FunctionComponent<IPostViewProps> = (props) => {
 				</section>
 			</main>
 			<CommentInput />
-			<If condition={postLoading}>
-				<Then>{/* TODO: Skeleton UI */}</Then>
-				<Else>{myInfo && <CommentList />}</Else>
-			</If>
+			<CommentList />
 		</React.Fragment>
 	);
 };

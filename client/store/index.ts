@@ -11,9 +11,11 @@ import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { AnyActionType } from "../types/Comment";
 import thunk from "redux-thunk";
 import isDevMode from "../utils/isDevMode";
+import { postReducer, PostStateType } from "./reducers/Post";
 
 export interface RootState {
 	auth: AuthStateType;
+	post: PostStateType;
 }
 
 const rootReducer = (
@@ -26,6 +28,7 @@ const rootReducer = (
 		default: {
 			const combinedReducer = combineReducers({
 				auth: authReducer,
+				post: postReducer,
 			});
 
 			return combinedReducer(state, action);

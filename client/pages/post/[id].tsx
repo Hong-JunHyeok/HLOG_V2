@@ -1,8 +1,4 @@
-import {
-	GetServerSideProps,
-	InferGetServerSidePropsType,
-	GetServerSidePropsContext,
-} from "next";
+import { InferGetServerSidePropsType } from "next";
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
 import React, { useEffect } from "react";
@@ -16,6 +12,10 @@ import { getCommentsRequest } from "../../apis/comment";
 import { CommentType } from "../../types/Comment";
 import { usePostDispatch } from "../../contexts/PostContext";
 import Head from "next/head";
+import { wrapper } from "../../store";
+import cookieSetter from "../../utils/initializer/cookieSetter";
+import { getMyInfoRequest } from "../../apis/user";
+import { authActions } from "../../store/reducers/Auth";
 
 interface IPostViewProps {
 	post: PostType;
@@ -26,33 +26,7 @@ interface IPostViewProps {
 const PostViewPage = (
 	props: IPostViewProps,
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
-	const { post, comments, error } = props;
-
-	const authDispatch = useAuthDispatch();
-	const postDispatch = usePostDispatch();
-
-	const pageInitialize = async () => {
-		postDispatch({
-			type: "GET_POST",
-		});
-
-		const postResponse = await getIsLikedPostRequest(post.id);
-
-		postDispatch({
-			type: "GET_POST_SUCCESS",
-			payload: { ...post, isLiked: postResponse.payload },
-		});
-
-		postDispatch({
-			type: "GET_COMMENTS_SUCCESS",
-			payload: comments,
-		});
-	};
-
-	useEffect(() => {
-		loginInitializer(authDispatch);
-		pageInitialize();
-	}, []);
+	const { post, error } = props;
 
 	return (
 		<React.Fragment>
@@ -73,28 +47,36 @@ const PostViewPage = (
 	);
 };
 
-export const getServerSideProps: GetServerSideProps = async (
-	context: GetServerSidePropsContext,
-) => {
-	const { id } = context.params;
+export const getServerSideProps = wrapper.getServerSideProps(
+	(store) => async (context) => {
+		const { id } = context.params;
 
-	try {
-		const postResponse = await getPostResponse(parseInt(id as string, 10));
-		const commentResponse = await getCommentsRequest(
-			parseInt(id as string, 10),
-		);
+		try {
+			cookieSetter(context);
 
-		return {
-			props: {
-				post: { ...postResponse.payload, isLiked: false, likeNumber: 0 },
-				comments: commentResponse.payload,
-			},
-		};
-	} catch (error) {
-		return {
-			props: { error: error },
-		};
-	}
-};
+			const myInfoResponse = await getMyInfoRequest();
+			const postResponse = await getPostResponse(parseInt(id as string, 10));
+			const commentResponse = await getCommentsRequest(
+				parseInt(id as string, 10),
+			);
+
+			store.dispatch({
+				type: authActions.GET_MY_INFO_SUCCESS,
+				payload: myInfoResponse.payload,
+			});
+
+			return {
+				props: {
+					post: { ...postResponse.payload, isLiked: false, likeNumber: 0 },
+					comments: commentResponse.payload,
+				},
+			};
+		} catch (error) {
+			return {
+				props: error,
+			};
+		}
+	},
+);
 
 export default PostViewPage;
