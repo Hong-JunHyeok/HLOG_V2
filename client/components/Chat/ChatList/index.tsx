@@ -1,12 +1,17 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./chatList.module.scss";
 import { AiOutlineClose } from "react-icons/ai";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import ChatInput from "../ChatInput";
 import { useDispatch } from "react-redux";
 import { chatActions } from "../../../store/reducers/Chat";
+import io from "socket.io-client";
+
+// const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL);
 
 const ChatList: React.FunctionComponent = () => {
+	const [currentSocket, setCurrentSocket] = useState();
+
 	const {
 		user: { username },
 	} = useTypedSelector((state) => state.post.post);
@@ -20,10 +25,6 @@ const ChatList: React.FunctionComponent = () => {
 	}, [dispatch]);
 
 	const mapChat = chats.map((chat, _) => <li key={_}>{chat.message}</li>);
-
-	useEffect(() => {
-		console.log(chats);
-	}, [chats]);
 
 	return (
 		<React.Fragment>
