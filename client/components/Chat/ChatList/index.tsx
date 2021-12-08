@@ -5,9 +5,11 @@ import { useTypedSelector } from "../../../utils/useTypedSelector";
 import ChatInput from "../ChatInput";
 import { useDispatch } from "react-redux";
 import { chatActions } from "../../../store/reducers/Chat";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
-// const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL);
+const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL, {
+	withCredentials: true,
+});
 
 const ChatList: React.FunctionComponent = () => {
 	const [currentSocket, setCurrentSocket] = useState();
@@ -25,6 +27,14 @@ const ChatList: React.FunctionComponent = () => {
 	}, [dispatch]);
 
 	const mapChat = chats.map((chat, _) => <li key={_}>{chat.message}</li>);
+
+	useEffect(() => {
+		socket.emit("message", "Hello World");
+
+		socket.on("message", (message) => {
+			console.log(message);
+		});
+	}, []);
 
 	return (
 		<React.Fragment>

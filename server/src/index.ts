@@ -12,7 +12,13 @@ import { createServer } from "http";
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, {});
+const io = new Server(httpServer, {
+  cors: {
+    origin: true,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 app.set("PORT", process.env.PORT || 8003);
 
@@ -47,8 +53,9 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 
 io.on("connection", (socket) => {
-  console.log(socket);
-  console.log("연결 성공");
+  socket.on("message", (message) => {
+    io.emit("message", message);
+  });
 });
 
 //! Error handler
