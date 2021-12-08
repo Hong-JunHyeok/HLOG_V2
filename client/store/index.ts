@@ -12,10 +12,12 @@ import { AnyActionType } from "../types/Comment";
 import thunk from "redux-thunk";
 import isDevMode from "../utils/isDevMode";
 import { postReducer, PostStateType } from "./reducers/Post";
+import { chatReducer, ChatStateType } from "./reducers/Chat";
 
 export interface RootState {
 	auth: AuthStateType;
 	post: PostStateType;
+	chat: ChatStateType;
 }
 
 const rootReducer = (
@@ -29,6 +31,7 @@ const rootReducer = (
 			const combinedReducer = combineReducers({
 				auth: authReducer,
 				post: postReducer,
+				chat: chatReducer,
 			});
 
 			return combinedReducer(state, action);

@@ -1,5 +1,5 @@
 import { postActions } from ".";
-import { CommentType } from "../../../types/Comment";
+import { AnyActionType, CommentType } from "../../../types/Comment";
 import { PostStateType } from "./types";
 
 const postInitialState: PostStateType = {
@@ -13,7 +13,7 @@ const postInitialState: PostStateType = {
 
 function postReducer(
 	state: PostStateType = postInitialState,
-	action: any,
+	action: AnyActionType,
 ): PostStateType {
 	switch (action.type) {
 		case postActions.GET_POST:
@@ -125,7 +125,7 @@ function postReducer(
 					return {
 						...comment,
 						isLiked: false,
-						likeNumber: comment.like.splice(state.comments.indexOf(comment), 1),
+						like: comment.like.splice(state.comments.indexOf(comment), 1),
 					};
 				} else {
 					return comment;

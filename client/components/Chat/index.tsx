@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./chat.module.scss";
 import Image from "next/image";
 import BalloonPng from "../../assets/png/balloon.png";
-import useToggle from "../../hooks/useToggle";
 import ChatList from "./ChatList";
+import { useTypedSelector } from "../../utils/useTypedSelector";
+import { useDispatch } from "react-redux";
+import { chatActions } from "../../store/reducers/Chat";
 
 interface IChatProps {}
 
-const Chat: React.FunctionComponent<IChatProps> = ({ children }) => {
-	const [isChatOpen, toggleChat, chatOpen, chatClose] = useToggle(false);
+const Chat: React.FunctionComponent<IChatProps> = () => {
+	const { isChatOpen } = useTypedSelector((state) => state.chat);
+	const dispatch = useDispatch();
+
+	const chatOpen = useCallback(() => {
+		dispatch({
+			type: chatActions.OPEN_CHAT,
+		});
+	}, [dispatch]);
 
 	return (
 		<React.Fragment>
-			<div className={styles.container} onClick={chatOpen}>
+			<div className={styles.container}>
 				{isChatOpen ? (
 					<ChatList />
 				) : (
-					<div className={styles.iconWrapper}>
+					<div className={styles.iconWrapper} onClick={chatOpen}>
 						<Image
 							src={BalloonPng}
 							draggable={false}
