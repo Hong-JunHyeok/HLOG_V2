@@ -1,94 +1,112 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .container {
-  position: relative;
-  max-width: 1000px;
-  margin: 0 auto;
+	position: relative;
+	max-width: 1000px;
+	margin: 0 auto;
 
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+	@media (max-width: 768px) {
+		padding: 1rem;
+	}
 
-  .meta {
-    .title {
-      font-size: 36px;
-      font-weight: bold;
-      color: colors.$normal_text;
-    }
+	.meta {
+		.title {
+			font-size: 36px;
+			font-weight: bold;
+			color: colors.$normal_text;
+		}
 
-    .info {
-      display: flex;
-      flex-direction: column;
-      .flex {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+		.info {
+			display: flex;
+			flex-direction: column;
+			.flex {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 
-        .profile {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          .profileImage {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-          }
-          .username {
-            font-weight: bold;
-            color: colors.$normal_text;
-          }
-          .subscribe {
-            background-color: inherit;
-            border: 1px solid colors.$primary_color;
-            color: colors.$primary_color;
-            font-size: 16px;
-            border-radius: 3px;
-            cursor: pointer;
-          }
-        }
-      }
+				.profile {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					justify-content: center;
+					border-radius: 50%;
+					.profileImage {
+						width: 58px;
+						height: 58px;
+						border-radius: 50%;
+					}
+					.username {
+						text-align: center;
+						font-weight: bold;
+						color: colors.$normal_text;
+					}
+					.subscribe {
+						background-color: inherit;
+						border: 1px solid colors.$primary_color;
+						color: colors.$primary_color;
+						font-size: 16px;
+						border-radius: 3px;
+						cursor: pointer;
+					}
+					.mode {
+						display: flex;
+						& > button {
+							margin-top: 1rem;
+							margin-right: 1rem;
+							padding: 0;
+							background-color: inherit;
+							border: none;
+							font-size: 0.8rem;
+							color: colors.$gray_text3;
+							cursor: pointer;
 
-      .profileInfo {
-        border-radius: 10px;
-        display: flex;
-        height: 120px;
+							&:hover {
+								color: colors.$normal_text;
+							}
+						}
+					}
+				}
+			}
 
-        .intro {
-          flex: 8;
-          margin: 0;
-          font-style: italic;
-          padding-left: 2rem;
-          font-size: 1.3rem;
-          color: colors.$normal_text;
-          height: 100%;
-          overflow-y: auto;
-          & > p {
-            margin: 0;
-          }
-        }
-      }
+			.profileInfo {
+				border-radius: 10px;
+				display: flex;
+				height: 120px;
 
-      .date {
-        margin-top: 1.5rem;
-        font-weight: bold;
-        color: colors.$primary_color;
-      }
-    }
-  }
+				.intro {
+					flex: 8;
+					margin: 0;
+					font-style: italic;
+					padding-left: 2rem;
+					font-size: 1.3rem;
+					color: colors.$normal_text;
+					height: 100%;
+					overflow-y: auto;
+					& > p {
+						margin: 0;
+					}
+				}
+			}
 
-  .content {
-    width: 100%;
-    .postThumnail {
-      width: 100%;
-      height: 500px;
-      object-fit: contain;
-    }
+			.date {
+				margin-top: 1.5rem;
+				font-weight: bold;
+				color: colors.$primary_color;
+			}
+		}
+	}
 
-    img {
-      width: 100%;
-      border-radius: 10px;
-    }
-  }
+	.content {
+		width: 100%;
+		.postThumnail {
+			width: 100%;
+			height: 500px;
+			object-fit: contain;
+		}
+
+		img {
+			width: 100%;
+			border-radius: 10px;
+		}
+	}
 }

@@ -14,6 +14,14 @@ export const CREATE_POST = "CREATE_POST" as const;
 export const CREATE_POST_SUCCESS = "CREATE_POST_SUCCESS" as const;
 export const CREATE_POST_ERROR = "CREATE_POST_ERROR" as const;
 
+export const EDIT_POST = "EDIT_POST" as const;
+export const EDIT_POST_SUCCESS = "EDIT_POST_SUCCESS" as const;
+export const EDIT_POST_ERROR = "EDIT_POST_ERROR" as const;
+
+export const DELETE_POST = "DELETE_POST" as const;
+export const DELETE_POST_SUCCESS = "DELETE_POST_SUCCESS" as const;
+export const DELETE_POST_ERROR = "DELETE_POST_ERROR" as const;
+
 export const CREATE_COMMENT = "CREATE_COMMENT" as const;
 export const CREATE_COMMENT_SUCCESS = "CREATE_COMMENT_SUCCESS" as const;
 export const CREATE_COMMENT_ERROR = "CREATE_COMMENT_ERROR" as const;
@@ -21,6 +29,8 @@ export const CREATE_COMMENT_ERROR = "CREATE_COMMENT_ERROR" as const;
 export const DELETE_COMMENT = "DELETE_COMMENT" as const;
 
 export const EDIT_COMMENT = "EDIT_COMMENT" as const;
+
+export const TOGGLE_EDIT_POST = "TOGGLE_EDIT_POST" as const;
 
 export const POST_LIKE = "POST_LIKE" as const;
 export const POST_UNLIKE = "POST_UNLIKE" as const;

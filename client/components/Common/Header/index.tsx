@@ -26,13 +26,11 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
 	};
 
 	const handleLogout = useCallback(() => {
-		removeCookie("hlog_access_token");
+		removeCookie("hlog_access_token", { path: "/" });
 		dispatch({
 			type: authActions.LOGOUT,
 		});
-
-		router.replace("/");
-	}, []);
+	}, [removeCookie, dispatch]);
 
 	return (
 		<React.Fragment>

@@ -4,33 +4,49 @@ import styles from "./postView.module.scss";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
-import React from "react";
-import MarkdownIt from "markdown-it";
-import hljs from "highlight.js";
+import React, { useCallback } from "react";
 import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
+import markdownIt from "../../../utils/getMarkdownIt";
+import { useDispatch } from "react-redux";
+import { postActions } from "../../../store/reducers/Post";
+import { useRouter } from "next/router";
 
 const PostView: React.FunctionComponent = () => {
-	const markdownIt = new MarkdownIt({
-		highlight: (str, lang) => {
-			if (lang && hljs.getLanguage(lang)) {
-				try {
-					return hljs.highlight(str, { language: lang }).value;
-				} catch (error) {
-					console.error(error);
-				}
-			}
-
-			return "";
-		},
-	});
-
+	const { myInfo } = useTypedSelector((state) => state.auth);
 	const { post } = useTypedSelector((state) => state.post);
-	const { postTitle, createdAt, updatedAt } = post;
+	const {
+		postTitle,
+		postContent,
+		createdAt,
+		updatedAt,
+		user: { id: postUserId },
+	} = post;
+	const dispatch = useDispatch();
+
+	const handleDeletePost = useCallback(() => {
+		dispatch({
+			type: postActions.DELETE_POST,
+			payload: post.id,
+		});
+	}, []);
+
+	const router = useRouter();
+	const handleEditPost = useCallback(() => {
+		dispatch({
+			type: postActions.TOGGLE_EDIT_POST,
+			payload: {
+				title: postTitle,
+				content: postContent,
+			},
+		});
+
+		router.replace("/post/create");
+	}, [dispatch, router, postTitle, postContent]);
 
 	return (
 		<React.Fragment>
@@ -52,8 +68,13 @@ const PostView: React.FunctionComponent = () => {
 									className={styles.profileImage}
 								/>
 								<span className={styles.username}>{post.user.username}</span>
+								{myInfo?.id === postUserId && (
+									<div className={styles.mode}>
+										<button onClick={handleEditPost}>수정</button>
+										<button onClick={handleDeletePost}>삭제</button>
+									</div>
+								)}
 							</div>
-
 							<Like />
 						</div>
 						<div className={`${styles.profileInfo}`}>

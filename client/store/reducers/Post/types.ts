@@ -7,4 +7,9 @@ export interface PostStateType {
 	postLoading: boolean;
 
 	comments: CommentType[];
+
+	isEditMode: boolean;
+
+	postTitleInput: string;
+	postContentInput: string;
 }

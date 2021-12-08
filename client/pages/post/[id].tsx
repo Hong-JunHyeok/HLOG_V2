@@ -10,7 +10,6 @@ import { wrapper } from "../../store";
 import cookieSetter from "../../utils/initializer/cookieSetter";
 import { authActions } from "../../store/reducers/Auth";
 import { postActions } from "../../store/reducers/Post";
-
 import { getCommentsRequest } from "../../apis/comment";
 import { getPostResponse, getIsLikedPostRequest } from "../../apis/post";
 import { getMyInfoRequest } from "../../apis/user";

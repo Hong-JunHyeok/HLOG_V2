@@ -9,6 +9,11 @@ const postInitialState: PostStateType = {
 	postLoading: false,
 
 	comments: [],
+
+	isEditMode: false,
+
+	postTitleInput: "",
+	postContentInput: "",
 };
 
 function postReducer(
@@ -55,6 +60,28 @@ function postReducer(
 		case postActions.CREATE_POST_ERROR:
 			return {
 				...state,
+			};
+
+		case postActions.EDIT_POST:
+			return {
+				...state,
+			};
+		case postActions.EDIT_POST_SUCCESS:
+			return {
+				...state,
+			};
+		case postActions.EDIT_POST_ERROR:
+			return {
+				...state,
+			};
+
+		case postActions.TOGGLE_EDIT_POST:
+			return {
+				...state,
+				isEditMode: true,
+
+				postTitleInput: action.payload.title,
+				postContentInput: action.payload.content,
 			};
 		case postActions.DELETE_COMMENT:
 			return {

@@ -26,7 +26,14 @@ const rootReducer = (
 ): CombinedState<RootState> => {
 	switch (action.type) {
 		case HYDRATE:
-			return action.payload;
+			const clientState = { ...state };
+			const serverState = { ...action.payload };
+			const nextState = {
+				...clientState,
+				...serverState,
+			};
+
+			return nextState;
 		default: {
 			const combinedReducer = combineReducers({
 				auth: authReducer,

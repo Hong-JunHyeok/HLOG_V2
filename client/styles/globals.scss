@@ -9,20 +9,6 @@
 		url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf")
 			format("truetype");
 }
-@font-face {
-	font-family: "ChosunBg";
-	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff")
-		format("woff");
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: "YeolrinGothic-Bold";
-	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/YeolrinGothic-Bold.woff")
-		format("woff");
-	font-weight: normal;
-	font-style: normal;
-}
 
 html,
 body {
@@ -66,9 +52,11 @@ code {
 }
 
 pre > code {
-	font-family: "Inconsolata", monospace !important;
+	font-family: "Consolas", monospace !important;
 	line-height: 1.5;
 	font-size: 14px;
+	color: #f8f8f2;
+	background: none;
 }
 
 pre {
@@ -80,8 +68,8 @@ pre {
 code {
 	font-family: "Inconsolata", monospace !important;
 	line-height: normal;
-	// background: rgba(135, 131, 120, 0.15);
-	color: #f8f8f2;
+	background: rgba(135, 131, 120, 0.15);
+	color: black;
 	border-radius: 3px;
 	font-size: 85%;
 	padding: 0.2em 0.4em;

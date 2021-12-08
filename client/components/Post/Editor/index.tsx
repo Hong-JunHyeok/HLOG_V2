@@ -13,7 +13,6 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 import "github-markdown-css";
-import { useAuthState } from "../../../contexts/AuthContext";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import { createPostRequest, patchPostThumnail } from "../../../apis/post";
 import { useRouter } from "next/router";
@@ -21,6 +20,7 @@ import imageFormat from "../../../utils/formatter/image-format";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ChangeEvent } from "react";
 import PostItem from "../PostItem";
+import { useTypedSelector } from "../../../utils/useTypedSelector";
 
 const Editor = () => {
 	const router = useRouter();
@@ -48,7 +48,7 @@ const Editor = () => {
 	const [createPostSuccess, setCreatePostSuccess] = useState(false);
 	const [thumnail, setThumnail] = useState<File>();
 
-	const authState = useAuthState();
+	const authState = useTypedSelector((state) => state.auth);
 
 	const todayDateFormatter = useMemo(() => {
 		return `${new Date().getFullYear()}-${
@@ -136,10 +136,6 @@ const Editor = () => {
 			setIsEmptyContent(true);
 		}
 	}, [title, code]);
-
-	if (!authState.myInfo) {
-		return null;
-	}
 
 	return (
 		<React.Fragment>
