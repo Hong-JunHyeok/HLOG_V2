@@ -1,0 +1,22 @@
+@use "../../styles/colors.module.scss" as colors;
+
+.container {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	user-select: none;
+
+	.iconWrapper {
+		cursor: pointer;
+		border-radius: 50%;
+		background-color: colors.$primary_color;
+		transform: scaleX(-1);
+		width: 5rem;
+		height: 5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+		border-radius: 50%;
+	}
+}

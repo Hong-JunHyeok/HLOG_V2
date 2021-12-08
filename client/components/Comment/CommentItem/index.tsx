@@ -15,6 +15,7 @@ import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
+import Image from "next/image";
 
 interface ICommentProps {
 	comment: CommentType;
@@ -89,12 +90,14 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 				onMouseLeave={editClose}
 			>
 				<header className={styles.meta}>
-					<img
+					<Image
 						src={
 							comment.user.profileUrl
 								? imageFormat(comment.user.profileUrl)
 								: DefaultProfile
 						}
+						width={58}
+						height={58}
 						alt={comment.user.username}
 						className={styles.profileImage}
 					/>

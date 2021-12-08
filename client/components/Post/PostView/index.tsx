@@ -12,6 +12,8 @@ import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
+import Chat from "../../Chat";
+import Image from "next/image";
 
 const PostView: React.FunctionComponent = () => {
 	const markdownIt = new MarkdownIt({
@@ -30,7 +32,6 @@ const PostView: React.FunctionComponent = () => {
 
 	const { post } = useTypedSelector((state) => state.post);
 	const { postTitle, createdAt, updatedAt } = post;
-	const { isLoggedIn } = useTypedSelector((state) => state.auth);
 
 	return (
 		<React.Fragment>
@@ -40,12 +41,14 @@ const PostView: React.FunctionComponent = () => {
 					<div className={styles.info}>
 						<div className={styles.flex}>
 							<div className={styles.profile}>
-								<img
+								<Image
 									src={
 										post.user.profileUrl
 											? imageFormat(post.user.profileUrl)
 											: DefaultProfile
 									}
+									width={58}
+									height={58}
 									alt={post.user.username}
 									className={styles.profileImage}
 								/>
@@ -99,6 +102,7 @@ const PostView: React.FunctionComponent = () => {
 			</main>
 			<CommentInput />
 			<CommentList />
+			<Chat />
 		</React.Fragment>
 	);
 };

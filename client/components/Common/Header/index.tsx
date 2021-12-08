@@ -9,6 +9,7 @@ import imageFormat from "../../../utils/formatter/image-format";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { authActions } from "../../../store/reducers/Auth";
 import { useCookies } from "react-cookie";
+import Image from "next/image";
 
 interface HeaderProps {}
 
@@ -65,13 +66,15 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
 								글쓰기
 							</li>
 							<li className={styles.profile}>
-								<img
+								<Image
 									onClick={toggleUserDrop}
 									src={
 										authState.myInfo?.profileUrl
 											? imageFormat(authState.myInfo?.profileUrl)
 											: DefaultProfile
 									}
+									width={38}
+									height={38}
 									alt=""
 									className={styles.profileImage}
 									draggable={false}

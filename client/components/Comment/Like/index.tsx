@@ -30,8 +30,8 @@ const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
 		await commentLikeRequest(comment.id);
 
 		dispatch({
-			type: "COMMENT_LIKE",
-			payload: comment.id,
+			type: postActions.COMMENT_LIKE,
+			payload: { commentId: comment.id, userId: myInfo.id },
 		});
 	};
 
@@ -44,10 +44,23 @@ const Like: React.FunctionComponent<ILikeProps> = ({ comment }) => {
 		});
 	};
 
+	useEffect(() => {
+		if (myInfo) {
+			comment.like.forEach((like) => {
+				if (like.userId === myInfo.id) {
+					dispatch({
+						type: postActions.COMMENT_INIT_LIKE,
+						payload: comment.id,
+					});
+				}
+			});
+		}
+	}, [myInfo, dispatch]);
+
 	return (
 		<React.Fragment>
 			<div className={styles.container}>
-				{comment.isLiked ? (
+				{myInfo && comment.isLiked ? (
 					<>
 						<FcLike onClick={unlike} />
 						<span className={styles.ment}>

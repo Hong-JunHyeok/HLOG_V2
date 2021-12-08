@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { authActions } from "../../../store/reducers/Auth";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const ProfileForm: React.FunctionComponent = () => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
@@ -24,14 +25,17 @@ const ProfileForm: React.FunctionComponent = () => {
 
 	const editProfileRef = useRef<HTMLInputElement | null>(null);
 
-	const handleLogout = useCallback((redirect: string) => {
-		removeCookie("hlog_access_token");
-		dispatch({
-			type: authActions.LOGOUT,
-		});
+	const handleLogout = useCallback(
+		(redirect: string) => {
+			dispatch({
+				type: authActions.LOGOUT,
+			});
+			removeCookie("hlog_access_token");
 
-		router.replace(redirect);
-	}, []);
+			router.replace(redirect);
+		},
+		[dispatch, router],
+	);
 
 	const handleClickEditProfile = useCallback(() => {
 		editProfileRef.current.click();
@@ -72,7 +76,7 @@ const ProfileForm: React.FunctionComponent = () => {
 					<header className={styles.header}>My Profile</header>
 					<div className={styles.profileContainer}>
 						<div className={styles.profile}>
-							<img
+							<Image
 								src={
 									prevProfileImage
 										? prevProfileImage
@@ -80,6 +84,9 @@ const ProfileForm: React.FunctionComponent = () => {
 										? imageFormat(myInfo?.profileUrl)
 										: DefaultProfile
 								}
+								width={100}
+								height={100}
+								className={styles.profileImage}
 								alt={myInfo.username}
 							/>
 

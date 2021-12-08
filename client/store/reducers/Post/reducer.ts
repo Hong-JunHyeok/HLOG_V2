@@ -94,13 +94,20 @@ function postReducer(
 					likeNumber: state.post.likeNumber - 1,
 				},
 			};
+
 		case postActions.COMMENT_LIKE: {
 			const newCommentList = state.comments.map((comment) => {
-				if (comment.id === action.payload) {
+				if (comment.id === action.payload.commentId) {
 					return {
 						...comment,
 						isLiked: true,
-						likeNumber: comment.likeNumber + 1,
+						like: [
+							{
+								id: 1,
+								userId: action.payload.userId,
+							},
+							...comment.like,
+						],
 					};
 				} else {
 					return comment;
@@ -118,7 +125,7 @@ function postReducer(
 					return {
 						...comment,
 						isLiked: false,
-						likeNumber: comment.likeNumber - 1,
+						likeNumber: comment.like.splice(state.comments.indexOf(comment), 1),
 					};
 				} else {
 					return comment;
@@ -132,11 +139,10 @@ function postReducer(
 
 		case postActions.COMMENT_INIT_LIKE: {
 			const newCommentList = state.comments.map((comment) => {
-				if (comment.id === action.payload.id) {
+				if (comment.id === action.payload) {
 					return {
 						...comment,
-						likeNumber: action.payload.likeNumber,
-						isLiked: action.payload.status,
+						isLiked: true,
 					};
 				} else {
 					return comment;
