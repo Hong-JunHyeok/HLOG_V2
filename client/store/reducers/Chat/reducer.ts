@@ -17,7 +17,7 @@ function chatReducer(
 		case chatActions.ADD_CHAT_SUCCESS:
 			return {
 				...state,
-				chats: [action.payload, ...state.chats],
+				chats: [...state.chats, action.payload],
 			};
 		case chatActions.ADD_CHAT_ERROR:
 
