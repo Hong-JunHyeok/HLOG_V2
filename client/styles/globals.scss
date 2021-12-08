@@ -64,3 +64,29 @@ code {
 	color: #839496;
 	-webkit-text-size-adjust: none;
 }
+
+pre > code {
+	font-family: "Inconsolata", monospace !important;
+	line-height: 1.5;
+	font-size: 14px;
+}
+
+pre {
+	padding: 1rem;
+	background: #282c34 !important;
+	border-radius: 10px;
+}
+
+code {
+	font-family: "Inconsolata", monospace !important;
+	line-height: normal;
+	// background: rgba(135, 131, 120, 0.15);
+	color: #f8f8f2;
+	border-radius: 3px;
+	font-size: 85%;
+	padding: 0.2em 0.4em;
+}
+
+img {
+	border-radius: "10px";
+}

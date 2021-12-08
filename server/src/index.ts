@@ -52,9 +52,11 @@ app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 
+const socketList = [];
+
 io.on("connection", (socket) => {
-  socket.on("message", (message) => {
-    io.emit("message", message);
+  socket.on("SEND", (message) => {
+    console.log(message);
   });
 });
 

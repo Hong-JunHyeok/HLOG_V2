@@ -12,8 +12,6 @@ const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL, {
 });
 
 const ChatList: React.FunctionComponent = () => {
-	const [currentSocket, setCurrentSocket] = useState();
-
 	const {
 		user: { username },
 	} = useTypedSelector((state) => state.post.post);
@@ -29,12 +27,8 @@ const ChatList: React.FunctionComponent = () => {
 	const mapChat = chats.map((chat, _) => <li key={_}>{chat.message}</li>);
 
 	useEffect(() => {
-		socket.emit("message", "Hello World");
-
-		socket.on("message", (message) => {
-			console.log(message);
-		});
-	}, []);
+		// socket.emit("ee",user);
+	}, [socket]);
 
 	return (
 		<React.Fragment>

@@ -12,7 +12,6 @@ import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
-import Chat from "../../Chat";
 import Image from "next/image";
 
 const PostView: React.FunctionComponent = () => {
@@ -102,7 +101,6 @@ const PostView: React.FunctionComponent = () => {
 			</main>
 			<CommentInput />
 			<CommentList />
-			<Chat />
 		</React.Fragment>
 	);
 };
