@@ -39,6 +39,17 @@ export const getServerSideProps = wrapper.getServerSideProps(
 					payload: myInfoResponse.payload,
 				});
 			}
+
+			if (
+				store.getState().auth.userInfo.id === store.getState().auth.myInfo.id
+			) {
+				return {
+					redirect: {
+						destination: "/profile/my",
+						permanent: false,
+					},
+				};
+			}
 		} catch (error) {
 			return {
 				props: error,
