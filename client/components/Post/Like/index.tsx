@@ -4,15 +4,20 @@ import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import { postLikeRequest, postUnlikeRequest } from "../../../apis/post";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 const Like: React.FunctionComponent = () => {
 	const { post } = useTypedSelector((state) => state.post);
 	const { isLoggedIn } = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
+	const router = useRouter();
 	const like = async () => {
 		if (!isLoggedIn) {
-			alert("로그인 해");
+			if (confirm("로그인 필요한 서비스입니다. 로그인 하시겠습니까?")) {
+				return router.push("/auth/login");
+			}
+
 			return;
 		}
 		await postLikeRequest(post.id);

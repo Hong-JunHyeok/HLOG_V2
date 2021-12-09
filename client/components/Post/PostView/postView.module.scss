@@ -73,17 +73,27 @@
 				border-radius: 10px;
 				display: flex;
 				height: 120px;
+				flex-direction: column;
 
 				.intro {
 					flex: 8;
 					margin: 0;
 					font-style: italic;
 					padding-left: 2rem;
-					font-size: 1.3rem;
+					font-size: 0.9rem;
 					color: colors.$normal_text;
 					height: 100%;
-					overflow-y: auto;
+					padding: 1rem;
+					background-color: colors.$gray_text2;
+					border-radius: 10px;
+					margin-bottom: 1rem;
 					& > p {
+						&::before {
+							content: "자기소개 :";
+							display: block;
+							font-weight: bold;
+							font-size: 1rem;
+						}
 						margin: 0;
 					}
 				}
@@ -99,13 +109,15 @@
 
 	.content {
 		width: 100%;
-		.postThumnail {
-			width: 100%;
-			height: 500px;
-			object-fit: contain;
+		margin-top: 2rem;
+		@media (max-width: 768px) {
+			margin-top: 4rem;
 		}
 
-		img {
+		.postThumnail {
+			object-fit: contain;
+		}
+		& > img {
 			width: 100%;
 			border-radius: 10px;
 		}

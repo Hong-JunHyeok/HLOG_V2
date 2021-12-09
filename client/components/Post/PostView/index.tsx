@@ -118,10 +118,12 @@ const PostView: React.FunctionComponent = () => {
 				<section className={styles.content}>
 					<If condition={post.postThumnail}>
 						<Then>
-							<img
+							<Image
 								src={imageFormat(post.postThumnail)}
 								className={styles.postThumnail}
 								alt={post.postTitle}
+								width={1200}
+								height={600}
 							/>
 						</Then>
 					</If>
