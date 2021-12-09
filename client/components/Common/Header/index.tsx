@@ -79,11 +79,7 @@ const Header: React.FunctionComponent<HeaderProps> = () => {
 								/>
 								{isUserDropOpen && (
 									<ul className={styles.userDropdown}>
-										<li
-											onClick={() =>
-												router.push(`/profile/${authState.myInfo.id}`)
-											}
-										>
+										<li onClick={() => router.push(`/profile/my`)}>
 											내 프로필
 										</li>
 										<li onClick={handleLogout}>로그아웃</li>

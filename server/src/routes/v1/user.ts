@@ -11,24 +11,57 @@ const router = Router();
 router.get("/me", tokenValidator, async (req, res, next) => {
   const userRepository = getRepository(User);
 
-  const me = await userRepository.findOne({
-    where: { email: req.body.decodedUserPayload.email },
-    select: [
-      "id",
-      "username",
-      "email",
-      "createdAt",
-      "updatedAt",
-      "selfIntroduction",
-      "profileUrl",
-    ],
-  });
+  try {
+    const me = await userRepository.findOne({
+      where: { email: req.body.decodedUserPayload.email },
+      select: [
+        "id",
+        "username",
+        "email",
+        "createdAt",
+        "updatedAt",
+        "selfIntroduction",
+        "profileUrl",
+      ],
+    });
 
-  setJsonResponser(res, {
-    code: 200,
-    message: "내 정보 조회성공",
-    payload: me,
-  });
+    setJsonResponser(res, {
+      code: 200,
+      message: "내 정보 조회성공",
+      payload: me,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/:userId", tokenValidator, async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const userRepository = getRepository(User);
+
+    const foundUser = await userRepository.findOne({
+      where: { id: parseInt(userId) },
+      select: [
+        "id",
+        "username",
+        "email",
+        "createdAt",
+        "updatedAt",
+        "selfIntroduction",
+        "profileUrl",
+      ],
+    });
+
+    setJsonResponser(res, {
+      code: 200,
+      message: "유저 정보 조회성공",
+      payload: foundUser,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 const upload = multer({

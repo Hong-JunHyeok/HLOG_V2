@@ -69,11 +69,13 @@ const Editor = () => {
 			const response = await createPostRequest(postData);
 			const postId = response.payload.postId;
 
-			const formData = new FormData();
+			if (thumnail) {
+				const formData = new FormData();
 
-			formData.append("thumnail", thumnail);
+				formData.append("thumnail", thumnail);
 
-			await patchPostThumnail(postId, formData);
+				await patchPostThumnail(postId, formData);
+			}
 
 			setCreatePostSuccess(true);
 			setTitle("");

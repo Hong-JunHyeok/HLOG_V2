@@ -15,6 +15,7 @@ import markdownIt from "../../../utils/getMarkdownIt";
 import { useDispatch } from "react-redux";
 import { postActions } from "../../../store/reducers/Post";
 import { useRouter } from "next/router";
+import { deletePostRequest } from "../../../apis/post";
 
 const PostView: React.FunctionComponent = () => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
@@ -28,12 +29,20 @@ const PostView: React.FunctionComponent = () => {
 	} = post;
 	const dispatch = useDispatch();
 
-	const handleDeletePost = useCallback(() => {
-		dispatch({
-			type: postActions.DELETE_POST,
-			payload: post.id,
-		});
-	}, []);
+	const handleDeletePost = useCallback(async () => {
+		try {
+			await deletePostRequest(post.id);
+			dispatch({
+				type: postActions.DELETE_POST,
+				payload: post.id,
+			});
+
+			router.replace("/");
+		} catch (error) {
+			console.error(error);
+			alert(error.response.message);
+		}
+	}, [dispatch]);
 
 	const router = useRouter();
 	const handleEditPost = useCallback(() => {
