@@ -5,6 +5,7 @@ build/
 tmp/
 temp/
 .env
+mysql.env
 
 profiles/
 thumnails/
