@@ -10,6 +10,8 @@ const markdownCenterInserter = (
 	const draggedText = textareaEl.value.substring(startPosition, endPosition); // '이지미'
 	const afterText = textareaEl.value.substring(endPosition); // '입니다.'
 
+	console.log(draggedText);
+
 	const result = `${beforeText}${decorator}${draggedText}${decorator}${afterText}`;
 
 	return result;

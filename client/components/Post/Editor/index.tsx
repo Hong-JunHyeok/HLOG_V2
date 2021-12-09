@@ -23,7 +23,8 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ChangeEvent } from "react";
 import PostItem from "../PostItem";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
-import markdownCenterInserter from "../../../utils/markdownCenterInserter";
+import markdownCenterInserter from "../../../utils/markdown/markdownCenterInserter";
+import markdownLineInserter from "../../../utils/markdown/makrdownLineInserter";
 
 const Editor = () => {
 	const router = useRouter();
@@ -106,6 +107,22 @@ const Editor = () => {
 		[codeEditorRef],
 	);
 
+	const handleChangeHeading = useCallback(
+		(heading: "#" | "##" | "###" | "####") => {
+			setCode(markdownLineInserter(codeEditorRef.current, heading));
+			codeEditorRef.current.focus();
+		},
+		[codeEditorRef, setCode],
+	);
+
+	const handleChangeFont = useCallback(
+		(decorator: "**" | "*" | "~~") => {
+			setCode(markdownCenterInserter(codeEditorRef.current, decorator));
+			codeEditorRef.current.focus();
+		},
+		[codeEditorRef, setCode],
+	);
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if ((title || code) && !createPostSuccess) {
@@ -147,40 +164,28 @@ const Editor = () => {
 		}
 	}, [title, code]);
 
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		console.log(markdownCenterInserter(codeEditorRef.current, "**"));
-	// 	}, 1000);
-
-	// 	return () => clearInterval(interval);
-	// }, [title, code, createPostSuccess, codeEditorRef]);
-
-	// useEffect(() => {
-	// 	console.log(markdownCenterInserter(codeEditorRef.current, "**"));
-	// }, [codeEditorRef, code]);
-
 	return (
 		<React.Fragment>
 			<div className={styles.container}>
 				<header className={styles.tools}>
 					<ul className={styles.headings}>
 						<li>
-							<button>
+							<button onClick={() => handleChangeHeading("#")}>
 								H<span>1</span>
 							</button>
 						</li>
 						<li>
-							<button>
+							<button onClick={() => handleChangeHeading("##")}>
 								H<span>2</span>
 							</button>
 						</li>
 						<li>
-							<button>
+							<button onClick={() => handleChangeHeading("###")}>
 								H<span>3</span>
 							</button>
 						</li>
 						<li>
-							<button>
+							<button onClick={() => handleChangeHeading("####")}>
 								H<span>4</span>
 							</button>
 						</li>
@@ -188,17 +193,17 @@ const Editor = () => {
 
 					<ul className={styles.fonts}>
 						<li>
-							<button>
+							<button onClick={() => handleChangeFont("**")}>
 								<BiBold />
 							</button>
 						</li>
 						<li>
-							<button>
+							<button onClick={() => handleChangeFont("*")}>
 								<BiItalic />
 							</button>
 						</li>
 						<li>
-							<button>
+							<button onClick={() => handleChangeFont("~~")}>
 								<MdOutlineFormatStrikethrough />
 							</button>
 						</li>
