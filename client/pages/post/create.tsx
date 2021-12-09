@@ -24,8 +24,6 @@ const PostCreatePage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) => async (context) => {
 		try {
-			console.log(store.getState().post);
-
 			const hasToken = cookieSetter(context);
 
 			if (!hasToken) {

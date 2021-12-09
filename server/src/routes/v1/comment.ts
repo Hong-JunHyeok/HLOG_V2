@@ -230,8 +230,6 @@ router.get(
         .orderBy("comments.updatedAt", "DESC")
         .getMany();
 
-      console.log(comments[0]);
-
       setJsonResponser(res, {
         code: 200,
         message: `${postId}번 게시글 댓글 조회성공`,

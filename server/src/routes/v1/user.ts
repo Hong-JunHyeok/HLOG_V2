@@ -52,8 +52,6 @@ router.patch(
     try {
       const userRepository = getRepository(User);
 
-      console.log(req.body);
-
       const me = await userRepository.findOne({
         where: { email: req.body.decodedUserPayload.email },
       });

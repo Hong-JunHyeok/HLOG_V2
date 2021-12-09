@@ -1,5 +1,4 @@
 import React, {
-	KeyboardEventHandler,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -7,7 +6,7 @@ import React, {
 	useState,
 } from "react";
 import styles from "./editor.module.scss";
-import { BiBold, BiItalic } from "react-icons/bi";
+import { BiBold, BiItalic, BiCodeAlt, BiLink, BiImage } from "react-icons/bi";
 import { MdOutlineFormatStrikethrough } from "react-icons/md";
 import { Else, If, Then } from "react-if";
 import useInput from "../../../hooks/useInput";
@@ -25,7 +24,6 @@ import PostItem from "../PostItem";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import markdownCenterInserter from "../../../utils/markdown/markdownCenterInserter";
 import markdownLineInserter from "../../../utils/markdown/makrdownLineInserter";
-import { useHotkeys } from "react-hotkeys-hook";
 
 const Editor = () => {
 	const router = useRouter();
@@ -73,7 +71,6 @@ const Editor = () => {
 
 			const formData = new FormData();
 
-			console.log(thumnail);
 			formData.append("thumnail", thumnail);
 
 			await patchPostThumnail(postId, formData);
@@ -124,6 +121,24 @@ const Editor = () => {
 		[codeEditorRef, setCode],
 	);
 
+	const handleInsertUtil = useCallback(
+		(decorator: "![]()" | "[]()" | "```") => {
+			if (decorator === "```") {
+				setCode(
+					markdownCenterInserter(codeEditorRef.current, decorator, {
+						enter: true,
+						lang: "js",
+					}),
+				);
+			} else {
+				setCode(markdownLineInserter(codeEditorRef.current, decorator));
+			}
+
+			codeEditorRef.current.focus();
+		},
+		[codeEditorRef, setCode],
+	);
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if ((title || code) && !createPostSuccess) {
@@ -131,10 +146,11 @@ const Editor = () => {
 					title,
 					code,
 				});
+				console.log(editorData);
 
 				localStorage.setItem("editorContent", editorData);
 			}
-		}, 10000);
+		}, 1000);
 
 		return () => clearInterval(interval);
 	}, [title, code, createPostSuccess]);
@@ -164,12 +180,6 @@ const Editor = () => {
 			setIsEmptyContent(true);
 		}
 	}, [title, code]);
-
-	useEffect(() => {
-		window.addEventListener("keypress", (event) => {
-			console.log(event.ctrlKey);
-		});
-	}, []);
 
 	return (
 		<React.Fragment>
@@ -212,6 +222,24 @@ const Editor = () => {
 						<li>
 							<button onClick={() => handleChangeFont("~~")}>
 								<MdOutlineFormatStrikethrough />
+							</button>
+						</li>
+					</ul>
+
+					<ul className={styles.utils}>
+						<li>
+							<button onClick={() => handleInsertUtil("```")}>
+								<BiCodeAlt />
+							</button>
+						</li>
+						<li>
+							<button onClick={() => handleInsertUtil("[]()")}>
+								<BiLink />
+							</button>
+						</li>
+						<li>
+							<button onClick={() => handleInsertUtil("![]()")}>
+								<BiImage />
 							</button>
 						</li>
 					</ul>
