@@ -18,7 +18,7 @@ export const getPopularPostsRequest = async () => {
 	}
 };
 
-export const getPostResponse = async (postId: number) => {
+export const getPostRequest = async (postId: number) => {
 	try {
 		const response = await customAxios.get(`/post/${postId}`);
 		return response.data;

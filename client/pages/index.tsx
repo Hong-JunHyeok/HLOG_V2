@@ -34,15 +34,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
 				payload: postsResponse.payload.posts,
 			});
 
-			if (!hasToken) {
-				return;
+			if (hasToken) {
+				const myInfoResponse = await getMyInfoRequest();
+				store.dispatch({
+					type: authActions.GET_MY_INFO_SUCCESS,
+					payload: myInfoResponse.payload,
+				});
 			}
-
-			const myInfoResponse = await getMyInfoRequest();
-			store.dispatch({
-				type: authActions.GET_MY_INFO_SUCCESS,
-				payload: myInfoResponse.payload,
-			});
 		} catch (error) {
 			store.dispatch({
 				type: authActions.GET_MY_INFO_ERROR,

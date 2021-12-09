@@ -1,32 +1,32 @@
-import { InferGetServerSidePropsType } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { If, Then, Else } from "react-if";
 import PostView from "../../components/Post/PostView";
 import React from "react";
 import Header from "../../components/Common/Header";
 import Footer from "../../components/Common/Footer";
-import { CommentType } from "../../types/Comment";
 import Head from "next/head";
 import { wrapper } from "../../store";
 import cookieSetter from "../../utils/initializer/cookieSetter";
 import { authActions } from "../../store/reducers/Auth";
 import { postActions } from "../../store/reducers/Post";
 import { getCommentsRequest } from "../../apis/comment";
-import { getPostResponse, getIsLikedPostRequest } from "../../apis/post";
+import { getPostRequest, getIsLikedPostRequest } from "../../apis/post";
 import { getMyInfoRequest } from "../../apis/user";
+import { useTypedSelector } from "../../utils/useTypedSelector";
 
 interface IPostViewProps {
-	postTitle: string;
-	comments: CommentType[];
 	error: Error;
 }
 
 const PostViewPage = (
 	props: IPostViewProps,
 ): InferGetServerSidePropsType<typeof getServerSideProps> => {
+	// const { postTitle } = useTypedSelector((state) => state.post.post);
+
 	return (
 		<React.Fragment>
 			<Head>
-				<title>HLOG - {props.postTitle}</title>
+				<title>HLOG - 게시글</title>
 			</Head>
 			<Header />
 			<If condition={!!props.error}>
@@ -43,57 +43,45 @@ const PostViewPage = (
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-	(store) => async (context) => {
-		const { id } = context.params;
-
+	(store) => async (context: GetServerSidePropsContext) => {
 		try {
+			console.log(context.query);
+			const postId = context.query.postId;
 			const hasToken = cookieSetter(context);
 
-			const postResponse = await getPostResponse(parseInt(id as string, 10));
-			const commentResponse = await getCommentsRequest(
-				parseInt(id as string, 10),
-			);
-
+			const postResponse = await getPostRequest(Number(postId));
+			const commentResponse = await getCommentsRequest(Number(postId));
 			store.dispatch({
 				type: postActions.GET_POST_SUCCESS,
 				payload: {
 					...postResponse.payload,
 				},
 			});
-
 			store.dispatch({
 				type: postActions.GET_COMMENTS_SUCCESS,
 				payload: commentResponse.payload,
 			});
-
-			if (!hasToken) {
-				return;
+			if (hasToken) {
+				const myInfoResponse = await getMyInfoRequest();
+				store.dispatch({
+					type: authActions.GET_MY_INFO_SUCCESS,
+					payload: myInfoResponse.payload,
+				});
+				const isPostLikedResponse = await getIsLikedPostRequest(Number(postId));
+				store.dispatch({
+					type: postActions.GET_POST_SUCCESS,
+					payload: {
+						...postResponse.payload,
+						isLiked: isPostLikedResponse.payload,
+					},
+				});
 			}
-
-			const myInfoResponse = await getMyInfoRequest();
-			const isPostLikedResponse = await getIsLikedPostRequest(
-				parseInt(id as string, 10),
-			);
-
-			store.dispatch({
-				type: postActions.GET_POST_SUCCESS,
-				payload: {
-					...postResponse.payload,
-					isLiked: isPostLikedResponse.payload,
-				},
-			});
-
-			store.dispatch({
-				type: authActions.GET_MY_INFO_SUCCESS,
-				payload: myInfoResponse.payload,
-			});
-
 			return {
-				props: {
-					postTitle: postResponse.payload.postTitle,
-				},
+				props: {},
 			};
 		} catch (error) {
+			console.error(error);
+
 			return {
 				props: error,
 			};

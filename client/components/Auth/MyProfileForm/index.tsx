@@ -5,7 +5,7 @@ import { FiLogOut } from "react-icons/fi";
 import { MdSupervisorAccount } from "react-icons/md";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import styles from "./profileForm.module.scss";
-import { patchMyProfileRequest } from "../../../apis/user";
+import { patchMyIntroRequest, patchMyProfileRequest } from "../../../apis/user";
 import imageFormat from "../../../utils/formatter/image-format";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { useDispatch } from "react-redux";
@@ -13,8 +13,11 @@ import { useCookies } from "react-cookie";
 import { authActions } from "../../../store/reducers/Auth";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import useToggle from "../../../hooks/useToggle";
+import { Else, If, Then } from "react-if";
+import useInput from "../../../hooks/useInput";
 
-const ProfileForm: React.FunctionComponent = () => {
+const MyProfileForm: React.FunctionComponent = () => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const [, , removeCookie] = useCookies();
@@ -22,6 +25,8 @@ const ProfileForm: React.FunctionComponent = () => {
 
 	const [prevProfileImage, setPrevProfileImage] = useState<string | null>(null);
 	const [profileImage, setProfileImage] = useState<File | null>(null);
+	const [editIntro, onChangeEditIntro, setEditIntro] = useInput("");
+	const [isIntroEditModeOpen, , openEditMode, closeEditMode] = useToggle(false);
 
 	const editProfileRef = useRef<HTMLInputElement | null>(null);
 
@@ -55,6 +60,38 @@ const ProfileForm: React.FunctionComponent = () => {
 		await patchMyProfileRequest(myInfo.id, form);
 	}, [profileImage]);
 
+	const handleOpenEditMode = useCallback(() => {
+		openEditMode();
+		setEditIntro(myInfo.selfIntroduction);
+	}, [openEditMode, setEditIntro, myInfo.selfIntroduction]);
+
+	const handleEditIntro = useCallback(async () => {
+		try {
+			console.log(editIntro);
+			if (!editIntro.trim()) {
+				return;
+			}
+			dispatch({
+				type: authActions.EDIT_INTRO,
+			});
+
+			await patchMyIntroRequest(myInfo.id, editIntro);
+			dispatch({
+				type: authActions.EDIT_INTRO_SUCCESS,
+				payload: editIntro.trim(),
+			});
+			alert("성공적으로 자기소개를 변경했습니다.");
+
+			closeEditMode();
+			setEditIntro("");
+		} catch (error) {
+			dispatch({
+				type: authActions.EDIT_INTRO_ERROR,
+			});
+			console.error(error);
+		}
+	}, [editIntro]);
+
 	useEffect(() => {
 		if (profileImage && window.confirm("프로필사진을 변경하시겠습니까?")) {
 			changeProfile();
@@ -66,6 +103,7 @@ const ProfileForm: React.FunctionComponent = () => {
 	}, [profileImage]);
 
 	if (!myInfo) {
+		router.push("/");
 		return null;
 	}
 
@@ -73,7 +111,7 @@ const ProfileForm: React.FunctionComponent = () => {
 		<React.Fragment>
 			<div className={styles.container}>
 				<div className={styles.wrapper}>
-					<header className={styles.header}>My Profile</header>
+					<header className={styles.header}>나의 프로필</header>
 					<div className={styles.profileContainer}>
 						<div className={styles.profile}>
 							<Image
@@ -87,27 +125,58 @@ const ProfileForm: React.FunctionComponent = () => {
 								width={100}
 								height={100}
 								className={styles.profileImage}
-								alt={myInfo.username}
+								alt={myInfo?.username}
 							/>
 
-							<input
-								type="file"
-								className={styles.profileInput}
-								onChange={onChangeProfile}
-								ref={editProfileRef}
-								accept="image/png, image/jpeg"
-								multiple={false}
-							/>
-							<button onClick={handleClickEditProfile}>
-								<BsPencilFill />
-							</button>
+							<>
+								<input
+									type="file"
+									className={styles.profileInput}
+									onChange={onChangeProfile}
+									ref={editProfileRef}
+									accept="image/png, image/jpeg"
+									multiple={false}
+								/>
+								<button onClick={handleClickEditProfile}>
+									<BsPencilFill />
+								</button>
+							</>
 						</div>
 
 						<div className={styles.userInfo}>
 							<h1 className={styles.username}>{myInfo.username}</h1>
-							<p>{myInfo.selfIntroduction}</p>
 						</div>
 					</div>
+
+					<If condition={isIntroEditModeOpen}>
+						<Then>
+							<div className={styles.editContainer}>
+								<p>
+									<textarea
+										className={styles.editInput}
+										placeholder="자기소개를 입력해주세요."
+										value={editIntro}
+										onChange={onChangeEditIntro}
+									/>
+								</p>
+								<div className={styles.options}>
+									<button onClick={handleEditIntro}>수정</button>
+								</div>
+							</div>
+						</Then>
+						<Else>
+							<div className={styles.intro}>
+								<p>
+									{myInfo.selfIntroduction
+										? myInfo.selfIntroduction
+										: "자기소개가 없습니다."}
+								</p>
+								<div className={styles.options}>
+									<button onClick={handleOpenEditMode}>자기소개 수정</button>
+								</div>
+							</div>
+						</Else>
+					</If>
 
 					<footer className={styles.footer}>
 						<h3>Settings</h3>
@@ -139,4 +208,4 @@ const ProfileForm: React.FunctionComponent = () => {
 	);
 };
 
-export default ProfileForm;
+export default MyProfileForm;

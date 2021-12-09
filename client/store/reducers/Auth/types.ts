@@ -9,7 +9,13 @@ export interface AuthStateType {
 	loginError: Error | null;
 
 	myInfo: null | UserType;
+	userInfo: null | UserType;
+
+	getUserInfoLoading: boolean;
+	getUserInfoError: Error | null;
 
 	getMyInfoLoading: boolean;
 	getMyInfoError: Error | null;
+
+	editIntroLoading: boolean;
 }

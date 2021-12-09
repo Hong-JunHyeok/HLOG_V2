@@ -13,15 +13,8 @@ const CommentInput: React.FunctionComponent<ICommentProps> = () => {
 	const authState = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
-	const [commentState, onChangeCommentState, setCommentState] = useInput(
-		"",
-		true,
-	);
+	const [commentState, onChangeCommentState, setCommentState] = useInput("");
 	const router = useRouter();
-
-	const getPostId = useCallback(() => {
-		return router.query.id as string;
-	}, []);
 
 	const handleCommentSubmit = useCallback(
 		async (event: React.SyntheticEvent) => {
@@ -31,7 +24,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = () => {
 				return router.push("/auth/login");
 			}
 
-			const postId = Number(getPostId());
+			const postId = Number(router.query.postId);
 
 			try {
 				const {
@@ -58,7 +51,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = () => {
 				});
 				setCommentState("");
 			} catch (error) {
-				alert(error.response.message);
+				console.error(error);
 			}
 		},
 		[commentState, dispatch],

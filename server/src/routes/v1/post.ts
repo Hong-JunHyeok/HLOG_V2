@@ -218,6 +218,8 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
 
   const postRepository = getRepository(Post);
 
+  console.log(id);
+
   try {
     const post = await postRepository
       .createQueryBuilder("posts")

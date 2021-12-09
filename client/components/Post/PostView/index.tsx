@@ -28,6 +28,7 @@ const PostView: React.FunctionComponent = () => {
 		user: { id: postUserId },
 	} = post;
 	const dispatch = useDispatch();
+	const router = useRouter();
 
 	const handleDeletePost = useCallback(async () => {
 		try {
@@ -44,7 +45,6 @@ const PostView: React.FunctionComponent = () => {
 		}
 	}, [dispatch]);
 
-	const router = useRouter();
 	const handleEditPost = useCallback(() => {
 		dispatch({
 			type: postActions.TOGGLE_EDIT_POST,
@@ -54,8 +54,12 @@ const PostView: React.FunctionComponent = () => {
 			},
 		});
 
-		router.replace("/post/create");
+		router.push("/post/create");
 	}, [dispatch, router, postTitle, postContent]);
+
+	const handlePushUserProfile = useCallback(async () => {
+		router.push(`/profile/${postUserId}`);
+	}, [router]);
 
 	return (
 		<React.Fragment>
@@ -66,6 +70,7 @@ const PostView: React.FunctionComponent = () => {
 						<div className={styles.flex}>
 							<div className={styles.profile}>
 								<Image
+									onClick={handlePushUserProfile}
 									src={
 										post.user.profileUrl
 											? imageFormat(post.user.profileUrl)

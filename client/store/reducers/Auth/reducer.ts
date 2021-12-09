@@ -8,9 +8,15 @@ const authInitialState: AuthStateType = {
 	loginLoading: false,
 
 	myInfo: null,
+	userInfo: null,
+
+	getUserInfoLoading: false,
+	getUserInfoError: null,
 
 	getMyInfoLoading: false,
 	getMyInfoError: null,
+
+	editIntroLoading: false,
 };
 
 export default function authReducer(
@@ -57,6 +63,47 @@ export default function authReducer(
 				myInfo: null,
 				isLoggedIn: false,
 				getMyInfoLoading: false,
+			};
+		case authActions.GET_USER_INFO:
+			return {
+				...state,
+				userInfo: null,
+				getUserInfoLoading: true,
+			};
+		case authActions.GET_USER_INFO_SUCCESS:
+			return {
+				...state,
+				userInfo: action.payload,
+				getUserInfoLoading: false,
+			};
+		case authActions.GET_USER_INFO_ERROR:
+			return {
+				...state,
+				userInfo: null,
+				getUserInfoLoading: false,
+			};
+		case authActions.EDIT_INTRO:
+			return {
+				...state,
+				editIntroLoading: true,
+			};
+		case authActions.EDIT_INTRO_SUCCESS:
+			return {
+				...state,
+				editIntroLoading: false,
+				myInfo: {
+					...state.myInfo,
+					selfIntroduction: action.payload,
+				},
+			};
+		case authActions.EDIT_INTRO_ERROR:
+			return {
+				...state,
+				editIntroLoading: false,
+				myInfo: {
+					...state.myInfo,
+					selfIntroduction: "에러 발생",
+				},
 			};
 		case authActions.LOGOUT:
 			return {

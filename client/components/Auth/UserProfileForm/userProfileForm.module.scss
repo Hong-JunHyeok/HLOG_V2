@@ -94,14 +94,14 @@
 				font-size: 1.5rem;
 				font-weight: bold;
 			}
-
-			.intro {
-				padding: 1rem 5rem;
-				font-style: italic;
-				background-color: colors.$gray_text2;
-				color: colors.$normal_text;
-				font-size: 1.2rem;
-			}
 		}
+	}
+	.intro {
+		display: flex;
+		padding: 1rem 5rem;
+		font-style: italic;
+		background-color: colors.$gray_text2;
+		color: colors.$normal_text;
+		font-size: 0.8rem;
 	}
 }

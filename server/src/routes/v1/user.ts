@@ -35,7 +35,7 @@ router.get("/me", tokenValidator, async (req, res, next) => {
   }
 });
 
-router.get("/:userId", tokenValidator, async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -76,6 +76,47 @@ const upload = multer({
     },
   }),
 });
+
+router.patch(
+  "/intro/:userId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userRepository = getRepository(User);
+      const { selfIntroduction } = req.body;
+
+      const me = await userRepository.findOne({
+        where: { email: req.body.decodedUserPayload.email },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      console.log(selfIntroduction);
+
+      await userRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          selfIntroduction,
+        })
+        .where("id = :id", { id: me.id })
+        .execute();
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "자기소개를 변경했습니다.",
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
 
 router.patch(
   "/profile/:userId",
