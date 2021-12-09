@@ -25,6 +25,7 @@ import PostItem from "../PostItem";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import markdownCenterInserter from "../../../utils/markdown/markdownCenterInserter";
 import markdownLineInserter from "../../../utils/markdown/makrdownLineInserter";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const Editor = () => {
 	const router = useRouter();
@@ -163,6 +164,12 @@ const Editor = () => {
 			setIsEmptyContent(true);
 		}
 	}, [title, code]);
+
+	useEffect(() => {
+		window.addEventListener("keypress", (event) => {
+			console.log(event.ctrlKey);
+		});
+	}, []);
 
 	return (
 		<React.Fragment>
