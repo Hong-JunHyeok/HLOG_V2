@@ -1,4 +1,5 @@
 import React, {
+	KeyboardEventHandler,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -22,6 +23,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ChangeEvent } from "react";
 import PostItem from "../PostItem";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
+import markdownCenterInserter from "../../../utils/markdownCenterInserter";
 
 const Editor = () => {
 	const router = useRouter();
@@ -97,9 +99,12 @@ const Editor = () => {
 		[setThumnail],
 	);
 
-	const handleKeySave = useCallback((event: KeyboardEvent) => {
-		console.log(event.key);
-	}, []);
+	const handleKeySave = useCallback(
+		(event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+			console.log(event.key);
+		},
+		[codeEditorRef],
+	);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -141,6 +146,18 @@ const Editor = () => {
 			setIsEmptyContent(true);
 		}
 	}, [title, code]);
+
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		console.log(markdownCenterInserter(codeEditorRef.current, "**"));
+	// 	}, 1000);
+
+	// 	return () => clearInterval(interval);
+	// }, [title, code, createPostSuccess, codeEditorRef]);
+
+	// useEffect(() => {
+	// 	console.log(markdownCenterInserter(codeEditorRef.current, "**"));
+	// }, [codeEditorRef, code]);
 
 	return (
 		<React.Fragment>
@@ -192,7 +209,7 @@ const Editor = () => {
 						className={styles.codeMirror}
 						value={code}
 						onChange={onChangeCode}
-						// onKeyPress={handleKeySave}
+						onKeyPress={handleKeySave}
 						ref={codeEditorRef}
 					/>
 					<div
