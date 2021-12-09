@@ -6,7 +6,8 @@ import React, {
 	useState,
 } from "react";
 import styles from "./editor.module.scss";
-import { BsCode, BsEyeFill } from "react-icons/bs";
+import { BiBold, BiItalic } from "react-icons/bi";
+import { MdOutlineFormatStrikethrough } from "react-icons/md";
 import { Else, If, Then } from "react-if";
 import useInput from "../../../hooks/useInput";
 import MarkdownIt from "markdown-it";
@@ -39,12 +40,12 @@ const Editor = () => {
 		},
 	});
 
+	const codeEditorRef = useRef<null | HTMLTextAreaElement>(null);
 	const thumnailInputRef = useRef<HTMLInputElement | null>(null);
 
 	const [isEmptyContent, setIsEmptyContent] = useState<boolean>(true);
 	const [title, onChangeTitle, setTitle] = useInput("");
 	const [code, onChangeCode, setCode] = useInput("");
-	const [editorMode, setEditorMode] = useState<"EDIT" | "PREVIEW">("EDIT");
 	const [createPostSuccess, setCreatePostSuccess] = useState(false);
 	const [thumnail, setThumnail] = useState<File>();
 
@@ -96,6 +97,10 @@ const Editor = () => {
 		[setThumnail],
 	);
 
+	const handleKeySave = useCallback((event: KeyboardEvent) => {
+		console.log(event.key);
+	}, []);
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			if ((title || code) && !createPostSuccess) {
@@ -106,7 +111,7 @@ const Editor = () => {
 
 				localStorage.setItem("editorContent", editorData);
 			}
-		}, 2000);
+		}, 10000);
 
 		return () => clearInterval(interval);
 	}, [title, code, createPostSuccess]);
@@ -140,44 +145,60 @@ const Editor = () => {
 	return (
 		<React.Fragment>
 			<div className={styles.container}>
-				<header className={styles.header}>
-					<ul className={styles.menus}>
-						<li
-							className={editorMode === "EDIT" ? styles.active : ""}
-							onClick={() => setEditorMode("EDIT")}
-						>
-							<BsCode className={styles.icon} />
-							Edit
+				<header className={styles.tools}>
+					<ul className={styles.headings}>
+						<li>
+							<button>
+								H<span>1</span>
+							</button>
 						</li>
-						<li
-							className={editorMode === "PREVIEW" ? styles.active : ""}
-							onClick={() => setEditorMode("PREVIEW")}
-						>
-							<BsEyeFill className={styles.icon} />
-							Preview
+						<li>
+							<button>
+								H<span>2</span>
+							</button>
+						</li>
+						<li>
+							<button>
+								H<span>3</span>
+							</button>
+						</li>
+						<li>
+							<button>
+								H<span>4</span>
+							</button>
+						</li>
+					</ul>
+
+					<ul className={styles.fonts}>
+						<li>
+							<button>
+								<BiBold />
+							</button>
+						</li>
+						<li>
+							<button>
+								<BiItalic />
+							</button>
+						</li>
+						<li>
+							<button>
+								<MdOutlineFormatStrikethrough />
+							</button>
 						</li>
 					</ul>
 				</header>
-
 				<div className={styles.editor}>
-					<If condition={editorMode === "EDIT"}>
-						<Then>
-							<textarea
-								className={styles.codeMirror}
-								value={code}
-								onChange={onChangeCode}
-							/>
-						</Then>
-					</If>
-
-					<If condition={editorMode === "PREVIEW"}>
-						<Then>
-							<div
-								className={`${styles.preview}`}
-								dangerouslySetInnerHTML={{ __html: markdownIt.render(code) }}
-							/>
-						</Then>
-					</If>
+					<textarea
+						className={styles.codeMirror}
+						value={code}
+						onChange={onChangeCode}
+						// onKeyPress={handleKeySave}
+						ref={codeEditorRef}
+					/>
+					<div
+						className={styles.preview}
+						dangerouslySetInnerHTML={{ __html: markdownIt.render(code) }}
+					/>
 				</div>
 
 				<div className={styles.metaContainer}>
