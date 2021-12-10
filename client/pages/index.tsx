@@ -36,6 +36,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 			if (hasToken) {
 				const myInfoResponse = await getMyInfoRequest();
+				console.log(myInfoResponse);
 				store.dispatch({
 					type: authActions.GET_MY_INFO_SUCCESS,
 					payload: myInfoResponse.payload,

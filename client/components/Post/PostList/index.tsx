@@ -2,7 +2,6 @@ import React from "react";
 import { Else, If, Then } from "react-if";
 import PostItem from "../PostItem";
 import styles from "./postList.module.scss";
-import NoData from "../../../assets/svg/no_data.svg";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 
 const PostList: React.FunctionComponent = () => {
@@ -16,7 +15,6 @@ const PostList: React.FunctionComponent = () => {
 				<Then>
 					<div className={styles.noData}>
 						<h1>데이터가 없습니다.</h1>
-						<img src={NoData} alt="" draggable={false} />
 					</div>
 				</Then>
 				<Else>
