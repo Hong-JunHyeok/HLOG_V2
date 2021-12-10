@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  client:
+    env_file:
+      - .env
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    build: ./client
+    environment:
+      NEXT_PUBLIC_API_SERVER_URL: ${NEXT_PUBLIC_API_SERVER_URL}
+      NEXT_PUBLIC_API_DOMAIN: ${NEXT_PUBLIC_API_DOMAIN}
+
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    ports:
+      - "33306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    env_file:
+      - mysql.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+
+  server:
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    ports:
+      - "8003:8003"
+    build: ./server
+    environment:
+      DB_HOST: mysql
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_NAME: ${DB_NAME}
+
+      CLIENT_IP: ${CLIENT_IP}
+
+      REDIS_PORT: ${REDIS_PORT}
+
+      JWT_SECRET: ${JWT_SECRET}
