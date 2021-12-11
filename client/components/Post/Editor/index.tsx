@@ -10,10 +10,7 @@ import { BiBold, BiItalic, BiCodeAlt, BiLink, BiImage } from "react-icons/bi";
 import { MdOutlineFormatStrikethrough } from "react-icons/md";
 import { Else, If, Then } from "react-if";
 import useInput from "../../../hooks/useInput";
-import MarkdownIt from "markdown-it";
-import hljs from "highlight.js";
-import "highlight.js/styles/atom-one-dark.css";
-import "github-markdown-css";
+import markdownIt from "../../../utils/getMarkdownIt";
 import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import { createPostRequest, patchPostThumnail } from "../../../apis/post";
 import { useRouter } from "next/router";
@@ -24,23 +21,10 @@ import PostItem from "../PostItem";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import markdownCenterInserter from "../../../utils/markdown/markdownCenterInserter";
 import markdownLineInserter from "../../../utils/markdown/makrdownLineInserter";
+import Image from "next/image";
 
 const Editor = () => {
 	const router = useRouter();
-
-	const markdownIt = new MarkdownIt({
-		highlight: (str, lang) => {
-			if (lang && hljs.getLanguage(lang)) {
-				try {
-					return hljs.highlight(str, { language: lang }).value;
-				} catch (error) {
-					console.error(error);
-				}
-			}
-
-			return "";
-		},
-	});
 
 	const codeEditorRef = useRef<null | HTMLTextAreaElement>(null);
 	const thumnailInputRef = useRef<HTMLInputElement | null>(null);
@@ -148,7 +132,6 @@ const Editor = () => {
 					title,
 					code,
 				});
-				console.log(editorData);
 
 				localStorage.setItem("editorContent", editorData);
 			}
@@ -261,12 +244,14 @@ const Editor = () => {
 				</div>
 
 				<div className={styles.metaContainer}>
-					<img
+					<Image
 						src={
 							authState.myInfo.profileUrl
 								? imageFormat(authState.myInfo.profileUrl)
 								: DefaultProfile
 						}
+						width={38}
+						height={38}
 						alt=""
 						className={styles.profileImage}
 						draggable={false}

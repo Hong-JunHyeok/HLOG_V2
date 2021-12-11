@@ -29,7 +29,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 			const hasToken = cookieSetter(context);
 
 			const postsResponse = await getPostsResponse();
-			console.log(postsResponse);
+
 			store.dispatch({
 				type: postActions.GET_POSTS_SUCCESS,
 				payload: postsResponse.payload.posts,
@@ -37,7 +37,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
 			if (hasToken) {
 				const myInfoResponse = await getMyInfoRequest();
-				console.log(myInfoResponse);
+
 				store.dispatch({
 					type: authActions.GET_MY_INFO_SUCCESS,
 					payload: myInfoResponse.payload,

@@ -29,15 +29,13 @@ export class User extends Common {
 
   @OneToMany(() => Post, (post) => post.user, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   posts: Post[];
 
   @OneToMany(() => Comment, (comment) => comment.user, {
     nullable: false,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   comments: Comment[];
 }

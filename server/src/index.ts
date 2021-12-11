@@ -31,8 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   cors({
-    origin: true,
-    // [`${process.env.CLIENT_IP}`]
+    origin: [`${process.env.CLIENT_IP}`],
   })
 );
 

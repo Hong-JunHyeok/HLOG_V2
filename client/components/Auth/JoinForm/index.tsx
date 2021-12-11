@@ -31,7 +31,7 @@ const JoinForm: React.FunctionComponent<JoinFormProps> = () => {
 					return alert(joinResponse.data.message);
 				}
 
-				alert("로그인에 성공했습니다.");
+				alert("회원가입에 성공했습니다.");
 				return router.replace("/auth/login");
 			} catch (error) {
 				console.error(error);

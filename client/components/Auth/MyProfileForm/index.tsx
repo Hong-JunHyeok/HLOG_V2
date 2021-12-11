@@ -67,7 +67,6 @@ const MyProfileForm: React.FunctionComponent = () => {
 
 	const handleEditIntro = useCallback(async () => {
 		try {
-			console.log(editIntro);
 			if (!editIntro.trim()) {
 				return;
 			}

@@ -5,8 +5,6 @@ import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
 import React, { useCallback } from "react";
-import "highlight.js/styles/atom-one-dark.css";
-import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";

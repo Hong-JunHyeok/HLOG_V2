@@ -39,6 +39,7 @@ router.delete(
           email: req.body.decodedUserPayload.email,
         },
       });
+      console.log(me);
 
       if (!me) {
         return setJsonResponser(res, {
@@ -49,8 +50,9 @@ router.delete(
 
       const post = await postRepository
         .createQueryBuilder("posts")
-        .select(["posts.id", "user.id"])
+        .select(["posts.id", "user.id", "user.username"])
         .leftJoin("posts.user", "user")
+        .where("user.id = :id", { id: me.id })
         .getOne();
 
       if (me.id !== post.user.id) {
@@ -74,6 +76,8 @@ router.delete(
         message: "성공적으로 게시글을 삭제했습니다.",
       });
     } catch (error) {
+      console.error(error);
+
       next(error);
     }
   }

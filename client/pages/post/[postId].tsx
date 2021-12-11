@@ -12,7 +12,6 @@ import { postActions } from "../../store/reducers/Post";
 import { getCommentsRequest } from "../../apis/comment";
 import { getPostRequest, getIsLikedPostRequest } from "../../apis/post";
 import { getMyInfoRequest } from "../../apis/user";
-import { useTypedSelector } from "../../utils/useTypedSelector";
 
 interface IPostViewProps {
 	error: Error;

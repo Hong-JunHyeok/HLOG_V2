@@ -1,18 +1,18 @@
 .container {
-  padding: 0 0.5rem;
-  display: flex;
-  justify-content: space-evenly;
-  .mainComment {
-    font-weight: 400;
-    font-family: "YeolrinGothic-Bold";
-    font-weight: bold;
-    font-size: 48px;
-    white-space: pre-wrap;
-  }
+	padding: 0 0.5rem;
+	display: flex;
+	justify-content: space-evenly;
+	.mainComment {
+		font-weight: 400;
+		font-family: "YeolrinGothic-Bold";
+		font-weight: bold;
+		font-size: 48px;
+		white-space: pre-wrap;
+	}
 
-  @media (max-width: 1200px) {
-    .mainComment {
-      display: none;
-    }
-  }
+	@media (max-width: 1200px) {
+		.mainComment {
+			display: none;
+		}
+	}
 }
