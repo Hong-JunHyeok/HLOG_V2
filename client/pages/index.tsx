@@ -29,6 +29,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 			const hasToken = cookieSetter(context);
 
 			const postsResponse = await getPostsResponse();
+			console.log(postsResponse);
 			store.dispatch({
 				type: postActions.GET_POSTS_SUCCESS,
 				payload: postsResponse.payload.posts,
@@ -43,6 +44,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 				});
 			}
 		} catch (error) {
+			console.error(error);
 			store.dispatch({
 				type: authActions.GET_MY_INFO_ERROR,
 				payload: error,

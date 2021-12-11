@@ -129,7 +129,7 @@ const PostView: React.FunctionComponent = () => {
 					</If>
 
 					<div
-						className={`${styles.text}`}
+						className={styles.text}
 						dangerouslySetInnerHTML={{
 							__html: markdownIt.render(post.postContent),
 						}}

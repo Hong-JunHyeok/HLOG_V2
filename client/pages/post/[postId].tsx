@@ -45,7 +45,6 @@ const PostViewPage = (
 export const getServerSideProps = wrapper.getServerSideProps(
 	(store) => async (context: GetServerSidePropsContext) => {
 		try {
-			console.log(context.query);
 			const postId = context.query.postId;
 			const hasToken = cookieSetter(context);
 
