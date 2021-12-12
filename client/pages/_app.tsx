@@ -6,6 +6,7 @@ import { wrapper } from "../store";
 import { useCookies } from "react-cookie";
 import customAxios from "../utils/customAxios";
 import "../styles/globals.scss";
+import Chat from "../components/Chat";
 
 function MyApp({ Component, pageProps }) {
 	const [cookie] = useCookies();
@@ -19,11 +20,8 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<React.Fragment>
 			<CookiesProvider>
-				<AuthProvider>
-					<PostProvider>
-						<Component {...pageProps} />
-					</PostProvider>
-				</AuthProvider>
+				<Component {...pageProps} />
+				<Chat />
 			</CookiesProvider>
 		</React.Fragment>
 	);

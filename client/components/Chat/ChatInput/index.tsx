@@ -5,10 +5,13 @@ import useInput from "../../../hooks/useInput";
 import { useDispatch } from "react-redux";
 import { chatActions } from "../../../store/reducers/Chat";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
+import { Socket } from "socket.io-client";
 
-interface IChatInput {}
+interface IChatInput {
+	socket: Socket;
+}
 
-const ChatInput: React.FunctionComponent<IChatInput> = () => {
+const ChatInput: React.FunctionComponent<IChatInput> = ({ socket }) => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
 	const [chatMessage, onChangeChatMessage, setChatMessage] = useInput("");
 	const dispatch = useDispatch();
@@ -16,9 +19,7 @@ const ChatInput: React.FunctionComponent<IChatInput> = () => {
 	const handleCreateChat = useCallback(
 		(event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 			if (chatMessage.trim() && event.keyCode === 13 && !event.shiftKey) {
-				const data = {
-					message: chatMessage,
-				};
+				socket.emit("message", chatMessage.trim());
 
 				dispatch({
 					type: chatActions.ADD_CHAT_SUCCESS,
@@ -28,6 +29,8 @@ const ChatInput: React.FunctionComponent<IChatInput> = () => {
 						user: myInfo,
 					},
 				});
+
+				setChatMessage("");
 			}
 		},
 		[chatMessage, dispatch],

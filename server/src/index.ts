@@ -51,11 +51,9 @@ app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 
-const socketList = [];
-
 io.on("connection", (socket) => {
-  socket.on("SEND", (message) => {
-    console.log(message);
+  socket.on("message", (message) => {
+    io.emit("message", message);
   });
 });
 

@@ -12,9 +12,9 @@ const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL, {
 });
 
 const ChatList: React.FunctionComponent = () => {
-	const {
-		user: { username },
-	} = useTypedSelector((state) => state.post.post);
+	// const {
+	// 	user: { username },
+	// } = useTypedSelector((state) => state.post.post);
 	const { chats } = useTypedSelector((state) => state.chat);
 	const dispatch = useDispatch();
 
@@ -27,21 +27,23 @@ const ChatList: React.FunctionComponent = () => {
 	const mapChat = chats.map((chat, _) => <li key={_}>{chat.message}</li>);
 
 	useEffect(() => {
-		// socket.emit("ee",user);
+		socket.on("message", (message) => {
+			console.log(message);
+		});
 	}, [socket]);
 
 	return (
 		<React.Fragment>
 			<div className={styles.wrapper}>
 				<header className={styles.meta}>
-					<div className={styles.username}>{username}</div>
+					{/* <div className={styles.username}>{username}</div> */}
 					<div className={styles.close} onClick={chatClose}>
 						<AiOutlineClose />
 					</div>
 				</header>
 				<main className={styles.main}>{mapChat}</main>
 				<footer className={styles.footer}>
-					<ChatInput />
+					<ChatInput socket={socket} />
 				</footer>
 			</div>
 		</React.Fragment>
