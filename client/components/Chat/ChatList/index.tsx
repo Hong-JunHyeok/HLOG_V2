@@ -12,9 +12,6 @@ const socket = io(process.env.NEXT_PUBLIC_API_SERVER_URL, {
 });
 
 const ChatList: React.FunctionComponent = () => {
-	// const {
-	// 	user: { username },
-	// } = useTypedSelector((state) => state.post.post);
 	const { chats } = useTypedSelector((state) => state.chat);
 	const dispatch = useDispatch();
 

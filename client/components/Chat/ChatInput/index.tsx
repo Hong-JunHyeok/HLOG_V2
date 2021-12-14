@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./chatInput.module.scss";
 import { FiSend } from "react-icons/fi";
 import useInput from "../../../hooks/useInput";
@@ -13,27 +13,41 @@ interface IChatInput {
 
 const ChatInput: React.FunctionComponent<IChatInput> = ({ socket }) => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
+	const { addChatLoading, addChatError, addChatSuccess } = useTypedSelector(
+		(state) => state.chat,
+	);
 	const [chatMessage, onChangeChatMessage, setChatMessage] = useInput("");
 	const dispatch = useDispatch();
 
-	const handleCreateChat = useCallback(
-		(event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-			if (chatMessage.trim() && event.keyCode === 13 && !event.shiftKey) {
-				socket.emit("message", chatMessage.trim());
+	const handleCreateChat = useCallback(() => {
+		dispatch({
+			type: chatActions.ADD_CHAT,
+		});
 
-				dispatch({
-					type: chatActions.ADD_CHAT_SUCCESS,
-					payload: {
-						id: 0,
-						message: chatMessage,
-						user: myInfo,
-					},
-				});
+		socket.emit("message", chatMessage.trim());
 
-				setChatMessage("");
+		dispatch({
+			type: chatActions.ADD_CHAT_SUCCESS,
+			payload: {
+				id: 0,
+				message: chatMessage,
+				user: myInfo,
+			},
+		});
+
+		setChatMessage("");
+	}, [chatMessage, dispatch, setChatMessage]);
+
+	const handleKeyDownChat = useCallback(
+		(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+			if (e.key === "Enter") {
+				if (!e.shiftKey) {
+					e.preventDefault();
+					handleCreateChat();
+				}
 			}
 		},
-		[chatMessage, dispatch],
+		[chatMessage, handleCreateChat],
 	);
 
 	return (
@@ -44,9 +58,13 @@ const ChatInput: React.FunctionComponent<IChatInput> = ({ socket }) => {
 					placeholder="이 포스트에 대해 궁금한 점을 질문해보세요."
 					value={chatMessage}
 					onChange={onChangeChatMessage}
-					onKeyDown={handleCreateChat}
+					onKeyDown={handleKeyDownChat}
 				/>
-				<button className={styles.submit} type="submit">
+				<button
+					className={styles.submit}
+					type="submit"
+					onClick={handleCreateChat}
+				>
 					<FiSend />
 				</button>
 			</div>
