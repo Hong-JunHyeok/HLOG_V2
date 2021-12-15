@@ -4,7 +4,6 @@ import {
 	deleteCommentRequest,
 	editCommentRequest,
 } from "../../../apis/comment";
-import { useAuthState } from "../../../contexts/AuthContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
@@ -16,6 +15,8 @@ import Like from "../Like";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
+import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
+import CommentList from "../CommentList";
 
 interface ICommentProps {
 	comment: CommentType;
@@ -32,6 +33,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 		comment.commentContent,
 	);
 	const [isEmptyContent, setIsEmptyContent] = useState(false);
+	const [replyOpen, setReplyOpen] = useState(false);
 
 	const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
@@ -155,8 +157,23 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 					</Else>
 				</If>
 				<footer className={styles.emotion}>
+					{replyOpen ? (
+						<div className={styles.more} onClick={() => setReplyOpen(false)}>
+							<AiOutlineMinusSquare />
+							닫기
+						</div>
+					) : (
+						<div className={styles.more} onClick={() => setReplyOpen(true)}>
+							<AiOutlinePlusSquare />
+							댓글 더보기
+						</div>
+					)}
+
 					<Like comment={comment} />
 				</footer>
+				{replyOpen && (
+					<CommentList comments={[]} mode="REPLY" commentId={comment.id} />
+				)}
 			</div>
 		</React.Fragment>
 	);

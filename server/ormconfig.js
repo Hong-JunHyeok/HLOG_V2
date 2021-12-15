@@ -12,13 +12,13 @@ module.exports = {
   collation: "utf8mb4_unicode_ci",
   synchronize: true,
   logging: process.env.NODE_ENV === "development" ? true : false,
-  entities: ["src/entity/**/*.ts"],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: ["src/subscriber/**/*.ts"],
+  entities: ["entity/**/*.ts"],
+  migrations: ["migration/**/*.ts"],
+  subscribers: ["subscriber/**/*.ts"],
 
   cli: {
-    entitiesDir: "src/entity",
-    migrationsDir: "src/migration",
-    subscribersDir: "src/subscriber",
+    entitiesDir: "entity",
+    migrationsDir: "migration",
+    subscribersDir: "subscriber",
   },
 };

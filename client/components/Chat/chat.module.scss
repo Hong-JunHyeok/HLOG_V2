@@ -2,17 +2,16 @@
 
 .container {
 	position: fixed;
-	bottom: 1rem;
-	right: 1rem;
+	bottom: 2rem;
+	right: 2rem;
 	user-select: none;
 
 	.iconWrapper {
 		cursor: pointer;
 		border-radius: 50%;
 		background-color: colors.$primary_color;
-		transform: scaleX(-1);
-		width: 5rem;
-		height: 5rem;
+		width: 3rem;
+		height: 3rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;

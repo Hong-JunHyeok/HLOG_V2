@@ -3,10 +3,20 @@ import { Else, If, Then } from "react-if";
 import CommentItem from "../CommentItem";
 import styles from "./commentList.module.scss";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
+import { CommentType } from "../../../types/Comment";
+import CommentInput from "../CommentInput";
 
-const CommentList: React.FunctionComponent = () => {
-	const comments = useTypedSelector((state) => state.post.comments);
+interface CommentListProps {
+	comments: CommentType[];
+	mode?: "COMMENT" | "REPLY";
+	commentId?: number;
+}
 
+const CommentList: React.FunctionComponent<CommentListProps> = ({
+	comments,
+	mode = "COMMENT",
+	commentId,
+}) => {
 	return (
 		<React.Fragment>
 			<If condition={comments.length > 0}>
@@ -18,9 +28,15 @@ const CommentList: React.FunctionComponent = () => {
 					</div>
 				</Then>
 				<Else>
-					<div className={styles.noData}>
-						<p>이 게시글에 댓글이 없습니다.</p>
-					</div>
+					{mode === "COMMENT" ? (
+						<div className={styles.noData}>
+							<p>이 게시글에 댓글이 없습니다.</p>
+						</div>
+					) : (
+						<div className={styles.recomment}>
+							<CommentInput mode="REPLY" commentId={commentId} />
+						</div>
+					)}
 				</Else>
 			</If>
 		</React.Fragment>

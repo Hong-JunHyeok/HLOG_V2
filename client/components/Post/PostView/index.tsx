@@ -17,7 +17,7 @@ import { deletePostRequest } from "../../../apis/post";
 
 const PostView: React.FunctionComponent = () => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
-	const { post } = useTypedSelector((state) => state.post);
+	const { post, comments } = useTypedSelector((state) => state.post);
 	const {
 		postTitle,
 		postContent,
@@ -135,7 +135,7 @@ const PostView: React.FunctionComponent = () => {
 				</section>
 			</main>
 			<CommentInput />
-			<CommentList />
+			<CommentList comments={comments} />
 		</React.Fragment>
 	);
 };

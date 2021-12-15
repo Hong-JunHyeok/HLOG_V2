@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { Comment } from "./Comment";
 import { Like } from "./Like";

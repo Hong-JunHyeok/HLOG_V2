@@ -1,142 +1,152 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .container {
-  margin: 0 0 2rem 0;
-  background-color: white;
-  border-radius: 20px;
-  color: colors.$normal_text;
-  position: relative;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  .meta {
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    .username {
-      margin: 0;
-      padding: 0 1rem;
-      @media (max-width: 768px) {
-        font-size: 14px;
-        padding: 0;
-      }
-    }
+	margin: 0 0 2rem 0;
+	background-color: white;
+	border-radius: 20px;
+	color: colors.$normal_text;
+	position: relative;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	.meta {
+		padding: 1rem 2rem;
+		display: flex;
+		align-items: center;
+		.username {
+			margin: 0;
+			padding: 0 1rem;
+			@media (max-width: 768px) {
+				font-size: 14px;
+				padding: 0;
+			}
+		}
 
-    .profileImage {
-      border-radius: 50%;
-      width: 58px;
-      height: 58px;
+		.profileImage {
+			border-radius: 50%;
+			width: 58px;
+			height: 58px;
 
-      @media (max-width: 768px) {
-        display: none;
-      }
-    }
+			@media (max-width: 768px) {
+				display: none;
+			}
+		}
 
-    .date {
-      color: colors.$primary_color2;
-      @media (max-width: 768px) {
-        font-size: 12px;
-      }
-    }
+		.date {
+			color: colors.$primary_color2;
+			@media (max-width: 768px) {
+				font-size: 12px;
+			}
+		}
 
-    .editMode {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      & > button {
-        background-color: inherit;
-        padding: 0.5rem 0.7rem;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-left: 5px;
-      }
-      .edit {
-        border: 1px solid colors.$safe_color;
-        color: colors.$safe_color;
-      }
-      .delete {
-        border: 1px solid colors.$warning_color;
-        color: colors.$warning_color;
-      }
-    }
-  }
+		.editMode {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			& > button {
+				background-color: inherit;
+				padding: 0.5rem 0.7rem;
+				cursor: pointer;
+				border-radius: 5px;
+				margin-left: 5px;
+			}
+			.edit {
+				border: 1px solid colors.$safe_color;
+				color: colors.$safe_color;
+			}
+			.delete {
+				border: 1px solid colors.$warning_color;
+				color: colors.$warning_color;
+			}
+		}
+	}
 
-  .content {
-    padding: 0 2rem;
+	.content {
+		padding: 0 2rem;
 
-    @media (max-width: 768px) {
-      font-size: 12px;
-    }
-  }
+		@media (max-width: 768px) {
+			font-size: 12px;
+		}
+	}
 
-  .editContainer {
-    width: 90%;
-    margin: 0 auto;
-    .options {
-      margin-bottom: 1rem;
-      & > button {
-        border: 1px solid #1b1f2426;
-        position: relative;
-        display: inline-block;
-        padding: 5px 16px;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        user-select: none;
-        border-radius: 6px;
-        margin-right: 5px;
-        transition: ease-in-out 0.2s;
-      }
+	.editContainer {
+		width: 90%;
+		margin: 0 auto;
+		.options {
+			margin-bottom: 1rem;
+			& > button {
+				border: 1px solid #1b1f2426;
+				position: relative;
+				display: inline-block;
+				padding: 5px 16px;
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 20px;
+				white-space: nowrap;
+				vertical-align: middle;
+				cursor: pointer;
+				user-select: none;
+				border-radius: 6px;
+				margin-right: 5px;
+				transition: ease-in-out 0.2s;
+			}
 
-      .notAllow {
-        background-color: #7babe1;
-        color: colors.$gray_text1;
-        -webkit-backdrop-filter: grayscale(0.8);
-        backdrop-filter: grayscale(0.8);
-        cursor: no-drop;
-      }
-      .submit {
-        background-color: colors.$primary_color;
-        color: colors.$gray_text1;
-      }
-      .cancel {
-        color: colors.$warning_color;
+			.notAllow {
+				background-color: #7babe1;
+				color: colors.$gray_text1;
+				-webkit-backdrop-filter: grayscale(0.8);
+				backdrop-filter: grayscale(0.8);
+				cursor: no-drop;
+			}
+			.submit {
+				background-color: colors.$primary_color;
+				color: colors.$gray_text1;
+			}
+			.cancel {
+				color: colors.$warning_color;
 
-        &:hover {
-          background-color: colors.$warning_color;
-          color: colors.$gray_text1;
-        }
-      }
-    }
-    .editInput {
-      outline: none;
-      background-color: #f5f8fa;
-      border: 1px solid #d0d7de;
-      width: 100%;
-      border-radius: 5px;
-      padding: 5px 12px;
-      font-size: 14px;
-      &::placeholder {
-        color: #6e7781;
-      }
-    }
-  }
+				&:hover {
+					background-color: colors.$warning_color;
+					color: colors.$gray_text1;
+				}
+			}
+		}
+		.editInput {
+			outline: none;
+			background-color: #f5f8fa;
+			border: 1px solid #d0d7de;
+			width: 100%;
+			border-radius: 5px;
+			padding: 5px 12px;
+			font-size: 14px;
+			&::placeholder {
+				color: #6e7781;
+			}
+		}
+	}
 
-  .emotion {
-    @media (max-width: 768px) {
-      font-size: 12px;
-    }
-    padding: 1rem;
-    border-radius: 0 0 20px 20px;
-    background-color: colors.$gray_text1;
-    user-select: none;
-    & > svg {
-      cursor: pointer;
-    }
-    .ment {
-      margin-left: 1rem;
-      font-weight: bold;
-    }
-  }
+	.emotion {
+		@media (max-width: 768px) {
+			font-size: 12px;
+		}
+		display: flex;
+		justify-content: space-between;
+		padding: 1rem;
+		border-radius: 0 0 20px 20px;
+		user-select: none;
+		.more {
+			font-family: bold;
+			font-size: 14px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: colors.$primary_color;
+			cursor: pointer;
+		}
+		& > svg {
+			cursor: pointer;
+		}
+		.ment {
+			margin-left: 1rem;
+			font-weight: bold;
+		}
+	}
 }

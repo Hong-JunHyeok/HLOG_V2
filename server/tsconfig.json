@@ -10,6 +10,6 @@
     "sourceMap": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

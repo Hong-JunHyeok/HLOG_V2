@@ -13,18 +13,25 @@ interface IChatInput {
 
 const ChatInput: React.FunctionComponent<IChatInput> = ({ socket }) => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
-	const { addChatLoading, addChatError, addChatSuccess } = useTypedSelector(
+	const { addChatLoading, addChatError } = useTypedSelector(
 		(state) => state.chat,
 	);
 	const [chatMessage, onChangeChatMessage, setChatMessage] = useInput("");
 	const dispatch = useDispatch();
 
 	const handleCreateChat = useCallback(() => {
+		if (addChatLoading || !chatMessage.trim()) {
+			return;
+		}
+
 		dispatch({
 			type: chatActions.ADD_CHAT,
 		});
 
-		socket.emit("message", chatMessage.trim());
+		socket.emit("question", {
+			userInfo: myInfo,
+			message: chatMessage.trim(),
+		});
 
 		dispatch({
 			type: chatActions.ADD_CHAT_SUCCESS,
@@ -50,20 +57,25 @@ const ChatInput: React.FunctionComponent<IChatInput> = ({ socket }) => {
 		[chatMessage, handleCreateChat],
 	);
 
+	if (addChatError) {
+		return <>에러 발생</>;
+	}
+
 	return (
 		<React.Fragment>
 			<div className={styles.wrapper}>
 				<textarea
 					className={styles.input}
-					placeholder="이 포스트에 대해 궁금한 점을 질문해보세요."
+					placeholder="문의사항을 적어주세요."
 					value={chatMessage}
 					onChange={onChangeChatMessage}
-					onKeyDown={handleKeyDownChat}
+					onKeyPress={handleKeyDownChat}
 				/>
 				<button
 					className={styles.submit}
 					type="submit"
 					onClick={handleCreateChat}
+					disabled={addChatLoading || !chatMessage.trim()}
 				>
 					<FiSend />
 				</button>

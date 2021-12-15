@@ -1,0 +1,13 @@
+.container {
+	padding: 0 0.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgb(236, 236, 236);
+	height: 100vh;
+	@media (max-width: 1200px) {
+		.mainComment {
+			display: none;
+		}
+	}
+}

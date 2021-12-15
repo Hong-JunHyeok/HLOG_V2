@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { authActions } from "../../../store/reducers/Auth";
 import { useCookies } from "react-cookie";
+import { HiUserCircle } from "react-icons/hi";
 
 type LoginFormProps = {};
 
@@ -77,6 +78,10 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 
 	return (
 		<form className={styles.container} onSubmit={handleSubmit}>
+			<header className={styles.userIcon}>
+				<h1 onClick={() => router.replace("/")}>HLOG</h1>
+				<HiUserCircle size={50} />
+			</header>
 			<input
 				type="email"
 				className={styles.input}

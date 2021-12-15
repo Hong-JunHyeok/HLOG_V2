@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import styles from "./chat.module.scss";
 import Image from "next/image";
 import BalloonPng from "../../assets/png/balloon.png";
+import { IoMdHelpCircle } from "react-icons/io";
 import ChatList from "./ChatList";
 import { useTypedSelector } from "../../utils/useTypedSelector";
 import { useDispatch } from "react-redux";
@@ -26,13 +27,14 @@ const Chat: React.FunctionComponent<IChatProps> = () => {
 					<ChatList />
 				) : (
 					<div className={styles.iconWrapper} onClick={chatOpen}>
-						<Image
+						<IoMdHelpCircle color="white" size={30} />
+						{/* <Image
 							src={BalloonPng}
 							draggable={false}
 							className={styles.chatIcon}
 							width={50}
 							height={50}
-						/>
+						/> */}
 					</div>
 				)}
 			</div>

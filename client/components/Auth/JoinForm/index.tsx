@@ -5,6 +5,7 @@ import useInput from "../../../hooks/useInput";
 import { joinValidation } from "../../../utils/validator/join";
 import styles from "./joinForm.module.scss";
 import Link from "next/link";
+import { HiUserCircle } from "react-icons/hi";
 
 type JoinFormProps = {};
 
@@ -74,6 +75,10 @@ const JoinForm: React.FunctionComponent<JoinFormProps> = () => {
 
 	return (
 		<form className={styles.container} onSubmit={handleJoin}>
+			<header className={styles.userIcon}>
+				<h1 onClick={() => router.replace("/")}>HLOG</h1>
+				<HiUserCircle size={50} />
+			</header>
 			<section>
 				<h1>이메일</h1>
 				<input

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 require("dotenv").config();
 
-import { createConnection } from "typeorm";
+import { createConnection, getRepository } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import logger from "morgan";
@@ -9,6 +9,7 @@ import { userRouter, authRouter, postRouter, commentRouter } from "./routes/v1";
 import errorHandler from "./middlewares/errorHandler";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { Question } from "./entity/Question";
 
 const app = express();
 const httpServer = createServer(app);
@@ -52,8 +53,16 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 
 io.on("connection", (socket) => {
-  socket.on("message", (message) => {
-    io.emit("message", message);
+  socket.on("question", async ({ userInfo, message }) => {
+    try {
+      const questionRepository = getRepository(Question);
+      await questionRepository.save({
+        user: userInfo,
+        content: message,
+      });
+    } catch (error) {
+      console.error("error");
+    }
   });
 });
 

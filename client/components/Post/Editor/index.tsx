@@ -291,7 +291,7 @@ const Editor = () => {
 										className={styles.thumnailInput}
 										onChange={onChangeThumnail}
 										ref={thumnailInputRef}
-										accept="image/png, image/jpeg"
+										accept="image/png, image/jpeg, image/gif"
 										multiple={false}
 									/>
 									<button

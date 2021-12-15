@@ -27,13 +27,17 @@ const ChatList: React.FunctionComponent = () => {
 		socket.on("message", (message) => {
 			console.log(message);
 		});
+
+		socket.on("wait", (message) => {
+			console.log(message);
+		});
 	}, [socket]);
 
 	return (
 		<React.Fragment>
 			<div className={styles.wrapper}>
 				<header className={styles.meta}>
-					{/* <div className={styles.username}>{username}</div> */}
+					<div className={styles.username}>HLOG에 문의해주세요.</div>
 					<div className={styles.close} onClick={chatClose}>
 						<AiOutlineClose />
 					</div>
