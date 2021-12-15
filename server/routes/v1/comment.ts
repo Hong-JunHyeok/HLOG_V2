@@ -6,6 +6,7 @@ import { User } from "../../entity/User";
 import { Like } from "../../entity/Like";
 import tokenValidator from "../../middlewares/tokenValidator";
 import setJsonResponser from "../../utils/setJsonResponser";
+import { Reply } from "../../entity/Reply";
 
 const router = express.Router();
 
@@ -206,7 +207,7 @@ router.get(
 
       if (!exPost) {
         return setJsonResponser(res, {
-          code: 403,
+          code: 404,
           message: "포스트가 없습니다.",
         });
       }
@@ -393,6 +394,59 @@ router.delete(
     } catch (error) {
       console.error(error);
 
+      next(error);
+    }
+  }
+);
+
+router.get(
+  "/:commentId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+
+    try {
+      const commentRepository = getRepository(Comment);
+      const replyRepository = getRepository(Reply);
+
+      const exComment = await commentRepository.findOne({
+        where: {
+          id: commentId,
+        },
+      });
+
+      if (!exComment) {
+        return setJsonResponser(res, {
+          code: 404,
+          message: "댓글이 없습니다.",
+        });
+      }
+
+      const replies = await replyRepository
+        .createQueryBuilder("replies")
+        .select([
+          "replies.id",
+          "replies.createdAt",
+          "replies.updatedAt",
+          "replies.commentContent",
+          "replies.commentId",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("replies.user", "user")
+        .leftJoinAndSelect("replies.like", "like")
+        .where("replies.commentId = :id", { id: commentId })
+        .orderBy("comments.createdAt", "DESC")
+        .orderBy("comments.updatedAt", "DESC")
+        .getMany();
+
+      setJsonResponser(res, {
+        code: 200,
+        message: `${commentId}번 게시글 댓글 조회성공`,
+        payload: replies,
+      });
+    } catch (error) {
+      console.error(error);
       next(error);
     }
   }

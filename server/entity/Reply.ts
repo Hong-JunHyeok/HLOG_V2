@@ -3,28 +3,21 @@ import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 import { User } from "./User";
 import { Like } from "./Like";
-import { Reply } from "./Reply";
+import { Comment } from "./Comment";
 
 @Entity({
-  name: "comments",
+  name: "replies",
   database: process.env.DB_NAME,
 })
-export class Comment extends Common {
-  @Column({ nullable: false, comment: "게시글의 제목" })
+export class Reply extends Common {
+  @Column({ nullable: false, comment: "댓글의 답글" })
   commentContent: string;
 
   @ManyToOne(() => User, (user) => user.id)
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.id)
-  post: Post;
-
-  @OneToMany(() => Reply, (reply) => reply.comment, {
-    nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  reply: Reply[];
+  @ManyToOne(() => Comment, (comment) => comment.id)
+  comment: Comment;
 
   @OneToMany(() => Like, (like) => like.comment, {
     nullable: true,
