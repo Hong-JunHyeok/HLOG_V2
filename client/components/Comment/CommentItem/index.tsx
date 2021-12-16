@@ -17,6 +17,8 @@ import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
 import CommentList from "../CommentList";
+import { getReplyRequest } from "../../../apis/reply";
+import { postActions } from "../../../store/reducers/Post";
 
 interface ICommentProps {
 	comment: CommentType;
@@ -74,6 +76,30 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 			console.error(error);
 		}
 	}, [editText, editCommentRequest, closeEditMode, comment]);
+
+	const getReplies = useCallback(async () => {
+		try {
+			// dispatch({
+			// 	type: postActions.GET_REPLY,
+			// });
+			const repliesResponse = await getReplyRequest(comment.id);
+			// dispatch({
+			// 	type: postActions.GET_REPLY_SUCCESS,
+			// 	payload: repliesResponse.payload,
+			// });
+		} catch (error) {
+			// dispatch({
+			// 	type: postActions.GET_REPLY_ERROR,
+			// 	payload: error,
+			// });
+			console.error(error);
+		}
+	}, [comment.id]);
+
+	const handleClickMore = useCallback(async () => {
+		await getReplies();
+		setReplyOpen(true);
+	}, [setReplyOpen]);
 
 	useEffect(() => {
 		if (editText.length === 0) setIsEmptyContent(true);
@@ -163,7 +189,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 							닫기
 						</div>
 					) : (
-						<div className={styles.more} onClick={() => setReplyOpen(true)}>
+						<div className={styles.more} onClick={handleClickMore}>
 							<AiOutlinePlusSquare />
 							댓글 더보기
 						</div>

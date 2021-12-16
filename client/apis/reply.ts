@@ -14,3 +14,13 @@ export const createReplyRequest = async (
 		return error.response;
 	}
 };
+
+export const getReplyRequest = async (commentId: number) => {
+	try {
+		const response = await customAxios.get(`/reply/${commentId}`);
+
+		return response.data;
+	} catch (error) {
+		return error.response;
+	}
+};
