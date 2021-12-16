@@ -19,9 +19,9 @@ const CommentList: React.FunctionComponent<CommentListProps> = ({
 }) => {
 	return (
 		<React.Fragment>
-			<If condition={comments.length > 0}>
-				<Then>
-					<div className={styles.container}>
+			<div className={styles.container}>
+				<If condition={comments.length > 0}>
+					<Then>
 						{mode === "COMMENT" ? (
 							comments.map((comment: CommentType, _: number) => (
 								<CommentItem
@@ -32,7 +32,6 @@ const CommentList: React.FunctionComponent<CommentListProps> = ({
 							))
 						) : (
 							<div className={styles.recomment}>
-								<CommentInput mode="REPLY" commentId={commentId} />
 								{comments.map((comment: CommentType, _: number) => (
 									<CommentItem
 										comment={comment}
@@ -40,22 +39,30 @@ const CommentList: React.FunctionComponent<CommentListProps> = ({
 										mode="REPLY"
 									/>
 								))}
+								<CommentInput mode="REPLY" commentId={commentId} />
 							</div>
 						)}
-					</div>
-				</Then>
-				<Else>
-					{mode === "COMMENT" ? (
-						<div className={styles.noData}>
-							<p>이 게시글에 댓글이 없습니다.</p>
-						</div>
-					) : (
-						<div className={styles.noData}>
-							<p>답글이 없습니다.</p>
-						</div>
-					)}
-				</Else>
-			</If>
+					</Then>
+					<Else>
+						{mode === "COMMENT" ? (
+							<div className={styles.noData}>
+								<p>이 게시글에 댓글이 없습니다.</p>
+							</div>
+						) : (
+							<div className={styles.recomment}>
+								{comments.map((comment: CommentType, _: number) => (
+									<CommentItem
+										comment={comment}
+										key={comment.id}
+										mode="REPLY"
+									/>
+								))}
+								<CommentInput mode="REPLY" commentId={commentId} />
+							</div>
+						)}
+					</Else>
+				</If>
+			</div>
 		</React.Fragment>
 	);
 };

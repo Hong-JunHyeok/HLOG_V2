@@ -49,11 +49,12 @@
 				margin-left: 5px;
 			}
 			.edit {
-				border: 1px solid colors.$safe_color;
-				color: colors.$safe_color;
+				background-color: colors.$primary_color;
+				color: colors.$white_text;
+				border: none;
 			}
 			.delete {
-				border: 1px solid colors.$warning_color;
+				border: 1px solid colors.$gray_text1;
 				color: colors.$warning_color;
 			}
 		}
