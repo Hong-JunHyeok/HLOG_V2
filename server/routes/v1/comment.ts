@@ -452,4 +452,57 @@ router.get(
   }
 );
 
+router.post(
+  "/:commentId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.params;
+    const { commentContent } = req.body;
+
+    if (!commentContent.trim()) {
+      return setJsonResponser(res, {
+        code: 400,
+        message: "답글을 작성해주세요.",
+      });
+    }
+
+    try {
+      const userRepository = getRepository(User);
+      const commentRepository = getRepository(Comment);
+      const replyRepository = getRepository(Reply);
+
+      const user = await userRepository.findOne({
+        where: { id: req.body.decodedUserPayload.id },
+      });
+
+      const exComment = await commentRepository.findOne({
+        where: { id: commentId },
+      });
+
+      if (!exComment) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "댓글이 없습니다.",
+        });
+      }
+
+      const newReply = new Reply();
+
+      newReply.commentContent = commentContent;
+      newReply.comment = exComment;
+      newReply.user = user;
+
+      await replyRepository.save(newReply);
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 댓글을 작성하였습니다.",
+        payload: newReply,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;
