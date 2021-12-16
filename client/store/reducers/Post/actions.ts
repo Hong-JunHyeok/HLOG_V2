@@ -30,6 +30,10 @@ export const DELETE_COMMENT = "DELETE_COMMENT" as const;
 
 export const EDIT_COMMENT = "EDIT_COMMENT" as const;
 
+export const CREATE_REPLY = "CREATE_REPLY" as const;
+export const CREATE_REPLY_SUCCESS = "CREATE_REPLY_SUCCESS" as const;
+export const CREATE_REPLY_ERROR = "CREATE_REPLY_ERROR" as const;
+
 export const TOGGLE_EDIT_POST = "TOGGLE_EDIT_POST" as const;
 
 export const POST_LIKE = "POST_LIKE" as const;

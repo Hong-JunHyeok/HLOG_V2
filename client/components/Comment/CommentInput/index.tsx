@@ -4,6 +4,7 @@ import styles from "./commentInput.module.scss";
 import TextareaAutosize from "react-textarea-autosize";
 import useInput from "../../../hooks/useInput";
 import { createCommentRequest } from "../../../apis/comment";
+import { createReplyRequest } from "../../../apis/reply";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { postActions } from "../../../store/reducers/Post";
@@ -21,6 +22,7 @@ const CommentInput: React.FunctionComponent<ICommentProps> = ({
 	const dispatch = useDispatch();
 
 	const [commentState, onChangeCommentState, setCommentState] = useInput("");
+	const [replyState, onChangeReplyState, setReplyState] = useInput("");
 	const router = useRouter();
 
 	const handleReplySubmit = useCallback(
@@ -32,27 +34,27 @@ const CommentInput: React.FunctionComponent<ICommentProps> = ({
 			}
 
 			try {
-				console.log(commentId);
 				if (!commentId) {
 					throw new Error("Unhandled Comment Id");
 				}
-				// dispatch({
-				// 	type: postActions.CREATE_REPLY,
-				// 	payload: {}
-				// })
-				//TODO - await createReplyRequest(commentId)
-				// dispatch({
-				// 	type: postActions.CREATE_REPLY_SUCCESS,
-				// })
+				dispatch({
+					type: postActions.CREATE_REPLY,
+					payload: {},
+				});
+				const response = await createReplyRequest(commentId, replyState);
+				console.log(response);
+				dispatch({
+					type: postActions.CREATE_REPLY_SUCCESS,
+				});
 			} catch (error) {
-				// dispatch({
-				// 	type: postActions.CREATE_REPLY_ERROR,
-				// 	payload: error
-				// })
+				dispatch({
+					type: postActions.CREATE_REPLY_ERROR,
+					payload: error,
+				});
 				console.error(error);
 			}
 		},
-		[commentState, dispatch],
+		[replyState, dispatch],
 	);
 
 	const handleCommentSubmit = useCallback(
@@ -115,8 +117,8 @@ const CommentInput: React.FunctionComponent<ICommentProps> = ({
 					<TextareaAutosize
 						placeholder="이 댓글에 답글을 남겨주세요."
 						className={styles.commentInput}
-						value={commentState}
-						onChange={onChangeCommentState}
+						value={replyState}
+						onChange={onChangeReplyState}
 					/>
 					<button type="submit" className={styles.commentSubmit}>
 						답글 작성

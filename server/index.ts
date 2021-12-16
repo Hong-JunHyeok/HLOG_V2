@@ -5,7 +5,13 @@ import { createConnection, getRepository } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import logger from "morgan";
-import { userRouter, authRouter, postRouter, commentRouter } from "./routes/v1";
+import {
+  userRouter,
+  authRouter,
+  postRouter,
+  commentRouter,
+  replyRouter,
+} from "./routes/v1";
 import errorHandler from "./middlewares/errorHandler";
 import { Server } from "socket.io";
 import { createServer } from "http";
@@ -51,6 +57,7 @@ app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
+app.use("/reply", replyRouter);
 
 io.on("connection", (socket) => {
   socket.on("question", async ({ userInfo, message }) => {
