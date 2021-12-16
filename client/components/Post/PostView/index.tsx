@@ -30,13 +30,19 @@ const PostView: React.FunctionComponent = () => {
 
 	const handleDeletePost = useCallback(async () => {
 		try {
-			await deletePostRequest(post.id);
-			dispatch({
-				type: postActions.DELETE_POST,
-				payload: post.id,
-			});
+			if (
+				confirm(
+					"정말로 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다.",
+				)
+			) {
+				await deletePostRequest(post.id);
+				dispatch({
+					type: postActions.DELETE_POST,
+					payload: post.id,
+				});
 
-			router.replace("/");
+				router.replace("/");
+			}
 		} catch (error) {
 			console.error(error);
 			alert(error.response.message);

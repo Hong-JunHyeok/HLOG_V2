@@ -16,16 +16,20 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import CommentList from "../CommentList";
 import { getReplyRequest } from "../../../apis/reply";
 import { postActions } from "../../../store/reducers/Post";
+import CommentList from "../CommentList";
+import CommentInput from "../CommentInput";
 
 interface ICommentProps {
 	comment: CommentType;
+	mode?: "COMMENT" | "REPLY";
 }
 
-const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
-	const { comment } = props;
+const CommentItem: React.FunctionComponent<ICommentProps> = ({
+	comment,
+	mode = "COMMENT",
+}) => {
 	const { myInfo, isLoggedIn } = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
@@ -39,7 +43,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
 	const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
-	const handleDelete = useCallback(async () => {
+	const handleDeleteComment = useCallback(async () => {
 		if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
 			await deleteCommentRequest(comment.id);
 
@@ -47,6 +51,12 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 				type: "DELETE_COMMENT",
 				payload: comment.id,
 			});
+		}
+	}, [dispatch]);
+
+	const handleDeleteReply = useCallback(async () => {
+		if (confirm("정말로 삭제하시겠습니까? 삭제한 답글은 복구할 수 없습니다.")) {
+			//TODO: Delete Reply
 		}
 	}, []);
 
@@ -79,19 +89,19 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
 	const getReplies = useCallback(async () => {
 		try {
-			// dispatch({
-			// 	type: postActions.GET_REPLY,
-			// });
+			dispatch({
+				type: postActions.GET_REPLY,
+			});
 			const repliesResponse = await getReplyRequest(comment.id);
-			// dispatch({
-			// 	type: postActions.GET_REPLY_SUCCESS,
-			// 	payload: repliesResponse.payload,
-			// });
+			dispatch({
+				type: postActions.GET_REPLY_SUCCESS,
+				payload: { commentId: comment.id, replies: repliesResponse.payload },
+			});
 		} catch (error) {
-			// dispatch({
-			// 	type: postActions.GET_REPLY_ERROR,
-			// 	payload: error,
-			// });
+			dispatch({
+				type: postActions.GET_REPLY_ERROR,
+				payload: error,
+			});
 			console.error(error);
 		}
 	}, [comment.id]);
@@ -145,12 +155,28 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 
 					{isMyComment && isEditMode && isLoggedIn && !isEdit && (
 						<div className={styles.editMode}>
-							<button onClick={openEditMode} className={styles.edit}>
-								수정
-							</button>
-							<button onClick={handleDelete} className={styles.delete}>
-								삭제
-							</button>
+							{mode === "COMMENT" ? (
+								<>
+									<button onClick={openEditMode} className={styles.edit}>
+										수정
+									</button>
+									<button
+										onClick={handleDeleteComment}
+										className={styles.delete}
+									>
+										삭제
+									</button>
+								</>
+							) : (
+								<>
+									<button onClick={openEditMode} className={styles.edit}>
+										수정
+									</button>
+									<button onClick={handleDeleteReply} className={styles.delete}>
+										삭제
+									</button>
+								</>
+							)}
 						</div>
 					)}
 				</header>
@@ -182,23 +208,33 @@ const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
 						<p className={styles.content}>{comment.commentContent}</p>
 					</Else>
 				</If>
-				<footer className={styles.emotion}>
-					{replyOpen ? (
-						<div className={styles.more} onClick={() => setReplyOpen(false)}>
-							<AiOutlineMinusSquare />
-							닫기
-						</div>
-					) : (
-						<div className={styles.more} onClick={handleClickMore}>
-							<AiOutlinePlusSquare />
-							댓글 더보기
-						</div>
-					)}
 
-					<Like comment={comment} />
-				</footer>
+				{mode === "COMMENT" && (
+					<footer className={styles.emotion}>
+						{replyOpen ? (
+							<div className={styles.more} onClick={() => setReplyOpen(false)}>
+								<AiOutlineMinusSquare />
+								닫기
+							</div>
+						) : (
+							<div className={styles.more} onClick={handleClickMore}>
+								<AiOutlinePlusSquare />
+								댓글 더보기
+							</div>
+						)}
+
+						<Like comment={comment} />
+					</footer>
+				)}
+
 				{replyOpen && (
-					<CommentList comments={[]} mode="REPLY" commentId={comment.id} />
+					<>
+						<CommentList
+							comments={comment.replies}
+							mode="REPLY"
+							commentId={comment.id}
+						/>
+					</>
 				)}
 			</div>
 		</React.Fragment>

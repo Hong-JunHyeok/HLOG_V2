@@ -8,6 +8,9 @@ const postInitialState: PostStateType = {
 
 	postLoading: false,
 
+	replies: [],
+	replyLoading: false,
+
 	comments: [],
 
 	isEditMode: false,
@@ -58,6 +61,33 @@ function postReducer(
 				...state,
 			};
 		case postActions.CREATE_POST_ERROR:
+			return {
+				...state,
+			};
+
+		case postActions.GET_REPLY:
+			return {
+				...state,
+				replyLoading: true,
+			};
+		case postActions.GET_REPLY_SUCCESS:
+			console.log(action.payload.commentId, action.payload.replies);
+
+			const newComments = state.comments.map((comment) => {
+				if (comment.id === action.payload.commentId) {
+					return {
+						...comment,
+						replies: action.payload.replies,
+					};
+				}
+				return comment;
+			});
+
+			return {
+				...state,
+				comments: newComments,
+			};
+		case postActions.GET_REPLY_ERROR:
 			return {
 				...state,
 			};
