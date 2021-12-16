@@ -92,6 +92,8 @@ router.patch(
         });
       }
 
+      console.log(commentContent);
+
       const reply = await replyRepository
         .createQueryBuilder("replies")
         .select(["replies.id", "user.id"])

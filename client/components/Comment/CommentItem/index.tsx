@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import { getReplyRequest } from "../../../apis/reply";
+import { getReplyRequest, patchReplyRequest } from "../../../apis/reply";
 import { postActions } from "../../../store/reducers/Post";
 import CommentList from "../CommentList";
 
@@ -70,17 +70,31 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 
 	const handleEditReply = useCallback(async () => {
 		try {
+			dispatch({
+				type: postActions.EDIT_REPLY,
+			});
+			const response = await patchReplyRequest(comment.id, editText);
+
+			dispatch({
+				type: postActions.EDIT_REPLY_SUCCESS,
+				payload: response.payload,
+			});
+			closeEditMode();
 		} catch (error) {
+			dispatch({
+				type: postActions.EDIT_REPLY_ERROR,
+				payload: error,
+			});
 			console.error(error);
 		}
-	}, []);
+	}, [editText, dispatch, closeEditMode]);
 
 	const handleEditComment = useCallback(async () => {
 		try {
 			const response = await editCommentRequest(comment.id, editText);
 
 			dispatch({
-				type: "EDIT_COMMENT",
+				type: postActions.EDIT_COMMENT,
 				payload: {
 					id: comment.id,
 					commentContent: response.payload.commentContent,
