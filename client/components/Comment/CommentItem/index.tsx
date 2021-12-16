@@ -19,7 +19,6 @@ import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
 import { getReplyRequest } from "../../../apis/reply";
 import { postActions } from "../../../store/reducers/Post";
 import CommentList from "../CommentList";
-import CommentInput from "../CommentInput";
 
 interface ICommentProps {
 	comment: CommentType;
@@ -67,6 +66,13 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 	const closeEditMode = useCallback(async () => {
 		setEditText(comment.commentContent);
 		setIsEdit(false);
+	}, []);
+
+	const handleEditReply = useCallback(async () => {
+		try {
+		} catch (error) {
+			console.error(error);
+		}
 	}, []);
 
 	const handleEditComment = useCallback(async () => {
@@ -193,7 +199,9 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 							<div className={styles.options}>
 								<button
 									className={isEmptyContent ? styles.notAllow : styles.submit}
-									onClick={handleEditComment}
+									onClick={
+										mode === "COMMENT" ? handleEditComment : handleEditReply
+									}
 									disabled={isEmptyContent}
 								>
 									수정하기

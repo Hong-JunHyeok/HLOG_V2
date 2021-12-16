@@ -61,6 +61,72 @@ router.get(
   }
 );
 
+router.patch(
+  "/:replyId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { replyId } = req.params;
+    const { commentContent } = req.body;
+
+    if (!commentContent.trim()) {
+      return setJsonResponser(res, {
+        code: 403,
+        message: "수정된 내용이 없습니다.",
+      });
+    }
+
+    try {
+      const userRepository = getRepository(User);
+      const replyRepository = getRepository(Reply);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      const reply = await replyRepository
+        .createQueryBuilder("replies")
+        .select(["replies.id", "user.id"])
+        .leftJoin("replies.user", "user")
+        .where("user.id = :id", { id: me.id })
+        .getOne();
+
+      if (me.id !== reply.user.id) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "자기가 쓴 답글만 수정할 수 있습니다.",
+        });
+      }
+
+      await replyRepository
+        .createQueryBuilder()
+        .update()
+        .set({ commentContent })
+        .where("id = :id", { id: replyId })
+        .execute();
+
+      setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 답글을 수정했습니다.",
+        payload: {
+          commentContent,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.post(
   "/:commentId",
   tokenValidator,
@@ -109,6 +175,69 @@ router.post(
         payload: newReply,
       });
     } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  "/:replyId",
+  tokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { replyId } = req.params;
+
+    try {
+      const replyRepository = getRepository(Reply);
+      const userRepository = getRepository(User);
+
+      const me = await userRepository.findOne({
+        where: {
+          email: req.body.decodedUserPayload.email,
+        },
+      });
+
+      if (!me) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "유저 정보가 없습니다.",
+        });
+      }
+
+      const comment = await replyRepository
+        .createQueryBuilder("replies")
+        .select([
+          "replies.id",
+          "replies.createdAt",
+          "replies.updatedAt",
+          "replies.commentContent",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("replies.user", "user")
+        .where("user.id = :id", { id: me.id })
+        .getOne();
+
+      if (me.id !== comment.user.id) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
+        });
+      }
+
+      await replyRepository
+        .createQueryBuilder()
+        .delete()
+        .from(Comment)
+        .where("id = :id", { id: replyId })
+        .execute();
+
+      setJsonResponser(res, {
+        code: 201,
+        message: "성공적으로 답글을 삭제했습니다.",
+      });
+    } catch (error) {
+      console.error(error);
       next(error);
     }
   }
