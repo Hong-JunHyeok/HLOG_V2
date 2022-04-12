@@ -19,20 +19,29 @@ export class Like {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id, { nullable: false })
+  @ManyToOne(() => User, (user) => user.id, { 
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE' 
+  })
   @JoinColumn({ name: "userId" })
   user: User;
 
   @RelationId((like: Like) => like.user)
   userId: number;
 
-  @ManyToOne(() => Post, (post) => post.id, { nullable: true })
+  @ManyToOne(() => Post, (post) => post.id, { 
+    nullable: true, 
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE' 
+  })
   @JoinColumn({ name: "post" })
   post: Post;
 
   @ManyToOne(() => Comment, (comment) => comment.id, {
     nullable: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   })
   @JoinColumn({ name: "comment" })
   comment: Comment;

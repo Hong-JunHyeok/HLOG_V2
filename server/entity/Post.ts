@@ -20,22 +20,20 @@ export class Post extends Common {
 
   @ManyToOne(() => User, (user) => user.posts, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   })
   user: User;
 
   @OneToMany(() => Comment, (comment) => comment.post, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true
   })
   comment: Comment;
 
   @OneToMany(() => Like, (like) => like.post, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true
   })
   like: Like;
 }

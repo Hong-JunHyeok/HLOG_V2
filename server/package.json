@@ -39,6 +39,6 @@
     "nodemon": "^2.0.15",
     "ts-node": "3.3.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "3.3.3333"
+    "typescript": "3"
   }
 }

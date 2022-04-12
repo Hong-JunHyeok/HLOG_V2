@@ -13,23 +13,27 @@ export class Comment extends Common {
   @Column({ nullable: false, comment: "게시글의 제목" })
   commentContent: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.id)
+  @ManyToOne(() => Post, (post) => post.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   post: Post;
 
   @OneToMany(() => Reply, (reply) => reply.comment, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   reply: Reply[];
 
   @OneToMany(() => Like, (like) => like.comment, {
     nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   like: Like[];
 }
