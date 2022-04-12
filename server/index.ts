@@ -1,6 +1,8 @@
 import "reflect-metadata";
 require("dotenv").config();
 
+import path from 'path';
+import fs from 'fs';
 import { createConnection } from "typeorm";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
@@ -14,6 +16,7 @@ import {
 } from "./routes/v1";
 import errorHandler from "./middlewares/errorHandler";
 import { createServer } from "http";
+
 
 const app = express();
 const httpServer = createServer(app);
@@ -32,6 +35,10 @@ app.use(
     origin: true,
   })
 );
+
+if(!fs.existsSync('./profiles')) {
+  fs.mkdirSync('./profiles');
+}
 
 //* DB connection
 setImmediate(async () => {

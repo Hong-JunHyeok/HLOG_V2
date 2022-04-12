@@ -6,8 +6,7 @@ import customAxios from "../utils/customAxios";
 import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
-	const [cookie] = useCookies();
-	// const { isLoggedIn } = useTypedSelector((state) => state.auth);
+	const [ cookie ] = useCookies();
 
 	useEffect(() => {
 		if (cookie.hlog_access_token) {
@@ -19,7 +18,6 @@ function MyApp({ Component, pageProps }) {
 		<React.Fragment>
 			<CookiesProvider>
 				<Component {...pageProps} />
-				{/* {isLoggedIn && <Chat />} */}
 			</CookiesProvider>
 		</React.Fragment>
 	);

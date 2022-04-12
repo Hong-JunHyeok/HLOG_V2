@@ -106,6 +106,8 @@ const MyProfileForm: React.FunctionComponent = () => {
 		return null;
 	}
 
+	console.log(imageFormat(myInfo?.profileUrl))
+
 	return (
 		<React.Fragment>
 			<div className={styles.container}>
