@@ -4,7 +4,7 @@ import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
 
 import Header from "@/components/Common/Header";
-// import Footer from "@/components/Common/Footer";
+import Footer from "@/components/Common/Footer";
 
 // const PostList = lazy(() => import("../components/Post/PostList"));
 
@@ -19,8 +19,9 @@ function Recent() {
 					<PostList />
 				</Suspense>
 			</ErrorBoundary>
+			*/}
 
-			<Footer /> */}
+			<Footer /> 
 		</React.Fragment>
 	);
 }

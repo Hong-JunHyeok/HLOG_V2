@@ -1,17 +1,14 @@
-// import React from "react";
+import React from "react";
+import S from './StyledFooter';
 
-// interface FooterProps {}
+interface FooterProps {}
 
-// const Footer: React.FunctionComponent<FooterProps> = () => {
-//   return (
-//     <React.Fragment>
-//       <footer>
-//         <p>
-//           All Copyright reserved <span className={styles.logo}>HLOG</span>
-//         </p>
-//       </footer>
-//     </React.Fragment>
-//   );
-// };
+const Footer: React.FunctionComponent<FooterProps> = () => {
+  return (
+    <S.FooterContainer>
+      <S.FooterLogo>HLOG</S.FooterLogo>
+    </S.FooterContainer>
+  );
+};
 
-// export default Footer;
+export default Footer;
