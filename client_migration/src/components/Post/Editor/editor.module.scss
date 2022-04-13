@@ -1,0 +1,229 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+	padding: 1rem;
+
+	.header {
+		border-radius: 5px 5px 0 0;
+		border: 1px solid #d0d7de;
+		width: 100%;
+		background-color: #f6f8fa;
+		.menus {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			overflow: hidden;
+
+			.active {
+				background-color: #ffffff;
+				border-radius: 5px 5px 0 0;
+				font-weight: 600;
+				border-left: 1px solid #d0d7de;
+				border-right: 1px solid #d0d7de;
+				&:first-child {
+					border-left: none;
+				}
+			}
+
+			& > li {
+				display: flex;
+				align-items: center;
+				padding: 12px 24px;
+				font-size: 14px;
+				cursor: pointer;
+				.icon {
+					margin-right: 0.6rem;
+				}
+			}
+		}
+	}
+
+	.tools {
+		display: flex;
+		ul {
+			user-select: none;
+			display: flex;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			list-style: none;
+			margin-bottom: 1rem;
+			& > li > button {
+				width: 3rem;
+				height: 3rem;
+				display: flex;
+				-webkit-box-align: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				justify-content: center;
+				font-size: 1.75rem;
+				color: rgb(134, 142, 150);
+				cursor: pointer;
+				flex-shrink: 0;
+				background: none;
+				outline: none;
+				border: none;
+				padding: 0px;
+				font-size: 1rem;
+
+				&:hover {
+					background-color: rgb(248, 249, 250);
+				}
+			}
+		}
+		.headings {
+			padding-right: 1rem;
+			border-right: 1px solid rgb(206, 212, 218);
+		}
+		.fonts {
+			padding: 0 1rem;
+			border-right: 1px solid rgb(206, 212, 218);
+		}
+		.utils {
+			padding: 0 1rem;
+		}
+	}
+
+	.editor {
+		width: 100%;
+		height: 80vh;
+		border-radius: 5px;
+		border: 1px solid #d0d7de;
+		display: flex;
+
+		.codeMirror {
+			background-attachment: local;
+			background-repeat: no-repeat;
+			padding: 1rem;
+			border-color: #ccc;
+			background-color: white;
+			outline: none;
+			flex: 1;
+			height: 100%;
+			resize: none;
+			border: none;
+			font-size: 1rem;
+			color: colors.$normal_text;
+		}
+
+		.preview {
+			flex: 1;
+			padding: 1rem;
+			height: 100%;
+			overflow-y: auto;
+			background-color: colors.$gray_text1;
+			color: colors.$normal_text;
+			img {
+				width: 100%;
+			}
+		}
+	}
+
+	.metaContainer {
+		padding: 1rem 0.6rem;
+		.profileImage {
+			margin-right: 2rem;
+			border-radius: 50%;
+		}
+		.meta {
+			padding: 1.3rem;
+			width: 90%;
+			border-radius: 6px;
+			border: 1px solid #d0d7de;
+		}
+
+		.titleContainer {
+			& > h1 {
+				font-size: 24px;
+				margin: 0;
+				margin-bottom: 10px;
+				font-weight: bold;
+			}
+			.titleInput {
+				outline: none;
+				background-color: #f5f8fa;
+				border: 1px solid #d0d7de;
+				width: 100%;
+				border-radius: 5px;
+				padding: 5px 12px;
+				font-size: 14px;
+				&::placeholder {
+					color: #6e7781;
+				}
+			}
+		}
+
+		.thumnailContainer {
+			margin-top: 1rem;
+
+			& > h1 {
+				font-size: 24px;
+				margin: 0;
+				margin-bottom: 10px;
+				font-weight: bold;
+			}
+
+			.thumnailInput {
+				display: none;
+			}
+
+			.prevThumnail {
+			}
+
+			.thumnailButton {
+				width: 300px;
+				height: 350px;
+				// width: 100%;
+				// height: 200px;
+				box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+				border: none;
+				cursor: pointer;
+				border-radius: 10px;
+				&:hover {
+					background-color: #ccc;
+				}
+			}
+		}
+	}
+	.options {
+		margin-top: 1rem;
+
+		& > button {
+			border: 1px solid #1b1f2426;
+			position: relative;
+			display: inline-block;
+			padding: 5px 16px;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 20px;
+			white-space: nowrap;
+			vertical-align: middle;
+			cursor: pointer;
+			user-select: none;
+			border-radius: 6px;
+			margin-right: 5px;
+			transition: ease-in-out 0.2s;
+		}
+
+		.notAllow {
+			background-color: #7babe1;
+			color: colors.$gray_text1;
+			-webkit-backdrop-filter: grayscale(0.8);
+			backdrop-filter: grayscale(0.8);
+			cursor: no-drop;
+		}
+		.submit {
+			background-color: colors.$primary_color;
+			color: colors.$gray_text1;
+		}
+		.cancel {
+			color: colors.$warning_color;
+
+			&:hover {
+				background-color: colors.$warning_color;
+				color: colors.$gray_text1;
+			}
+		}
+	}
+}

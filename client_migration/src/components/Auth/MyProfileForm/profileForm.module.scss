@@ -1,0 +1,171 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+	width: 100%;
+	background-color: colors.$gray_text1;
+	padding: 1rem;
+	min-height: 90vh;
+	.wrapper {
+		width: 500px;
+
+		margin: 0 auto;
+		background-color: #fff;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	.header {
+		display: flex;
+		align-items: center;
+		font-size: 24px;
+		flex-direction: column;
+
+		box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+			rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+		padding: 0.5rem 0;
+		font-weight: bold;
+	}
+
+	.footer {
+		display: flex;
+		flex-direction: column;
+		padding: 0 2rem;
+		user-select: none;
+		h3 {
+			color: colors.$gray_text3;
+		}
+		ul {
+			padding: 0;
+			list-style: none;
+
+			li {
+				border-radius: 10px;
+				padding: 1rem 0.3rem;
+				cursor: pointer;
+				&:hover {
+					background-color: colors.$gray_text1;
+				}
+			}
+			.mode {
+				color: black;
+			}
+			.changeAccount {
+				color: colors.$primary_color;
+			}
+			.logout {
+				color: colors.$warning_color;
+			}
+		}
+	}
+
+	.profileContainer {
+		display: flex;
+		padding: 0 2rem;
+		align-items: center;
+
+		.profile {
+			position: relative;
+			padding: 2rem 0;
+
+			.profileInput {
+				display: none;
+			}
+			.profileImage {
+				border-radius: 50%;
+			}
+			button {
+				cursor: pointer;
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				border: none;
+				border-radius: 50%;
+				right: 0.1rem;
+				bottom: 2rem;
+				background-color: white;
+				box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+			}
+		}
+
+		.userInfo {
+			margin-left: 1.5rem;
+			height: 100px;
+			.username {
+				font-size: 1.5rem;
+				font-weight: bold;
+			}
+		}
+	}
+
+	.editContainer {
+		& > p {
+			display: flex;
+			padding: 1rem;
+			font-style: italic;
+			background-color: colors.$gray_text2;
+			color: colors.$normal_text;
+			font-size: 0.8rem;
+			margin: 0;
+		}
+		.editInput {
+			outline: none;
+			background-color: #f5f8fa;
+			border: 1px solid #d0d7de;
+			width: 100%;
+			border-radius: 5px;
+			padding: 5px 12px;
+			font-size: 14px;
+			resize: none;
+			&::placeholder {
+				color: #6e7781;
+			}
+		}
+
+		.options {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			& > button {
+				width: 100%;
+				padding: 0.3rem;
+				border: none;
+				cursor: pointer;
+				transition: ease-in-out 0.2s;
+				&:hover {
+					background-color: colors.$primary_color;
+					color: colors.$white_text;
+				}
+			}
+		}
+	}
+
+	.intro {
+		display: flex;
+		flex-direction: column;
+		& > p {
+			display: flex;
+			padding: 1rem 5rem;
+			font-style: italic;
+			background-color: colors.$gray_text2;
+			color: colors.$normal_text;
+			font-size: 0.8rem;
+			margin: 0;
+		}
+		.options {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			& > button {
+				width: 100%;
+				padding: 0.3rem;
+				border: none;
+				cursor: pointer;
+				transition: ease-in-out 0.2s;
+				&:hover {
+					background-color: colors.$primary_color;
+					color: colors.$white_text;
+				}
+			}
+		}
+	}
+}

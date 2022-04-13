@@ -1,0 +1,44 @@
+.container {
+	padding: 0.3rem;
+	border-radius: 50%;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	display: flex;
+	align-items: center;
+	background: white;
+	-webkit-box-align: center;
+	align-items: center;
+	border-radius: 50%;
+	outline: none;
+	user-select: none;
+	position: relative;
+	cursor: pointer;
+	color: rgb(173, 181, 189);
+	transition: ease-in-out 0.2s;
+	&:hover {
+		.unlikeBtn,
+		.likeBtn {
+			font-size: 2.5rem;
+		}
+	}
+
+	&:active {
+		.unlikeBtn,
+		.likeBtn {
+			font-size: 1.9rem;
+		}
+	}
+
+	.unlikeBtn {
+		transition: ease-in-out 0.2s;
+		display: flex;
+		cursor: pointer;
+		font-size: 2rem;
+	}
+
+	.likeBtn {
+		transition: ease-in-out 0.2s;
+		display: flex;
+		cursor: pointer;
+		font-size: 2rem;
+	}
+}
