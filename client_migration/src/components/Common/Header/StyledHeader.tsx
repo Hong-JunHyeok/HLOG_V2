@@ -10,14 +10,15 @@ const CssVariable = {
 
 const StyledHeader = {
   HeaderContainer: styled.header`
+    display: flex;
     width: 100%;
     height: ${CssVariable['--header-height-max']};
-    display: flex;
     background-color: ${ColorSet['--white']};
     user-select: none;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     padding: 0 3rem;
+    transition: 0.4s;
 
     ${mediaQueryHelper('small')} {
       height: ${CssVariable['--header-height-min']};
@@ -54,8 +55,7 @@ const StyledHeader = {
     width: 100%;
     display: flex;
     list-style: none;
-    justify-content: flex-end;
-    margin-right: 2rem;
+    margin: 0 2rem 0 auto;
     display: flex;
     ul {
       display: flex;
@@ -85,48 +85,53 @@ const StyledHeader = {
     }
 
     .mobile_layout_menus {
+      position: relative;
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      button {
+        background-color: ${ColorSet['--white']};
+        border: none;
+      }
+
+      ul {
+        background-color: ${ColorSet['--white']};
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        position: absolute;
+        width: 150px;
+        top: 80px;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        z-index: 100;
+        padding: 10px 0;
+      }
+      a {
+        width: 100%;
+        padding: 1rem
+        margin: 0;
+      }
+
+      .menu_opened{
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    } 
+
+    & > ul {
       display: none;
     }
 
-    ${mediaQueryHelper('small')} {
-      & > ul {
+    ${mediaQueryHelper('medium')} {
+      .mobile_layout_menus {
         display: none;
       }
-
-      .mobile_layout_menus {
-        position: relative;
+      & > ul {
         display: flex;
-        button {
-          background-color: ${ColorSet['--white']};
-          border: none;
-        }
-
-        ul {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          position: absolute;
-          width: 150px;
-          top: 80px;
-          left: 20px;
-          right: 10px;
-          transform: translate(-50%, 0%);
-          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-          z-index: 2;
-          padding: 10px 0;
-        }
-        a {
-          width: 100%;
-          padding: 1rem
-          margin: 0;
-        }
-
-        .menu_opened{
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
-      } 
+      }
     }
   `,
 

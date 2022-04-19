@@ -7,7 +7,7 @@ import DefaultProfile from '../../../../public/assets/default_profile.svg';
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  const [menuOpen, toggleMenu, open, close] = useToggle(false);
+  const [menuOpen, toggleMenu] = useToggle(false);
 
   return (
     <React.Fragment>

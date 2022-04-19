@@ -1,3 +1,27 @@
+import React from 'react';
+import { PostType } from '@/types/Post'
+import S from './StyledPostItem';
+
+interface PropTypes {
+  postData: PostType;
+}
+
+const PostItem: React.FunctionComponent<PropTypes> = ({ postData }) => {
+  const { postThumnail, postTitle, postContent } = postData;
+
+  return (
+    <S.Container>
+      <S.Thumbnail thumbnailUrl={postThumnail} />
+      <S.Content>
+        <h1>{postTitle}</h1>
+        <p>{postContent}</p>
+      </S.Content>
+    </S.Container>
+  )
+}
+
+export default PostItem;
+
 // import React, { useCallback } from "react";
 // import { If, Then, Else } from "react-if";
 // import styles from "./postItem.module.scss";

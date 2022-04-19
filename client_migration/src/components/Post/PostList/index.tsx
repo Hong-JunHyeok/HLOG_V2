@@ -1,3 +1,28 @@
+import React from 'react';
+import PostItem from '@/components/Post/PostItem';
+import S from './StyledPostList';
+import { PostType } from '@/types/Post';
+
+interface PropTypes {
+  postList?: PostType[]
+}
+
+const PostList: React.FunctionComponent<PropTypes> = ({ postList = [] }) => {
+  const mappedPostList = postList.map((postItem) => 
+    <PostItem key={postItem.id} postData={postItem} />
+  )
+
+  return (
+    <S.Container>
+      <S.PostList>
+        {mappedPostList}
+      </S.PostList>
+    </S.Container>
+  )
+}
+
+export default PostList;
+
 // import React from "react";
 // import useSWR from "swr";
 // import fetcher from 'utils/fetcher';
