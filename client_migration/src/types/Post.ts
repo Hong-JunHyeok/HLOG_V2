@@ -6,12 +6,6 @@ export interface PostType {
   postThumnail: string;
   postContent: string;
   createdAt: Date;
-  updatedAt: Date;
   user: UserType;
-  likeNumber: number;
-  isLiked: boolean;
-  like: Array<{
-    id: number;
-    userId: number;
-  }>;
+  like: number;
 }

@@ -1,12 +1,34 @@
 import React from 'react';
+import StyledPostList from '@/components/Post/PostList/StyledPostList';
+import S from './StyledFallbackLoader';
 
-const FallbackLoader: React.FC = () => {
-  console.log("Load")
+const SkeletonPost = () => (
+  <S.SkeletonView>
+    <S.Thumbnail />
+    <S.Content>
+      <S.ContentLine />
+      <S.ContentLine />
+      <S.ContentLine />
+    </S.Content>
+    <S.Meta />
+  </S.SkeletonView>
+)
 
+const PostFallbackLoader: React.FC = () => {
   return (
-    <div className='container'>
-    </div>
+    <StyledPostList.Container>
+      <StyledPostList.PostList>
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+      </StyledPostList.PostList>
+    </StyledPostList.Container>
   );
 }
 
-export default FallbackLoader;
+export default PostFallbackLoader;

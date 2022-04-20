@@ -11,7 +11,10 @@ class RouteContainer extends React.Component {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Pages.RecentPage />}></Route>
+          <Route path="" element={<Pages.PopularPage />}></Route>
+          <Route path="recent" element={<Pages.RecentPage />}></Route>
+          <Route path="write" element={<Pages.EditPostPage />}></Route>
+          <Route path="*"  />
         </Routes>
       </BrowserRouter>
     )

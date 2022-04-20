@@ -5,5 +5,4 @@ export interface UserType {
   selfIntroduction: string;
   email: string;
   createdAt: Date;
-  updatedAt: Date;
 }

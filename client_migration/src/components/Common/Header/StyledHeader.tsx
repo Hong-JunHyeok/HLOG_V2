@@ -10,6 +10,7 @@ const CssVariable = {
 
 const StyledHeader = {
   HeaderContainer: styled.header`
+    position: fixed;
     display: flex;
     width: 100%;
     height: ${CssVariable['--header-height-max']};
@@ -80,6 +81,27 @@ const StyledHeader = {
             background-color: ${ColorSet['--greyOpacity100']}
           }
         }
+
+      }
+    }
+    .write {
+      margin: auto 0 auto auto; 
+      padding: .5rem 1rem;
+      font-size: 1rem;
+      border-radius: 1rem;
+      outline: none;
+      font-weight: bold;
+      word-break: keep-all;
+      border: 1px solid ${ColorSet['--greyOpacity700']};;
+      background-color: ${ColorSet['--white']};
+      color: ${ColorSet['--greyOpacity700']};
+      transition: all 0.125s ease-in 0s;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        background-color: ${ColorSet['--greyOpacity700']};;
+        color: ${ColorSet['--white']};
       }
     }
 

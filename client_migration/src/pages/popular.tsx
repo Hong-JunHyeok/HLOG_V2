@@ -1,16 +1,26 @@
-// import React from "react";
-// import Footer from "../components/Common/Footer";
-// import Header from "../components/Common/Header";
-// import PostList from "../components/Post/PostList";
+import React, { Suspense, lazy } from "react";
 
-// const PopularPage = () => {
-// 	return (
-// 		<React.Fragment>
-// 			<Header />
-// 			<PostList />
-// 			<Footer />
-// 		</React.Fragment>
-// 	);
-// };
+import { getPopularPostsMock } from "@/mocks/postData";
 
-// export default PopularPage;
+import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
+
+import Footer from "@/components/Common/Footer";
+import Header from "@/components/Common/Header";
+const PostList = lazy(() => import("@/components/Post/PostList"));
+
+const PopularPage = () => {
+	return (
+		<React.Fragment>
+			<Header />
+			<ErrorBoundary fallback={<>error...</>}>
+				<Suspense fallback={<FallbackLoader />}>
+					<PostList postList={getPopularPostsMock(100)}/>
+				</Suspense>
+			</ErrorBoundary>
+			<Footer />
+		</React.Fragment>
+	);
+};
+
+export default PopularPage;

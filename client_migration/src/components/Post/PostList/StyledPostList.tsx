@@ -13,6 +13,7 @@ const StyledPostList = {
     display: flex;
     flex-wrap: wrap;
     padding: 1rem;
+    margin-top: 5rem;
 
     ${mediaQueryHelper('medium')} {
       margin-left: -1rem;

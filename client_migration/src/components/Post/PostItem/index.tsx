@@ -11,7 +11,7 @@ interface PropTypes {
 
 const PostItem: React.FunctionComponent<PropTypes> = ({ postData }) => {
   const { 
-    postThumnail, postTitle, postContent, createdAt,
+    postThumnail, postTitle, postContent,
     user: { 
       username, 
       profileUrl

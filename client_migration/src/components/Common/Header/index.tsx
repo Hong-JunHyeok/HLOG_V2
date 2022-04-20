@@ -21,6 +21,8 @@ const Header: React.FC<HeaderProps> = () => {
             <button onClick={toggleMenu}>🍔</button>
             {menuOpen && <MenuList />}
           </div>
+
+          <Link className="write" to="/write">글 작성</Link>
         </S.HeaderMenus>
         <S.HeaderProfile>
           <DefaultProfile />
@@ -33,10 +35,10 @@ const Header: React.FC<HeaderProps> = () => {
 const MenuList: React.FC = () => (
   <ul>
     <li>
-      <Link to="">인기 게시글</Link>
+      <Link to="/">인기 게시글</Link>
     </li>
     <li>
-      <Link to="recent">최근 게시글</Link>
+      <Link to="/recent">최근 게시글</Link>
     </li>
   </ul>
 )
