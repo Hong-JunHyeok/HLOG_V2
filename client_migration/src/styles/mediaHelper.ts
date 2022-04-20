@@ -1,14 +1,12 @@
-type BreakType = 'huge' | 'large' | 'medium' | 'small';
+type BreakType = 'large' | 'medium';
 
 interface BreakPointType {
   [key: string] : number
 }
 
 export const breakPoints: BreakPointType = {
-  huge: 1440,
-  large: 1100,
-  medium: 650,
-  small: 450,
+  large: 1200,
+  medium: 600,
 }
 
 const mediaQueryHelper = (n: BreakType) => 

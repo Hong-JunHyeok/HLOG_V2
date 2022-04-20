@@ -15,18 +15,17 @@ const StyledHeader = {
     height: ${CssVariable['--header-height-max']};
     background-color: ${ColorSet['--white']};
     user-select: none;
-    cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     padding: 0 3rem;
     transition: 0.4s;
 
-    ${mediaQueryHelper('small')} {
+    ${mediaQueryHelper('medium')} {
       height: ${CssVariable['--header-height-min']};
       padding: 1rem;
       padding: 0 1rem;
     }
 
-    ${mediaQueryHelper('medium')} {
+    ${mediaQueryHelper('large')} {
       height: ${CssVariable['--header-height-mid']};
       padding: 1rem;
       padding: 0 2rem;
@@ -42,11 +41,11 @@ const StyledHeader = {
       color: colors.$primary_color;
     }
 
-    ${mediaQueryHelper('small')} {
+    ${mediaQueryHelper('medium')} {
       font-size: 1rem;
     }
 
-    ${mediaQueryHelper('medium')} {
+    ${mediaQueryHelper('large')} {
       font-size: 1.5rem;
     }
   `,
@@ -142,12 +141,12 @@ const StyledHeader = {
     svg {
       width: 50px;
       height: 50px;
-      ${mediaQueryHelper('small')} {
+      ${mediaQueryHelper('medium')} {
         width: 30px;
         height: 30px; 
       }
 
-      ${mediaQueryHelper('medium')} {
+      ${mediaQueryHelper('large')} {
         width: 40px;
         height: 40px;
       }

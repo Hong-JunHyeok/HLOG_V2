@@ -5,8 +5,8 @@ export interface PostType {
   postTitle: string;
   postThumnail: string;
   postContent: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   user: UserType;
   likeNumber: number;
   isLiked: boolean;
