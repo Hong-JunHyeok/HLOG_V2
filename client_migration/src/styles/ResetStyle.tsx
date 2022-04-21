@@ -17,6 +17,11 @@ const ResetStyle = () => {
     line-height: 1.2;
     word-wrap: break-word;
     }
+    
+    textarea {
+        font-family: 'Apple SD Gothic Neo', Roboto, 'Noto Sans KR', NanumGothic, 'Malgun Gothic', sans-serif;
+    }
+
     body {
         background: #eee;
         -webkit-font-smoothing: antialiased;

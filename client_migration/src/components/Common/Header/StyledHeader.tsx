@@ -13,28 +13,28 @@ const StyledHeader = {
     position: fixed;
     display: flex;
     width: 100%;
-    height: ${CssVariable['--header-height-max']};
+    height: ${CssVariable['--header-height-min']};
     background-color: ${ColorSet['--white']};
     user-select: none;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    padding: 0 3rem;
+    padding: 0 1rem;
     transition: 0.4s;
 
     ${mediaQueryHelper('medium')} {
-      height: ${CssVariable['--header-height-min']};
+      height: ${CssVariable['--header-height-mid']};
       padding: 1rem;
       padding: 0 1rem;
     }
 
     ${mediaQueryHelper('large')} {
-      height: ${CssVariable['--header-height-mid']};
+      height: ${CssVariable['--header-height-max']};
       padding: 1rem;
       padding: 0 2rem;
     }
   `,
 
   HeaderTitle: styled.h1`
-    display: flex;
+    display: none;
     align-items: center;
     font-size: 2rem;
     font-weight: lighter;
@@ -43,6 +43,7 @@ const StyledHeader = {
     }
 
     ${mediaQueryHelper('medium')} {
+      display: flex;
       font-size: 1rem;
     }
 
@@ -161,16 +162,16 @@ const StyledHeader = {
     align-items: center;
     padding-right: 1rem;
     svg {
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
       ${mediaQueryHelper('medium')} {
-        width: 30px;
-        height: 30px; 
+        width: 40px;
+        height: 40px; 
       }
 
       ${mediaQueryHelper('large')} {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
       }
     }
   `

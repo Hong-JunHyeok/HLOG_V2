@@ -79,14 +79,25 @@ const StyledPostItem = {
         background-color: ${ColorSet['--grey800']};
         color: ${ColorSet['--white']};
         padding: .5rem;
-        &:first-child {
-          border-radius: 8px 0 0 8px;
-          border-right: 1px solid ${ColorSet['--whiteOpacity300']};
+        &:first-of-type {
+          border-radius: 8px;
           padding: 0 .5rem;
+          margin-right: 1rem;
+          ${mediaQueryHelper('medium')} {
+            margin-right: 0;
+            border-right: 1px solid ${ColorSet['--whiteOpacity300']};
+            border-radius: 8px 0 0 8px;
+          }
         }
-        &:last-child {
+        &:last-of-type {
           font-size: .8rem;
-          border-radius: 0 8px 8px 0;
+          border-radius: 8px;
+
+          ${mediaQueryHelper('medium')} {
+            margin-right: 0;
+            border-right: 1px solid ${ColorSet['--whiteOpacity300']};
+            border-radius: 0 8px 8px 0; 
+          }
         }
       }
     }
