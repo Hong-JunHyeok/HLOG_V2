@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import PostItem from '@/components/Post/PostItem';
 import S from './StyledPostList';
 import { PostType } from '@/types/Post';
@@ -14,12 +15,26 @@ const PostList: React.FunctionComponent<PropTypes> = ({ postList = [] }) => {
 
   return (
     <S.Container>
+      <S.PostMenu>
+        <MenuList />
+      </S.PostMenu>
       <S.PostList>
         {mappedPostList}
       </S.PostList>
     </S.Container>
   )
 }
+
+export const MenuList: React.FC = () => (
+  <React.Fragment>
+    <li>
+      <Link to="/">인기 게시글</Link>
+    </li>
+    <li>
+      <Link to="/recent">최근 게시글</Link>
+    </li>
+  </React.Fragment>
+)
 
 export default PostList;
 

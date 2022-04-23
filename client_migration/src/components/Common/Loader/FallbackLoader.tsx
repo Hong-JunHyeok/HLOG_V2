@@ -17,7 +17,7 @@ const SkeletonPost = () => (
 const PostFallbackLoader: React.FC = () => {
   return (
     <StyledPostList.Container>
-      <StyledPostList.PostList>
+      <S.PostList>
         <SkeletonPost />
         <SkeletonPost />
         <SkeletonPost />
@@ -26,7 +26,7 @@ const PostFallbackLoader: React.FC = () => {
         <SkeletonPost />
         <SkeletonPost />
         <SkeletonPost />
-      </StyledPostList.PostList>
+      </S.PostList>
     </StyledPostList.Container>
   );
 }

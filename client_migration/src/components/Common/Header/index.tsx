@@ -1,46 +1,55 @@
 import React from "react";
-import { Link } from 'react-router-dom'
-import useToggle from '@/hooks/useToggle'
+import { Link } from 'react-router-dom';
+import MenuList from "@/components/Common/MenuList";
+import useToggle from '@/hooks/useToggle';
 import S from './StyledHeader';
+import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '../../../../public/assets/default_profile.svg';
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  const [menuOpen, toggleMenu] = useToggle(false);
+  const [userMenuToggleState, toggleUserMenu] = useToggle();
+  const headerMenuRef = useOutsideRef(() => {
+    userMenuToggleState && toggleUserMenu();
+  });
 
   return (
     <React.Fragment>
       <S.HeaderContainer>
-        <S.HeaderTitle>
+        <S.HeaderTitle> 
           HLOG
         </S.HeaderTitle>
         <S.HeaderMenus>
-          <MenuList />
-          <div className="mobile_layout_menus">
-            <button onClick={toggleMenu}>🍔</button>
-            {menuOpen && <MenuList />}
-          </div>
-
           <Link className="write" to="/write">글 작성</Link>
         </S.HeaderMenus>
-        <S.HeaderProfile>
-          <DefaultProfile />
+        <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
+          <DefaultProfile/>
+          <MenuList
+            items={[
+              {
+                title: '내 게시글',
+                link: '/my-post'
+              },
+              {
+                title: '새 글 작성',
+                link: '/write'
+              },
+              {
+                title: '설정',
+                link: '/settings'
+              },
+              {
+                title: '로그아웃',
+                link: '/logout'
+              }
+            ]}
+            visible={userMenuToggleState}
+          />
         </S.HeaderProfile>
       </S.HeaderContainer>
     </React.Fragment>
   )
 }
-
-const MenuList: React.FC = () => (
-  <ul>
-    <li>
-      <Link to="/">인기 게시글</Link>
-    </li>
-    <li>
-      <Link to="/recent">최근 게시글</Link>
-    </li>
-  </ul>
-)
 
 export default Header;
