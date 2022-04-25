@@ -1,16 +1,19 @@
 import React from "react";
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Editor from "@/components/Post/Editor";
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
-import mediaQueryHelper from '@/styles/mediaHelper';
 
 const WritePostPage = () => {
+  const navigate = useNavigate();
+
+  const handleExit = () => navigate(-1);
+
   return (
     <React.Fragment>
       <StyledWritePostPage.Container>
         <StyledWritePostPage.Header>
-          <button className="exit">나가기</button>
+          <button className="exit" onClick={handleExit}>나가기</button>
 
           <div className="utils">
             <button className="normal-button ">저장</button>
@@ -30,7 +33,7 @@ export default WritePostPage;
 
 const StyledWritePostPage = {
   Container: styled.section`
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     background-color: ${ColorSet['--white']};
   `,

@@ -1,13 +1,11 @@
 import React, { Suspense, lazy } from "react";
 
-import { getPopularPostsMock } from "@/mocks/postData";
-
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
 
 import Footer from "@/components/Common/Footer";
 import Header from "@/components/Common/Header";
-const PostList = lazy(() => import("@/components/Post/PostList"));
+const RecentPostList = lazy(() => import("@/components/Post/PostList/RecentPostList"));
 
 const PopularPage = () => {
 	return (
@@ -15,7 +13,7 @@ const PopularPage = () => {
 			<Header />
 			<ErrorBoundary fallback={<>error...</>}>
 				<Suspense fallback={<FallbackLoader />}>
-					<PostList postList={getPopularPostsMock(100)}/>
+					<RecentPostList />
 				</Suspense>
 			</ErrorBoundary>
 			<Footer />

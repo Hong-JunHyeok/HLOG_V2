@@ -4,6 +4,7 @@ import mediaQueryHelper from '@/styles/mediaHelper';
 
 const StyledEditor = {
   Container: styled.div`
+
   .RichEditor-root {
     background: #fff;
     border: 1px solid #ddd;
@@ -53,18 +54,22 @@ const StyledEditor = {
     font-size: 14px;
     margin-bottom: 5px;
     user-select: none;
+    & > .RichEditor-styleButton {
+      margin: 1rem;
+    }
   }
 
   .block_controls {
     display: inline-block;
+    border-bottom: 1px solid ${ColorSet['--greyOpacity200']};
+
     ${mediaQueryHelper('medium')} {
-      border-right: 1px solid ${ColorSet['--greyOpacity400']};
+      border-bottom: 0;
     }
   }
   .inline_controls {
     display: inline-block;
     ${mediaQueryHelper('medium')} {
-      margin-left: 1rem;
     }
   }
 
@@ -79,8 +84,6 @@ const StyledEditor = {
   .RichEditor-activeButton {
     color: ${ColorSet['--primary']};
   }
-
-  height: 100%;
 
   .title-input {
     width: 100%;
@@ -107,8 +110,15 @@ const StyledEditor = {
 
   .DraftEditor-editorContainer,
   .public-DraftEditor-content {
-    height: 100%;
+    height: 90vw;
     padding-top: 1rem;
+
+    ${mediaQueryHelper('medium')} {
+      height: 45vw;
+    }
+    ${mediaQueryHelper('large')} {
+      height: 28vw;
+    }
   }
 `,
 ToolContainer: styled.ul`
