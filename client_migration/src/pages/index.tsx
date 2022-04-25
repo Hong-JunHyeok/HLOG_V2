@@ -1,6 +1,6 @@
 import RecentPage from './recent';
 import PopularPage from './popular';
-import EditPostPage from './post/edit_post';
+import WritePostPage from './post/write';
 // import PostPage from './post/[postId]';
 // import CreatePostPage from './post/create';
 // import JoinPage from './auth/join';
@@ -10,7 +10,7 @@ import EditPostPage from './post/edit_post';
 export default {
 	RecentPage,
 	PopularPage,
-	EditPostPage
+	WritePostPage
 	// PostPage,
 	// CreatePostPage,
 	// JoinPage,

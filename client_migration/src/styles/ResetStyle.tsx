@@ -71,6 +71,32 @@ const ResetStyle = () => {
         cursor: pointer;
     }
 
+    h1 {
+        font-size: 2em
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    h3 {
+        font-size: 1.17em;
+    }
+    h4 {
+        font-size: 1em;
+    }
+    h5 {
+        font-size: .83em;
+    }
+    h6 {
+        font-size: .67em;
+    }
+
+    .hlog_blockquote {
+        border-left: 4px solid #3182f6;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        background: #F8F9FA;
+        padding: 1rem 1rem 1rem 2rem;
+    }
   `} />
 }
 

@@ -1,33 +1,34 @@
 import React from "react";
+import { useParams } from 'react-router-dom'
 import Editor from "@/components/Post/Editor";
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
 import mediaQueryHelper from '@/styles/mediaHelper';
 
-const EditPostPage = () => {
+const WritePostPage = () => {
   return (
     <React.Fragment>
-      <StyledEditPostPage.Container>
-        <StyledEditPostPage.Header>
+      <StyledWritePostPage.Container>
+        <StyledWritePostPage.Header>
           <button className="exit">나가기</button>
 
           <div className="utils">
             <button className="normal-button ">저장</button>
             <button className="normal-button post">포스트</button>
           </div>
-        </StyledEditPostPage.Header>
+        </StyledWritePostPage.Header>
         
-        <StyledEditPostPage.EditorContainer>
+        <StyledWritePostPage.EditorContainer>
           <Editor />
-        </StyledEditPostPage.EditorContainer>
-      </StyledEditPostPage.Container>
+        </StyledWritePostPage.EditorContainer>
+      </StyledWritePostPage.Container>
     </React.Fragment>
   );
 }
 
-export default EditPostPage;
+export default WritePostPage;
 
-const StyledEditPostPage = {
+const StyledWritePostPage = {
   Container: styled.section`
     height: 100vh;
     overflow: hidden;
