@@ -1,21 +1,31 @@
 {
-	"compilerOptions": {
-		"target": "es5",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"incremental": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"baseUrl": "."
-	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "keyofStringsOnly": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "typeRoots": ["node_modules/@types", "src/@type"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts",
+    "./node_modules/**/*"
+  ],
+  "include": ["./src/**/*", "@type"]
 }
