@@ -11,6 +11,45 @@ import { Like } from "../../entity/Like";
 
 const router = express.Router();
 
+router.get(
+  "/",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const postRepository = getRepository(Post);
+
+    try {
+      const posts = await postRepository
+        .createQueryBuilder("posts")
+        .select([
+          "posts.id",
+          "posts.createdAt",
+          "posts.updatedAt",
+          "posts.postThumnail",
+          "posts.postTitle",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("posts.user", "user")
+        .leftJoinAndSelect("posts.like", "like")
+        .orderBy("posts.createdAt", "DESC")
+        .orderBy("posts.updatedAt", "DESC")
+        .getMany();
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "모든 포스터조회 성공",
+        payload: {
+          posts,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
@@ -173,45 +212,6 @@ router.post(
       });
     } catch (error) {
       console.error(error);
-      next(error);
-    }
-  }
-);
-
-router.get(
-  "/posts",
-  async (req: Request, res: Response, next: NextFunction) => {
-    const postRepository = getRepository(Post);
-
-    try {
-      const posts = await postRepository
-        .createQueryBuilder("posts")
-        .select([
-          "posts.id",
-          "posts.createdAt",
-          "posts.updatedAt",
-          "posts.postThumnail",
-          "posts.postTitle",
-          "user.username",
-          "user.id",
-          "user.profileUrl",
-        ])
-        .leftJoin("posts.user", "user")
-        .leftJoinAndSelect("posts.like", "like")
-        .orderBy("posts.createdAt", "DESC")
-        .orderBy("posts.updatedAt", "DESC")
-        .getMany();
-
-      setJsonResponser(res, {
-        code: 200,
-        message: "모든 포스터조회 성공",
-        payload: {
-          posts,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-
       next(error);
     }
   }

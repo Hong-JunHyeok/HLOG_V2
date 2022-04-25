@@ -1,58 +1,32 @@
-import React from "react";
-import Header from "../components/Common/Header";
-import { getPostsResponse } from "../apis/post";
-import PostList from "../components/Post/PostList";
-import Footer from "../components/Common/Footer";
+import React, { Suspense, lazy } from "react";
 import Head from "next/head";
-import { wrapper } from "../store";
-import cookieSetter from "../utils/initializer/cookieSetter";
-import { getMyInfoRequest } from "../apis/user";
-import { authActions } from "../store/reducers/Auth";
-import { postActions } from "../store/reducers/Post";
+import dynamic from 'next/dynamic';
 
-export default function Index() {
+import ErrorBoundary from 'components/Common/ErrorBoundary';
+import FallbackLoader from 'components/Common/Loader/FallbackLoader';
+
+import Header from "../components/Common/Header";
+import Footer from "../components/Common/Footer";
+const PostList = dynamic(() => import("../components/Post/PostList"), { suspense: true });
+
+function Index() {
 	return (
 		<React.Fragment>
 			<Head>
 				<title>HLOG - 개발을 공유하다.</title>
 			</Head>
+
 			<Header />
-			<PostList />
+
+			<ErrorBoundary fallback={<>error...</>}>
+				<Suspense fallback={<FallbackLoader />}>
+					<PostList />
+				</Suspense>
+			</ErrorBoundary>
+
 			<Footer />
 		</React.Fragment>
 	);
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(
-	(store) => async (context) => {
-		try {
-			const hasToken = cookieSetter(context);
-
-			const postsResponse = await getPostsResponse();
-
-			store.dispatch({
-				type: postActions.GET_POSTS_SUCCESS,
-				payload: postsResponse.payload.posts,
-			});
-
-			if (hasToken) {
-				const myInfoResponse = await getMyInfoRequest();
-
-				store.dispatch({
-					type: authActions.GET_MY_INFO_SUCCESS,
-					payload: myInfoResponse.payload,
-				});
-			}
-		} catch (error) {
-			console.error(error);
-			store.dispatch({
-				type: authActions.GET_MY_INFO_ERROR,
-				payload: error,
-			});
-
-			return {
-				props: error,
-			};
-		}
-	},
-);
+export default Index;

@@ -1,0 +1,37 @@
+export type ExecCommands = "backColor" | 
+"underline" |
+"italic" |
+"bold" | 
+"createLink" | 
+"copy" | 
+"cut" | 
+"defaultParagraphSeparator" | 
+"delete" | 
+"fontName" | 
+"fontSize" | 
+"foreColor" | 
+"formatBlock" | 
+"forwardDelete" | 
+"insertHorizontalRule" | 
+"insertHTML" | 
+"insertImage" | 
+"insertLineBreak" | 
+"insertOrderedList" | 
+"insertParagraph" | 
+"insertText" | 
+"insertUnorderedList" | 
+"justifyCenter" | 
+"justifyFull" | 
+"justifyLeft" | 
+"justifyRight" | 
+"outdent" | 
+"paste" | 
+"redo" | 
+"selectAll" | 
+"strikethrough" | 
+"styleWithCss" | 
+"subscript" | 
+"superscript" | 
+"undo" | 
+"unlink" | 
+"useCSS"

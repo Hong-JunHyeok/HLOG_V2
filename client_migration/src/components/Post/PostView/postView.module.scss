@@ -1,0 +1,135 @@
+@use "../../../styles/colors.module.scss" as colors;
+
+.container {
+	position: relative;
+	max-width: 1000px;
+	margin: 0 auto;
+
+	@media (max-width: 768px) {
+		padding: 1rem;
+	}
+
+	.meta {
+		.title {
+			font-size: 36px;
+			font-weight: bold;
+			color: colors.$normal_text;
+		}
+
+		.info {
+			display: flex;
+			flex-direction: column;
+			.flex {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.profile {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					justify-content: center;
+					border-radius: 50%;
+					.profileImage {
+						width: 58px;
+						height: 58px;
+						border-radius: 50%;
+						cursor: pointer;
+					}
+					.username {
+						text-align: center;
+						font-weight: bold;
+						color: colors.$normal_text;
+					}
+					.subscribe {
+						background-color: inherit;
+						border: 1px solid colors.$primary_color;
+						color: colors.$primary_color;
+						font-size: 16px;
+						border-radius: 3px;
+						cursor: pointer;
+					}
+					.mode {
+						display: flex;
+						& > button {
+							margin-top: 1rem;
+							margin-right: 1rem;
+							padding: 0;
+							background-color: inherit;
+							border: none;
+							font-size: 0.8rem;
+							color: colors.$gray_text3;
+							cursor: pointer;
+
+							&:hover {
+								color: colors.$normal_text;
+							}
+						}
+					}
+				}
+			}
+
+			.profileInfo {
+				border-radius: 10px;
+				display: flex;
+				height: 120px;
+				flex-direction: column;
+
+				.intro {
+					flex: 8;
+					margin: 0;
+					font-style: italic;
+					padding-left: 2rem;
+					font-size: 0.9rem;
+					color: colors.$normal_text;
+					height: 100%;
+					padding: 1rem;
+					background-color: colors.$gray_text2;
+					border-radius: 10px;
+					margin-bottom: 1rem;
+					& > p {
+						&::before {
+							content: "자기소개 :";
+							display: block;
+							font-weight: bold;
+							font-size: 1rem;
+						}
+						margin: 0;
+					}
+				}
+			}
+
+			.date {
+				margin-top: 1.5rem;
+				font-weight: bold;
+				color: colors.$primary_color;
+			}
+		}
+	}
+
+	.content {
+		width: 100%;
+		margin-top: 2rem;
+		@media (max-width: 768px) {
+			margin-top: 4rem;
+		}
+
+		.postThumnail {
+			object-fit: contain;
+		}
+
+		.text {
+			img {
+				box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+				width: 100%;
+				border-radius: 10px;
+				transition: ease-in-out 0.2s;
+				cursor: pointer;
+				&:hover {
+					box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+					transform: translateY(-0.3rem);
+				}
+			}
+		}
+	}
+}

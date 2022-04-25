@@ -4,5 +4,8 @@ module.exports = {
 	images: {
 		domains: ['localhost'],
 	},
-	swcMinify: true,
+	experimental: {
+		concurrentFeatures: true,
+    runtime: 'nodejs',
+  },
 };

@@ -1,26 +1,21 @@
 import React from "react";
+import useSWR from "swr";
+import fetcher from 'utils/fetcher';
+import { PostType } from 'types/Post';
 import { Else, If, Then } from "react-if";
 import PostItem from "../PostItem";
 import styles from "./postList.module.scss";
-import { useTypedSelector } from "../../../utils/useTypedSelector";
 
 const PostList: React.FunctionComponent = () => {
-	const { posts } = useTypedSelector((state) => state.post);
+	const { data : { posts } } = useSWR('/post/posts', fetcher, {
+		suspense: true
+	});
 
-	const postsMap = posts.map((post) => <PostItem {...post} key={post.id} />);
+	const postsMap = posts.map((post: PostType) => <PostItem {...post} key={post.id} />);
 
 	return (
 		<React.Fragment>
-			<If condition={postsMap.length === 0}>
-				<Then>
-					<div className={styles.noData}>
-						<h1>데이터가 없습니다.</h1>
-					</div>
-				</Then>
-				<Else>
-					<div className={styles.postList}>{postsMap}</div>
-				</Else>
-			</If>
+			<div className={styles.postList}>{postsMap}</div>
 		</React.Fragment>
 	);
 };
