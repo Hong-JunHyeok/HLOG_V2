@@ -8,7 +8,7 @@ interface PostResponseType {
 }
 
 export function getRecentPost() {
-  return axios.get('http://localhost:8080/post');
+  return axios.get(process.env.API_SERVER_URL + '/post');
 }
 
 export function usePopularPosts() {
@@ -16,7 +16,7 @@ export function usePopularPosts() {
 }
 
 export function getPopularPost() {
-  return axios.get('http://localhost:8080/post');  
+  return axios.get(process.env.API_SERVER_URL + '/post');
 }
 
 export function useRecentPosts() {
