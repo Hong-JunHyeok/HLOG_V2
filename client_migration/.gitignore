@@ -1,2 +1,5 @@
 /node_modules
 /.yarn
+
+dev.env
+prod.env
