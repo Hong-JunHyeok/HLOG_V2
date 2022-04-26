@@ -1,3 +1,1 @@
-<svg id="visual" viewBox="0 0 1080 540" width="1080" height="540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-    <path d="M0 200L960 305L960 541L0 541Z" fill="#0066FF" stroke-linecap="square" stroke-linejoin="bevel"></path>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="visual" width="1080" height="540" version="1.1" viewBox="0 0 1080 540"><path fill="#06F" stroke-linecap="square" stroke-linejoin="bevel" d="M0 200L960 305L960 541L0 541Z"/></svg>
