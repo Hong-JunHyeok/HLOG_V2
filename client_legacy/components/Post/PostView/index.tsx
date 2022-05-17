@@ -5,6 +5,8 @@ import DefaultProfile from "../../../assets/svg/default_profile.svg";
 import CommentInput from "../../Comment/CommentInput";
 import CommentList from "../../Comment/CommentList";
 import React, { useCallback } from "react";
+import "highlight.js/styles/atom-one-dark.css";
+import "github-markdown-css";
 import imageFormat from "../../../utils/formatter/image-format";
 import Like from "../Like";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
@@ -17,7 +19,7 @@ import { deletePostRequest } from "../../../apis/post";
 
 const PostView: React.FunctionComponent = () => {
 	const { myInfo } = useTypedSelector((state) => state.auth);
-	const { post, comments } = useTypedSelector((state) => state.post);
+	const { post } = useTypedSelector((state) => state.post);
 	const {
 		postTitle,
 		postContent,
@@ -30,24 +32,19 @@ const PostView: React.FunctionComponent = () => {
 
 	const handleDeletePost = useCallback(async () => {
 		try {
-			if (
-				confirm(
-					"정말로 게시글을 삭제하시겠습니까? 삭제한 게시글은 되돌릴 수 없습니다.",
-				)
-			) {
-				await deletePostRequest(post.id);
-				dispatch({
-					type: postActions.DELETE_POST,
-					payload: post.id,
-				});
+			await deletePostRequest(post.id);
+			dispatch({
+				type: postActions.DELETE_POST,
+				payload: post.id,
+			});
 
-				router.replace("/");
-			}
+			router.replace("/");
 		} catch (error) {
 			console.error(error);
 			alert(error.response.message);
 		}
 	}, [dispatch]);
+
 
 	const handleEditPost = useCallback(() => {
 		dispatch({
@@ -120,20 +117,17 @@ const PostView: React.FunctionComponent = () => {
 				</div>
 
 				<section className={styles.content}>
-					<If condition={post.postThumnail}>
-						<Then>
-							<Image
-								src={imageFormat(post.postThumnail)}
-								className={styles.postThumnail}
-								alt={post.postTitle}
-								width={1200}
-								height={600}
-							/>
-						</Then>
-					</If>
+					{post.postThumnail && 
+						<Image
+							src={imageFormat(post.postThumnail)}
+							className={styles.postThumnail}
+							alt={post.postTitle}
+							width={1200}
+							height={600}
+						/>
+					}
 
 					<div
-						className={styles.text}
 						dangerouslySetInnerHTML={{
 							__html: markdownIt.render(post.postContent),
 						}}
@@ -141,7 +135,7 @@ const PostView: React.FunctionComponent = () => {
 				</section>
 			</main>
 			<CommentInput />
-			<CommentList comments={comments} />
+			<CommentList />
 		</React.Fragment>
 	);
 };

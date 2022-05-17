@@ -5,7 +5,6 @@ import useInput from "../../../hooks/useInput";
 import { joinValidation } from "../../../utils/validator/join";
 import styles from "./joinForm.module.scss";
 import Link from "next/link";
-import { HiUserCircle } from "react-icons/hi";
 
 type JoinFormProps = {};
 
@@ -32,7 +31,7 @@ const JoinForm: React.FunctionComponent<JoinFormProps> = () => {
 					return alert(joinResponse.data.message);
 				}
 
-				alert("회원가입에 성공했습니다.");
+				alert("로그인에 성공했습니다.");
 				return router.replace("/auth/login");
 			} catch (error) {
 				console.error(error);
@@ -75,10 +74,6 @@ const JoinForm: React.FunctionComponent<JoinFormProps> = () => {
 
 	return (
 		<form className={styles.container} onSubmit={handleJoin}>
-			<header className={styles.userIcon}>
-				<h1 onClick={() => router.replace("/")}>HLOG</h1>
-				<HiUserCircle size={50} />
-			</header>
 			<section>
 				<h1>이메일</h1>
 				<input

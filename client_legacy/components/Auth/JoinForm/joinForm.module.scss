@@ -2,32 +2,19 @@
 
 .container {
 	display: flex;
-	min-height: 600px;
+	height: 600px;
 	flex-direction: column;
 	padding: 2rem 4rem;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 	border-radius: 10px;
-	background-color: #fff;
 
-	.userIcon {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		font-weight: bold;
-		svg {
-			color: colors.$primary_color;
-		}
-	}
-
-	h1 {
-		font-size: 20px;
-		padding: 0;
-		margin: 1rem 0 0 0;
-		cursor: pointer;
-	}
 	section {
 		width: 400px;
+		h1 {
+			font-size: 20px;
+			padding: 0;
+			margin: 1rem 0 0 0;
+		}
 		.input {
 			width: 400px;
 			border-radius: 10px;

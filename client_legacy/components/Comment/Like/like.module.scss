@@ -1,16 +1,17 @@
 @use "../../../styles/colors.module.scss" as colors;
 
 .container {
-	@media (max-width: 768px) {
-		font-size: 12px;
-	}
-	border-radius: 0 0 20px 20px;
-	user-select: none;
-	& > svg {
-		cursor: pointer;
-	}
-	.ment {
-		margin-left: 1rem;
-		font-weight: bold;
-	}
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+  border-radius: 0 0 20px 20px;
+  background-color: colors.$gray_text1;
+  user-select: none;
+  & > svg {
+    cursor: pointer;
+  }
+  .ment {
+    margin-left: 1rem;
+    font-weight: bold;
+  }
 }

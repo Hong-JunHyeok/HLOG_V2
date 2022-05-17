@@ -1,5 +1,4 @@
 import { UserType } from "./User";
-import { ReplyType } from "./Reply";
 
 export interface CommentType {
 	id: number;
@@ -13,7 +12,6 @@ export interface CommentType {
 		id: number;
 		userId: number;
 	}>;
-	replies: ReplyType[];
 }
 
 export interface AnyActionType {

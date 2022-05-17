@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import { authActions } from "../../../store/reducers/Auth";
 import { useCookies } from "react-cookie";
-import { HiUserCircle } from "react-icons/hi";
 
 type LoginFormProps = {};
 
@@ -29,10 +28,6 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 				type: authActions.LOGIN,
 			});
 			const loginResponse = await loginRequest({ email, password });
-			if (loginResponse.status === 403) {
-				alert(loginResponse.data.message);
-				return;
-			}
 
 			setCookie("hlog_access_token", loginResponse.payload.accessToken, {
 				path: "/",
@@ -44,6 +39,11 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 			});
 		} catch (error) {
 			console.error(error);
+
+			dispatch({
+				type: authActions.LOGIN_ERROR,
+				payload: error.message,
+			});
 		}
 	}, [email, password, dispatch]);
 
@@ -69,7 +69,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 	);
 
 	useEffect(() => {
-		authState.loginError && alert("아이디, 비밀번호를 확인해주세요.");
+		authState.loginError && alert(authState.loginError);
 	}, [authState.loginError]);
 
 	useEffect(() => {
@@ -78,10 +78,6 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 
 	return (
 		<form className={styles.container} onSubmit={handleSubmit}>
-			<header className={styles.userIcon}>
-				<h1 onClick={() => router.replace("/")}>HLOG</h1>
-				<HiUserCircle size={50} />
-			</header>
 			<input
 				type="email"
 				className={styles.input}

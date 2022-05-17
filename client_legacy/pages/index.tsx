@@ -1,32 +1,51 @@
-import React, { Suspense, lazy } from "react";
-import Head from "next/head";
-import dynamic from 'next/dynamic';
-
-import ErrorBoundary from 'components/Common/ErrorBoundary';
-import FallbackLoader from 'components/Common/Loader/FallbackLoader';
-
+import React from "react";
 import Header from "../components/Common/Header";
+import { getPostsResponse } from "../apis/post";
+import PostList from "../components/Post/PostList";
 import Footer from "../components/Common/Footer";
-const PostList = dynamic(() => import("../components/Post/PostList"), { suspense: true });
+import Head from "next/head";
+import { wrapper } from "../store";
+import cookieSetter from "../utils/initializer/cookieSetter";
+import { getMyInfoRequest } from "../apis/user";
+import { authActions } from "../store/reducers/Auth";
+import { postActions } from "../store/reducers/Post";
 
-function Index() {
+export default function Index() {
 	return (
 		<React.Fragment>
 			<Head>
 				<title>HLOG - 개발을 공유하다.</title>
 			</Head>
-
 			<Header />
-
-			<ErrorBoundary fallback={<>error...</>}>
-				<Suspense fallback={<FallbackLoader />}>
-					<PostList />
-				</Suspense>
-			</ErrorBoundary>
-
+			<PostList />
 			<Footer />
 		</React.Fragment>
 	);
 }
 
-export default Index;
+export const getServerSideProps = wrapper.getServerSideProps(
+	(store) => async (context) => {
+		try {
+			const hasToken = cookieSetter(context);
+
+			const myInfoResponse = await getMyInfoRequest();
+			const postsResponse = await getPostsResponse();
+
+			store.dispatch({
+				type: postActions.GET_POSTS_SUCCESS,
+				payload: postsResponse.payload.posts,
+			});
+
+			if (!hasToken) return;
+
+			store.dispatch({
+				type: authActions.GET_MY_INFO_SUCCESS,
+				payload: myInfoResponse.payload,
+			});
+		} catch (error) {
+			return {
+				props: error,
+			};
+		}
+	},
+);

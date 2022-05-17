@@ -11,44 +11,6 @@ import { Like } from "../../entity/Like";
 
 const router = express.Router();
 
-router.get(
-  "/",
-  async (req: Request, res: Response, next: NextFunction) => {
-    const postRepository = getRepository(Post);
-
-    try {
-      const posts = await postRepository
-        .createQueryBuilder("posts")
-        .select([
-          "posts.id",
-          "posts.createdAt",
-          "posts.updatedAt",
-          "posts.postThumnail",
-          "posts.postTitle",
-          "user.username",
-          "user.id",
-          "user.profileUrl",
-        ])
-        .leftJoin("posts.user", "user")
-        .leftJoinAndSelect("posts.like", "like")
-        .orderBy("posts.createdAt", "DESC")
-        .orderBy("posts.updatedAt", "DESC")
-        .getMany();
-
-      setJsonResponser(res, {
-        code: 200,
-        message: "모든 포스터조회 성공",
-        payload: {
-          posts,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-
-      next(error);
-    }
-  }
-);
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -217,42 +179,6 @@ router.post(
   }
 );
 
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
-  const id = Number(req.params.id);
-
-  const postRepository = getRepository(Post);
-
-  console.log(id);
-
-  try {
-    const post = await postRepository
-      .createQueryBuilder("posts")
-      .select([
-        "posts.id",
-        "posts.createdAt",
-        "posts.updatedAt",
-        "posts.postThumnail",
-        "posts.postContent",
-        "posts.postTitle",
-        "user.username",
-        "user.selfIntroduction",
-        "user.id",
-        "user.profileUrl",
-      ])
-      .leftJoin("posts.user", "user")
-      .where("posts.id = :id", { id })
-      .getOne();
-
-    setJsonResponser(res, {
-      code: 200,
-      message: "포스트 조회성공",
-      payload: post,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.get(
   "/like/:postId",
   tokenValidator,
@@ -409,6 +335,45 @@ router.delete(
 );
 
 router.get(
+  "/posts/recent",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const postRepository = getRepository(Post);
+
+    try {
+      const posts = await postRepository
+        .createQueryBuilder("posts")
+        .select([
+          "posts.id",
+          "posts.createdAt",
+          "posts.updatedAt",
+          "posts.postThumnail",
+          "posts.postTitle",
+          "user.username",
+          "user.id",
+          "user.profileUrl",
+        ])
+        .leftJoin("posts.user", "user")
+        .leftJoinAndSelect("posts.like", "like")
+        .orderBy("posts.createdAt", "DESC")
+        .orderBy("posts.updatedAt", "DESC")
+        .getMany();
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "모든 포스터조회 성공",
+        payload: {
+          posts,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
+router.get(
   "/posts/popular",
   async (req: Request, res: Response, next: NextFunction) => {
     const postRepository = getRepository(Post);
@@ -451,5 +416,41 @@ router.get(
     }
   }
 );
+
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  const id = Number(req.params.id);
+
+  const postRepository = getRepository(Post);
+
+  console.log(req.params);
+
+  try {
+    const post = await postRepository
+      .createQueryBuilder("posts")
+      .select([
+        "posts.id",
+        "posts.createdAt",
+        "posts.updatedAt",
+        "posts.postThumnail",
+        "posts.postContent",
+        "posts.postTitle",
+        "user.username",
+        "user.selfIntroduction",
+        "user.id",
+        "user.profileUrl",
+      ])
+      .leftJoin("posts.user", "user")
+      .where("posts.id = :id", { id })
+      .getOne();
+
+    setJsonResponser(res, {
+      code: 200,
+      message: "포스트 조회성공",
+      payload: post,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;

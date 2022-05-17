@@ -1,30 +1,31 @@
 import React, { useEffect } from "react";
-import { AppProps } from "next/app"
-import { SWRConfig } from "swr";
-import fetcher from "utils/fetcher";
-import ErrorBoundary from 'components/Common/ErrorBoundary';
-import FallbackLoader from 'components/Common/Loader/FallbackLoader'
+import AuthProvider from "../contexts/AuthContext";
+import PostProvider from "../contexts/PostContext";
 import { CookiesProvider } from "react-cookie";
 import { wrapper } from "../store";
+import { useCookies } from "react-cookie";
+import customAxios from "../utils/customAxios";
 import "../styles/globals.scss";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
+	const [cookie] = useCookies();
+
+	useEffect(() => {
+		if (cookie.hlog_access_token) {
+			customAxios.defaults.headers["Authorization"] = cookie.hlog_access_token;
+		}
+	}, [cookie]);
+
 	return (
-		<React.StrictMode>
-			<ErrorBoundary fallback={<>Error</>}>
-				<React.Suspense fallback={<FallbackLoader />}>
-					<SWRConfig value={{
-						refreshInterval: 3000,
-						fetcher,
-						suspense: true
-					}}>
-						<CookiesProvider>
-							<Component {...pageProps} />
-						</CookiesProvider>
-					</SWRConfig>
-				</React.Suspense>
-			</ErrorBoundary>
-		</React.StrictMode>
+		<React.Fragment>
+			<CookiesProvider>
+				<AuthProvider>
+					<PostProvider>
+						<Component {...pageProps} />
+					</PostProvider>
+				</AuthProvider>
+			</CookiesProvider>
+		</React.Fragment>
 	);
 }
 

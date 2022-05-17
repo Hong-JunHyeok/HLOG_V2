@@ -67,6 +67,7 @@ const MyProfileForm: React.FunctionComponent = () => {
 
 	const handleEditIntro = useCallback(async () => {
 		try {
+			console.log(editIntro);
 			if (!editIntro.trim()) {
 				return;
 			}
@@ -105,8 +106,6 @@ const MyProfileForm: React.FunctionComponent = () => {
 		router.push("/");
 		return null;
 	}
-
-	console.log(imageFormat(myInfo?.profileUrl))
 
 	return (
 		<React.Fragment>

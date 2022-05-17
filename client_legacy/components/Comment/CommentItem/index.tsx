@@ -4,6 +4,7 @@ import {
 	deleteCommentRequest,
 	editCommentRequest,
 } from "../../../apis/comment";
+import { useAuthState } from "../../../contexts/AuthContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";
@@ -15,20 +16,13 @@ import Like from "../Like";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../../utils/useTypedSelector";
 import Image from "next/image";
-import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import { getReplyRequest, patchReplyRequest } from "../../../apis/reply";
-import { postActions } from "../../../store/reducers/Post";
-import CommentList from "../CommentList";
 
 interface ICommentProps {
 	comment: CommentType;
-	mode?: "COMMENT" | "REPLY";
 }
 
-const CommentItem: React.FunctionComponent<ICommentProps> = ({
-	comment,
-	mode = "COMMENT",
-}) => {
+const CommentItem: React.FunctionComponent<ICommentProps> = (props) => {
+	const { comment } = props;
 	const { myInfo, isLoggedIn } = useTypedSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
@@ -38,11 +32,10 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 		comment.commentContent,
 	);
 	const [isEmptyContent, setIsEmptyContent] = useState(false);
-	const [replyOpen, setReplyOpen] = useState(false);
 
 	const isMyComment = myInfo && comment.user.id === myInfo.id ? true : false;
 
-	const handleDeleteComment = useCallback(async () => {
+	const handleDelete = useCallback(async () => {
 		if (confirm("정말로 삭제하시겠습니까? 삭제한 댓글은 복구할 수 없습니다.")) {
 			await deleteCommentRequest(comment.id);
 
@@ -50,12 +43,6 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 				type: "DELETE_COMMENT",
 				payload: comment.id,
 			});
-		}
-	}, [dispatch]);
-
-	const handleDeleteReply = useCallback(async () => {
-		if (confirm("정말로 삭제하시겠습니까? 삭제한 답글은 복구할 수 없습니다.")) {
-			//TODO: Delete Reply
 		}
 	}, []);
 
@@ -68,33 +55,12 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 		setIsEdit(false);
 	}, []);
 
-	const handleEditReply = useCallback(async () => {
-		try {
-			dispatch({
-				type: postActions.EDIT_REPLY,
-			});
-			const response = await patchReplyRequest(comment.id, editText);
-
-			dispatch({
-				type: postActions.EDIT_REPLY_SUCCESS,
-				payload: response.payload,
-			});
-			closeEditMode();
-		} catch (error) {
-			dispatch({
-				type: postActions.EDIT_REPLY_ERROR,
-				payload: error,
-			});
-			console.error(error);
-		}
-	}, [editText, dispatch, closeEditMode]);
-
 	const handleEditComment = useCallback(async () => {
 		try {
 			const response = await editCommentRequest(comment.id, editText);
 
 			dispatch({
-				type: postActions.EDIT_COMMENT,
+				type: "EDIT_COMMENT",
 				payload: {
 					id: comment.id,
 					commentContent: response.payload.commentContent,
@@ -106,30 +72,6 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 			console.error(error);
 		}
 	}, [editText, editCommentRequest, closeEditMode, comment]);
-
-	const getReplies = useCallback(async () => {
-		try {
-			dispatch({
-				type: postActions.GET_REPLY,
-			});
-			const repliesResponse = await getReplyRequest(comment.id);
-			dispatch({
-				type: postActions.GET_REPLY_SUCCESS,
-				payload: { commentId: comment.id, replies: repliesResponse.payload },
-			});
-		} catch (error) {
-			dispatch({
-				type: postActions.GET_REPLY_ERROR,
-				payload: error,
-			});
-			console.error(error);
-		}
-	}, [comment.id]);
-
-	const handleClickMore = useCallback(async () => {
-		await getReplies();
-		setReplyOpen(true);
-	}, [setReplyOpen]);
 
 	useEffect(() => {
 		if (editText.length === 0) setIsEmptyContent(true);
@@ -175,28 +117,12 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 
 					{isMyComment && isEditMode && isLoggedIn && !isEdit && (
 						<div className={styles.editMode}>
-							{mode === "COMMENT" ? (
-								<>
-									<button onClick={openEditMode} className={styles.edit}>
-										수정
-									</button>
-									<button
-										onClick={handleDeleteComment}
-										className={styles.delete}
-									>
-										삭제
-									</button>
-								</>
-							) : (
-								<>
-									<button onClick={openEditMode} className={styles.edit}>
-										수정
-									</button>
-									<button onClick={handleDeleteReply} className={styles.delete}>
-										삭제
-									</button>
-								</>
-							)}
+							<button onClick={openEditMode} className={styles.edit}>
+								수정
+							</button>
+							<button onClick={handleDelete} className={styles.delete}>
+								삭제
+							</button>
 						</div>
 					)}
 				</header>
@@ -213,9 +139,7 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 							<div className={styles.options}>
 								<button
 									className={isEmptyContent ? styles.notAllow : styles.submit}
-									onClick={
-										mode === "COMMENT" ? handleEditComment : handleEditReply
-									}
+									onClick={handleEditComment}
 									disabled={isEmptyContent}
 								>
 									수정하기
@@ -230,34 +154,9 @@ const CommentItem: React.FunctionComponent<ICommentProps> = ({
 						<p className={styles.content}>{comment.commentContent}</p>
 					</Else>
 				</If>
-
-				{mode === "COMMENT" && (
-					<footer className={styles.emotion}>
-						{replyOpen ? (
-							<div className={styles.more} onClick={() => setReplyOpen(false)}>
-								<AiOutlineMinusSquare />
-								닫기
-							</div>
-						) : (
-							<div className={styles.more} onClick={handleClickMore}>
-								<AiOutlinePlusSquare />
-								댓글 더보기
-							</div>
-						)}
-
-						<Like comment={comment} />
-					</footer>
-				)}
-
-				{replyOpen && (
-					<>
-						<CommentList
-							comments={comment.replies}
-							mode="REPLY"
-							commentId={comment.id}
-						/>
-					</>
-				)}
+				<footer className={styles.emotion}>
+					<Like comment={comment} />
+				</footer>
 			</div>
 		</React.Fragment>
 	);

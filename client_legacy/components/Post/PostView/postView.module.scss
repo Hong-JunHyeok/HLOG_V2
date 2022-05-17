@@ -117,19 +117,10 @@
 		.postThumnail {
 			object-fit: contain;
 		}
-
-		.text {
-			img {
-				box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-				width: 100%;
-				border-radius: 10px;
-				transition: ease-in-out 0.2s;
-				cursor: pointer;
-				&:hover {
-					box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-					transform: translateY(-0.3rem);
-				}
-			}
+		
+		img {
+			width: 100%;
+			border-radius: 10px;
 		}
 	}
 }
