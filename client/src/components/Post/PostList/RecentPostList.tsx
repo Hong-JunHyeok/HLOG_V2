@@ -1,15 +1,15 @@
 import React from 'react';
-import { useRecentPosts } from "@/hooks/usePosts";
 import PostItem from "../PostItem";
 import S from './StyledPostList';
 import { Link } from 'react-router-dom';
+import usePosts from '@/hooks/usePosts';
 
 const RecentPostList: React.FunctionComponent = () => {
-  const { data } = useRecentPosts();
-  const { posts } = data.data.payload;
+  const { data } = usePosts('RECENT');
+  const posts = data.data.payload.posts;
 
   const mappedPostList = posts.map((postItem) => 
-    <PostItem key={postItem.id} postData={postItem} />
+    <PostItem key={postItem.id} post={postItem} />
   )
 
   return (

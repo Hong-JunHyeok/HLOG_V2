@@ -5,7 +5,7 @@ import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
 
 import Footer from "@/components/Common/Footer";
 import Header from "@/components/Common/Header";
-const RecentPostList = lazy(() => import("@/components/Post/PostList/RecentPostList"));
+const PopularPostList = lazy(() => import("@/components/Post/PostList/PopularPostList"));
 
 const PopularPage = () => {
 	return (
@@ -13,7 +13,7 @@ const PopularPage = () => {
 			<Header />
 			<ErrorBoundary fallback={<>error...</>}>
 				<Suspense fallback={<FallbackLoader />}>
-					<RecentPostList />
+					<PopularPostList />
 				</Suspense>
 			</ErrorBoundary>
 			<Footer />

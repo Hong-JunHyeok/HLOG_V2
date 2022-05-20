@@ -1,25 +1,34 @@
 import { useQuery } from 'react-query';
-import axios,{ AxiosResponse } from 'axios';
-import { PostType } from '@/types/Post';
-import { ResponseType } from '@/types/ResponseType';
+import customAxios from '@/utils/customAxios';
+import { AxiosResponse } from 'axios';
 
-interface PostResponseType {
-  posts: PostType[]
+interface AxiosResponseWithPayload<T=any> {
+  payload: {
+    [key: string]: T;
+  }
 }
 
-export function getRecentPost() {
-  return axios.get(process.env.API_SERVER_URL + '/post');
+const a = () => {
+  console.log("Hello");
 }
 
-export function usePopularPosts() {
-  return useQuery<AxiosResponse<ResponseType<PostResponseType>>>('popular_posts', getRecentPost);
+const getRecentPosts =  () => {
+  return customAxios.get<AxiosResponseWithPayload>('/post/recent');
 }
 
-export function getPopularPost() {
-  return axios.get(process.env.API_SERVER_URL + '/post');
+const getPopularPosts =  () => {
+  return customAxios.get<AxiosResponseWithPayload>('/post/popular');
 }
 
-export function useRecentPosts() {
-  return useQuery<AxiosResponse<ResponseType<PostResponseType>>>('recent_posts', getPopularPost);
-}
+type PostsQueryType = "RECENT" | "POPULAR";
 
+export default function usePosts (queryType: PostsQueryType) {
+  switch(queryType) {
+    case "RECENT":
+      return useQuery('recent_posts', getRecentPosts);
+    case "POPULAR":
+      return useQuery('popular_posts', getPopularPosts);
+    default:
+      throw new Error(`Unhandled Query Type : ${queryType}`)
+  }
+};

@@ -5,22 +5,20 @@ import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
 
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
-const PostList = lazy(() => import("@/components/Post/PostList/RecentPostList"));
+const RecentPostList = lazy(() => import("@/components/Post/PostList/RecentPostList"));
 
-function Recent() {
+const RecentPage = () => {
 	return (
 		<React.Fragment>
 			<Header />
-
 			<ErrorBoundary fallback={<>error...</>}>
 				<Suspense fallback={<FallbackLoader />}>
-					<PostList/>
+					<RecentPostList />
 				</Suspense>
 			</ErrorBoundary>
-				
 			<Footer /> 
 		</React.Fragment>
 	);
 }
 
-export default Recent;
+export default RecentPage;

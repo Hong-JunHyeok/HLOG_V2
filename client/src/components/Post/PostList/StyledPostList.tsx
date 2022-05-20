@@ -46,6 +46,7 @@ const StyledPostList = {
       }
     }
   `,
+  
   PostList: styled.div`
     display: flex;
     flex-wrap: wrap;

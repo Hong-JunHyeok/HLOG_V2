@@ -1,15 +1,15 @@
 import React from 'react';
-import { usePopularPosts } from "@/hooks/usePosts";
 import PostItem from "../PostItem";
 import S from './StyledPostList';
 import { Link } from 'react-router-dom';
+import usePosts from '@/hooks/usePosts';
 
-export const PopularPostList: React.FunctionComponent = () => {
-  const { data } = usePopularPosts();
-  const { posts } = data.data.payload;
+const PopularPostList: React.FunctionComponent = () => {
+  const { data } = usePosts('POPULAR');
+  const posts = data.data.payload.posts;
 
   const mappedPostList = posts.map((postItem) => 
-    <PostItem key={postItem.id} postData={postItem} />
+    <PostItem key={postItem.id} post={postItem} />
   )
 
   return (
@@ -24,6 +24,8 @@ export const PopularPostList: React.FunctionComponent = () => {
     </S.Container>
   )
 }
+
+export default PopularPostList;
 
 const MenuList: React.FC = () => (
   <React.Fragment>

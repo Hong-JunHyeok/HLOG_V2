@@ -12,6 +12,7 @@ interface MetaProps {
 
 const StyledPostItem = {
   Container: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;;

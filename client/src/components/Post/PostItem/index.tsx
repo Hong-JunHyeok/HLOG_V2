@@ -6,17 +6,17 @@ import DefaultProfile from '@/../public/assets/default_profile.svg';
 import S from './StyledPostItem';
 
 interface PropTypes {
-  postData: PostType;
+  post: PostType;
 }
 
-const PostItem: React.FunctionComponent<PropTypes> = ({ postData }) => {
+const PostItem: React.FunctionComponent<PropTypes> = ({ post }) => {
   const { 
     postThumnail, postTitle, postContent,
     user: { 
       username, 
       profileUrl
     } 
-  } = postData;
+  } = post;
 
   return (
     <S.Container>
