@@ -1,10 +1,9 @@
-import React from "react";
-import PostView from "@/components/Post/PostView";
 import Header from "@/components/Common/Header";
-import Footer from "@/components/Common/Footer";
+import React from "react";
+import Footer from '@/components/Common/Footer';
+import PostView from "@/components/Post/PostView";
 
-
-const PostViewPage = () => {
+const PostViewPage = (props) => {
 	return (
 		<React.Fragment>
 			<Header />

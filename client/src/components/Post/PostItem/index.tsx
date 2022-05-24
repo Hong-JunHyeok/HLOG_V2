@@ -1,17 +1,24 @@
 import React from 'react';
+
 import { PostType } from '@/types/Post'
 import stringCutter from '@/utils/stringCutter';
+import S from './StyledPostItem';
+import useLocationPush from '@/hooks/useLocationPush';
+
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
-import S from './StyledPostItem';
 
 interface PropTypes {
   post: PostType;
 }
 
 const PostItem: React.FunctionComponent<PropTypes> = ({ post }) => {
+
   const { 
-    postThumnail, postTitle, postContent,
+    id,
+    postThumnail, 
+    postTitle, 
+    postContent,
     user: { 
       username, 
       profileUrl
@@ -25,17 +32,17 @@ const PostItem: React.FunctionComponent<PropTypes> = ({ post }) => {
         <h1>{postTitle}</h1>
         <p>{stringCutter(postContent, 150)}</p>
       </S.Content>
-      <S.Meta profileUrl={profileUrl}>
-      {profileUrl ? 
-        <figure />
-        :
-        <DefaultProfile />
-      }
-      <span>{username}</span>
-      <div className="view-button">
-        <button>⭐️</button>
-        <button>열람하기</button>
-      </div>
+      <S.Meta>
+        {profileUrl ? 
+          <S.Figure profileUrl={profileUrl} />
+          :
+          <DefaultProfile />
+        }
+        <span>{username}</span>
+        <div className="view-button">
+          <button>⭐️</button>
+          <button onClick={useLocationPush(`/post/${id}`)}>열람하기</button>
+        </div>
       </S.Meta>
     </S.Container>
   )

@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Editor, EditorState, DraftEditorCommand, RichUtils, getDefaultKeyBinding } from 'draft-js';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { Editor, EditorState, DraftEditorCommand, RichUtils, getDefaultKeyBinding, convertFromRaw, convertToRaw } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import 'draft-js/dist/Draft.css';
 import S from './StyledEditor';
+import useLocalStorage from '@/utils/useLocalStorage';
 
 const styleMap = {
   CODE: {
@@ -16,10 +18,35 @@ const styleMap = {
 };
 
 const HlogEditor = () => {
-  const [title, setTitle] = useState('');
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const navigate = useNavigate();
+
+  const [editorTitle, setEditorTitle, clearEditorTitle] = useLocalStorage('hlog_editor_title', '');
+  const [editorContent, setEditorContent, clearEditorContent] = useLocalStorage('hlog_editor_content', '');
+
+  const titleInitialState = editorTitle ? 
+  editorTitle : ""
+
+  const contentInitialState = editorContent ? 
+  EditorState.createWithContent(convertFromRaw(editorContent))
+  : EditorState.createEmpty();
+
+  const [titleState, setTitleState] = useState(titleInitialState);
+  const [editorState, setEditorState] = useState(contentInitialState);
+
+  const handleExit = () => navigate(-1);
 
   const changeEditorContent = (editorState: EditorState) => setEditorState(editorState);
+
+  const handleSaveContent = () => {
+    setEditorTitle(titleState);
+    const content = editorState.getCurrentContent();
+    setEditorContent(convertToRaw(content));
+  }
+
+  const resetSavedContent = () => {
+    clearEditorTitle();
+    clearEditorContent();
+  }
 
   const toggleBlockType = (blockType: string) => changeEditorContent(
     RichUtils.toggleBlockType(
@@ -71,33 +98,40 @@ const HlogEditor = () => {
 
   return (
     <S.Container>
-    <AutosizeableTextarea 
-      placeholder="제목을 입력하세요." 
-      value={title} 
-      onChange={(e) => setTitle(e.target.value)}
-      className="title-input"
-    />
-    <div className='RichEditor-root'>
-      <BlockStyleControls
-        editorState={editorState}
-        onToggle={toggleBlockType}
+      <S.Header>
+      <button className="exit" onClick={handleExit}>나가기</button>
+      <div className="utils">
+        <button className="normal-button" onClick={handleSaveContent}>저장</button>
+        <button className="normal-button post">포스트</button>
+      </div>
+      </S.Header>
+      <AutosizeableTextarea 
+        placeholder="제목을 입력하세요." 
+        value={titleState} 
+        onChange={(e) => setTitleState(e.target.value)}
+        className="title-input"
       />
-      <InlineStyleControls
-        editorState={editorState}
-        onToggle={toggleInlineStyle}
-      />
-      <Editor 
-        customStyleMap={styleMap}
-        editorState={editorState}
-        handleKeyCommand={handleKeyCommand}
-        keyBindingFn={mapKeyToEditorCommand}
-        onChange={setEditorState}
-        blockStyleFn={blockStyleClassMap}
-        placeholder="내용을 입력해주세요..."
-        spellCheck
-      />
-    </div>
-  </S.Container>
+      <div className='RichEditor-root'>
+        <BlockStyleControls
+          editorState={editorState}
+          onToggle={toggleBlockType}
+        />
+        <InlineStyleControls
+          editorState={editorState}
+          onToggle={toggleInlineStyle}
+        />
+        <Editor 
+          customStyleMap={styleMap}
+          editorState={editorState}
+          handleKeyCommand={handleKeyCommand}
+          keyBindingFn={mapKeyToEditorCommand}
+          onChange={setEditorState}
+          blockStyleFn={blockStyleClassMap}
+          placeholder="내용을 입력해주세요..."
+          spellCheck
+        />
+      </div>
+    </S.Container>
     );
 };
 

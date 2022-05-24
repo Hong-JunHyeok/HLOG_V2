@@ -1,5 +1,6 @@
 import React, { Suspense, StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
@@ -25,6 +26,7 @@ class App extends React.Component {
                 <RouteContainer />
               </Suspense>
             </ErrorBoundary>
+            <ReactQueryDevtools />
           </QueryClientProvider>
         </StrictMode>
       </React.Fragment>

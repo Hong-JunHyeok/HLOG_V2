@@ -1,3 +1,40 @@
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import usePost from '@/hooks/usePost';
+import S from './StyledPostView';
+
+import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
+
+const PostView: React.FunctionComponent = () => {
+  const { postId } = useParams<"postId">();
+  const { data } = usePost(+postId);
+  const post = data.data.payload;
+  const { 
+    id,
+    postThumnail, 
+    postTitle, 
+    postContent,
+    user: { 
+      username, 
+      profileUrl
+    } 
+  } = post;
+
+  return (
+    <S.Container>
+      <S.HeadLine thumbnailUrl={postThumnail || ThumbnailPlaceholder}>
+        <h1>{postTitle}</h1>
+      </S.HeadLine>
+      <div dangerouslySetInnerHTML={{
+        __html: postContent
+      }}>
+      </div>
+    </S.Container>
+  )
+}
+
+export default PostView;
+
 // import { If, Else, Then } from "react-if";
 // import dateFormatter from "../../../utils/formatter/date-format";
 // import styles from "./postView.module.scss";

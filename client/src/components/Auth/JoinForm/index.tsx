@@ -1,3 +1,41 @@
+import { useCallback, useEffect } from "react";
+import { Link } from "react-router-dom";
+import S from './StyledJoinForm';
+
+const JoinForm = () => {
+  return (
+    <S.Container>
+        <S.Form>
+          <div className="form_head">
+            <h1>회원가입</h1>
+            <span>정보를 입력하여 HLOG에 합류해주세요.</span>
+          </div>
+
+          <label htmlFor="id">아이디 (이메일)</label>
+          <input type="text" className="join_input" id="id" />
+
+          <label htmlFor="password">비밀번호</label>
+          <input type="password" className="join_input" id="password" />
+
+          <label htmlFor="password_check">비밀번호 확인</label>
+          <input type="password" className="join_input" id="password_check" />
+
+          <label htmlFor="name">이름</label>
+          <input type="text" className="join_input" id="name" />
+
+          <button className="join_btn">회원가입</button>
+          
+          <Link to="/login" className="go_to_login">이미 회원이신가요?</Link>
+        </S.Form>
+        <S.Info>
+          <span className="info_text">HLOG에서 양질의 포스트들을 확인해보세요.</span>
+        </S.Info>
+      </S.Container>
+  )
+}
+
+export default JoinForm;
+
 // import { useCallback } from "react";
 // import { useRouter } from "next/router";
 // import { joinRequest } from "../../../apis/auth";

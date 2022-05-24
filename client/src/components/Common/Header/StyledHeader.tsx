@@ -33,7 +33,8 @@ const StyledHeader = {
     }
   `,
 
-  HeaderTitle: styled.h1`
+  HeaderTitle: styled.div`
+    cursor: pointer;
     align-items: center;
     font-size: 1rem;
     font-weight: lighter;
@@ -134,6 +135,26 @@ const StyledHeader = {
         padding: 1rem;
       }
     }
+  `,
+  LoginButton: styled.button`
+      margin: auto 0 auto auto; 
+      padding: .5rem 1rem;
+      font-size: 1rem;
+      border-radius: 1rem;
+      outline: none;
+      font-weight: bold;
+      word-break: keep-all;
+      border: 1px solid ${ColorSet['--greyOpacity700']};;
+      color: ${ColorSet['--white']};
+      background-color: ${ColorSet['--greyOpacity700']};
+      transition: all 0.125s ease-in 0s;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: ${ColorSet['--greyOpacity700']};;
+        background-color: ${ColorSet['--white']};
+      }    
   `
 };
 

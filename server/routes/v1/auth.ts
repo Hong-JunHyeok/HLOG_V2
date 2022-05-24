@@ -72,6 +72,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const loginData = req.body as LoginTypes;
     const { email, password } = loginData;
+    console.log(loginData)
 
     try {
       if (!email || !password) {

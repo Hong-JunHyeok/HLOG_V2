@@ -6,7 +6,7 @@ interface ThumbnailProps {
   thumbnailUrl: string;
 }
 
-interface MetaProps {
+interface ProfileProps {
   profileUrl?: string;
 }
 
@@ -34,7 +34,7 @@ const StyledPostItem = {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    border-radius: 20px 20px 0 0 ;
+    border-radius: 10px 10px 0 0 ;
   `,
   Content: styled.div`
     background-color: ${ColorSet['--white']};
@@ -50,17 +50,13 @@ const StyledPostItem = {
       font-weight: lighter;
     }
   `,
-  Meta: styled.div<MetaProps>`
+  Meta: styled.div`
     display: flex;
     align-items: center;
     background-color: white;
     padding: 0 1rem 1rem 1rem;
-    border-radius: 0 0 20px 20px;
-    figure, svg {
-      background-image: url(${(props) => props.profileUrl});
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
+    border-radius: 0 0 10px 10px;
+    svg {
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -102,6 +98,12 @@ const StyledPostItem = {
         }
       }
     }
+  `,
+  Figure: styled.figure<ProfileProps>`
+    background-image: url(${(props) => props.profileUrl});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   `
 }
 

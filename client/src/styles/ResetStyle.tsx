@@ -1,5 +1,6 @@
 import emotionReset from 'emotion-reset';
 import { Global, css } from '@emotion/react';
+import ColorSet from '@/styles/colorSet';
 
 const ResetStyle = () => {
   return <Global styles={css`
@@ -96,6 +97,12 @@ const ResetStyle = () => {
         border-bottom-right-radius: 4px;
         background: #F8F9FA;
         padding: 1rem 1rem 1rem 2rem;
+    }
+
+    a {
+        color: ${ColorSet['--primary']};
+        font-weight: bold;
+        text-decoration: none;
     }
   `} />
 }

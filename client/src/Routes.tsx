@@ -13,7 +13,12 @@ class RouteContainer extends React.Component {
         <Routes>
           <Route path="" element={<Pages.PopularPage />} />
           <Route path="recent" element={<Pages.RecentPage />} />
+          <Route path="post">
+            <Route path=":postId" element={<Pages.PostView />} />
+          </Route>
           <Route path="write" element={<Pages.WritePostPage />} />
+          <Route path="login" element={<Pages.LoginPage />} />
+          <Route path="join" element={<Pages.JoinPage />} />
           <Route path="*"  />
         </Routes>
       </BrowserRouter>

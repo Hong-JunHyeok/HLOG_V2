@@ -1,15 +1,10 @@
 import { useQuery } from 'react-query';
 import customAxios from '@/utils/customAxios';
-import { AxiosResponse } from 'axios';
 
 interface AxiosResponseWithPayload<T=any> {
   payload: {
     [key: string]: T;
   }
-}
-
-const a = () => {
-  console.log("Hello");
 }
 
 const getRecentPosts =  () => {
