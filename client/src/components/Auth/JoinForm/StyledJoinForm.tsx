@@ -35,6 +35,11 @@ const StyledJoinForm = {
       border: 1px solid ${ColorSet['--greyOpacity200']};
     }
 
+    .form_error {
+      color: ${ColorSet['--red500']};
+      margin-top: 10px;
+    }
+
     label {
       margin-top: 1rem;
       margin-bottom: 1rem;
