@@ -43,7 +43,7 @@ const StyledPostItem = {
     padding: 1em;
 
     h1 {
-      font-size: 38px;
+      font-size: 24px;
       font-weight: bold;
     }
     p {
