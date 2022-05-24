@@ -17,6 +17,7 @@ module.exports = (env) => {
     name: "HLOG_V2",
     mode: "development",
     entry: "./src/index.tsx",
+    devtool: 'eval',
     output: {
       filename: "bundle.[chunkhash].js",
       path: path.resolve("dist"),

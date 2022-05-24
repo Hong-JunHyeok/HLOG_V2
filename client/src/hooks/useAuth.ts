@@ -9,7 +9,7 @@ const useAuth = () => {
   const login = async (email: string, password: string) => {
     const response = await customAxios.post('/auth/login', {
       email,
-      password
+      password,
     });
 
     setToken(response.data.payload.accessToken);
