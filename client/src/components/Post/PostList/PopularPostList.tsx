@@ -1,7 +1,6 @@
 import React from 'react';
 import PostItem from "../PostItem";
 import S from './StyledPostList';
-import { Link } from 'react-router-dom';
 import usePosts from '@/hooks/usePosts';
 
 const PopularPostList: React.FunctionComponent = () => {

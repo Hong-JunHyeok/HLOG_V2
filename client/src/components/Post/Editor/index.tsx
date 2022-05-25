@@ -11,6 +11,7 @@ import SuccessModal from '@/components/Modal/Success/SuccessModal';
 import { convertToHTML } from 'draft-convert';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
 import useInterceptedAxios from '@/hooks/useInterceptedAxios';
+import useUser from '@/hooks/useUser';
 
 const styleMap = {
   CODE: {
@@ -23,6 +24,7 @@ const styleMap = {
 
 const HlogEditor = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
   const customAxios = useInterceptedAxios();
   const [editorTitle, setEditorTitle, clearEditorTitle] = useLocalStorage('hlog_editor_title', '');
   const [editorContent, setEditorContent, clearEditorContent] = useLocalStorage('hlog_editor_content', '');
@@ -104,6 +106,7 @@ const HlogEditor = () => {
 
   const createPost = async() => {
     try{
+      console.log(user);
       const response = await customAxios.post('/post', {
         postTitle: titleState,
         postContent: convertToHTML({

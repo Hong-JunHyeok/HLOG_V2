@@ -81,7 +81,7 @@ router.patch(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserId.email,
+          id: req.body.decodedUserId,
         },
       });
 
@@ -194,7 +194,7 @@ router.delete(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserId.email,
+          id: req.body.decodedUserId,
         },
       });
 

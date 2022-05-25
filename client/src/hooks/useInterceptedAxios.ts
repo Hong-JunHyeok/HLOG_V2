@@ -1,4 +1,3 @@
-import useUser from "./useUser";
 import { useEffect } from 'react';
 import customAxios from "@/utils/customAxios";
 import useRefreshToken from "./useRefreshToken";
@@ -16,7 +15,7 @@ const useInterceptedAxios = () => {
           config.headers['authorization'] = hlogToken;
         }
         return config;
-      }, (error) => Promise.reject(error)
+      }, (error) => error
     );
     const responseIntercept = customAxios.interceptors.response.use(
       response => response, 
@@ -28,6 +27,8 @@ const useInterceptedAxios = () => {
           const data = await refreshToken();
           prevRequest.headers['authorization'] = data.accessToken;
           return customAxios(prevRequest)
+        } else {
+          return customAxios;
         }
       }
     );
