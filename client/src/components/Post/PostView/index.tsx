@@ -26,7 +26,7 @@ const PostView: React.FunctionComponent = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await customAxios.delete(`/post/${id}`);
+      await customAxios.delete(`/post/${id}`);
       navigator('/')
     } catch (error) {
       console.log(error.response.data.message);
