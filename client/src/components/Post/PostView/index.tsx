@@ -21,13 +21,16 @@ const PostView: React.FunctionComponent = () => {
     postContent,
     user: { 
       username,
-      profileUrl
     } 
   } = post;
 
   const handleDelete = async () => {
-    const response = await customAxios.delete(`/post/${id}`);
-    console.log(response);
+    try {
+      const response = await customAxios.delete(`/post/${id}`);
+      navigator('/')
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   }
 
   const handleUpdate = () => {

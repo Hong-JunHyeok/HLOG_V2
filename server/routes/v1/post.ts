@@ -49,7 +49,7 @@ router.post(
       const userRepository = getRepository(User);
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserId.email },
+        where: { id: req.body.decodedUserId },
       });
 
       const postRepository = getRepository(Post);
@@ -173,7 +173,7 @@ router.delete(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserId.email,
+         id: req.body.decodedUserId,
         },
       });
 
@@ -312,7 +312,7 @@ router.get(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserId.email,
+          id: req.body.decodedUserId,
         },
       });
 
@@ -359,7 +359,7 @@ router.post(
       }
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserId.email },
+        where: { id: req.body.decodedUserId, },
       });
 
       const alreadyLiked = await likeRepository.findOne({
@@ -421,7 +421,7 @@ router.delete(
       }
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserId.email },
+        where: { id: req.body.decodedUserId, },
       });
 
       const alreadyLiked = await likeRepository.findOne({

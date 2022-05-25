@@ -105,7 +105,7 @@ router.patch(
       const { selfIntroduction } = req.body;
 
       const me = await userRepository.findOne({
-        where: { email: req.body.decodedUserId.email },
+        where: { id: req.body.decodedUserId },
       });
 
       if (!me) {
@@ -146,7 +146,7 @@ router.patch(
       const userRepository = getRepository(User);
 
       const me = await userRepository.findOne({
-        where: { email: req.body.decodedUserId.email },
+        where: { id: req.body.decodedUserId },
       });
 
       if (!me) {
