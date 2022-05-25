@@ -4,7 +4,7 @@ import {
 	deleteCommentRequest,
 	editCommentRequest,
 } from "../../../apis/comment";
-import { useAuthState } from "../../../contexts/AuthContext";
+import { useUserState } from "../../../contexts/AuthContext";
 import useToggle from "../../../hooks/useToggle";
 import { CommentType } from "../../../types/Comment";
 import dateFormatter from "../../../utils/formatter/date-format";

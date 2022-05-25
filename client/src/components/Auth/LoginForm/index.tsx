@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
+import useUser from "@/hooks/useUser";
 import { Link } from "react-router-dom";
 import S from './StyledLoginForm';
 import useLocationPush from "@/hooks/useLocationPush";
+import customAxios from "@/utils/customAxios";
+import useLocalStorage from "@/utils/useLocalStorage";
 
 interface LoginFormType {
   email: string;
@@ -10,17 +12,26 @@ interface LoginFormType {
 }
 
 const LoginForm = () => {
-  const auth = useAuth();
+  const { setUser } = useUser();
   const {
     register, handleSubmit, formState: { errors },
   } = useForm({ mode: 'onChange' });
+  const [_, setHlogToken] = useLocalStorage('hlog_access_token', '');
 
   const handlePushMain = useLocationPush('/');
 
   const onSubmit = async(data: LoginFormType) => {
     try {
       const { email,password } = data;
-      await auth.login(email, password);
+
+      const response = await customAxios.post('/auth/login', {
+        email,
+        password,
+      });
+      const { user, accessToken } = response.data.payload;
+      setUser(user); // user의 정보를 Context에서 관리
+      setHlogToken(accessToken) // AccessToken을 LocalStorage에서 관리
+      
       handlePushMain();
     } catch(error) {
       console.log(error.response.data.message);

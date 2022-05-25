@@ -6,6 +6,7 @@ import { getRepository } from "typeorm";
 import { LoginTypes } from "../../types/LoginTypes";
 import bcrypt from "bcrypt";
 import { Token } from "../../utils/token";
+import { refreshTokenValidator } from "../../middlewares/tokenValidator";
 
 const router = Router();
 
@@ -67,12 +68,24 @@ router.post(
   }
 );
 
+router.post('/refresh',refreshTokenValidator, (req,res) => {
+  const userId = req.body.decodedUserId;
+  const refreshedAccessToken = Token.createAccessToken(userId);
+
+  setJsonResponser(res, {
+    code: 201,
+    message: "정상적으로 토큰이 발급되었습니다.",
+    payload: {
+      accessToken: refreshedAccessToken
+    }
+  })
+})
+
 router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
     const loginData = req.body as LoginTypes;
     const { email, password } = loginData;
-    console.log(loginData)
 
     try {
       if (!email || !password) {
@@ -108,11 +121,13 @@ router.post(
         });
       }
 
-      const accessToken = Token.createAccessToken({
-        email: existUser.email,
-        id: existUser.id,
-      });
+      const accessToken = Token.createAccessToken(existUser.id);
+      const refreshToken = Token.createRefreshToken(existUser.id);
 
+      res.cookie('JWT', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 1d
+      });
       setJsonResponser(res, {
         code: 201,
         message: "로그인 성공",
@@ -134,5 +149,15 @@ router.post(
     }
   }
 );
+
+router.post('/logout', async(req,res) => {
+  res.clearCookie('JWT', {
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true
+  });
+
+  return res.sendStatus(204);
+})
 
 export default router;

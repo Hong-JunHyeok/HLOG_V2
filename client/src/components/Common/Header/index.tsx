@@ -6,16 +6,18 @@ import useToggle from '@/hooks/useToggle';
 import S from './StyledHeader';
 import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
-import useAuth from "@/hooks/useAuth";
+import useUser from "@/hooks/useUser";
 import useLocationPush from "@/hooks/useLocationPush";
-import useMyInfo from "@/hooks/useMyInfo";
+import useLogout from "@/hooks/useLogout";
 
 const Header: React.FC = () => {
-  const auth = useAuth();
+  const { user } = useUser();
+
   const [userMenuToggleState, toggleUserMenu] = useToggle();
   const headerMenuRef = useOutsideRef(() => {
     userMenuToggleState && toggleUserMenu();
   });
+  const logout = useLogout();
 
   const handlePushHome = useLocationPush('/');
   const handlePushLogin = useLocationPush('/login');
@@ -24,7 +26,7 @@ const Header: React.FC = () => {
     [
       {
         title: '내 프로필',
-        link: '/user'
+        link: `/user/${user?.id}`
       },
       {
         title: '새 글 작성',
@@ -36,10 +38,10 @@ const Header: React.FC = () => {
       },
       {
         title: '로그아웃',
-        action: auth.logout
+        action: logout
       }
     ]
-  ), []);
+  ), [user]);
 
   return (
     <React.Fragment>
@@ -47,7 +49,7 @@ const Header: React.FC = () => {
         <S.HeaderTitle onClick={handlePushHome}> 
           HLOG
         </S.HeaderTitle>
-        {auth.isLoggedIn ? 
+        {user ? 
         <>
           <S.HeaderMenus>
             <Link className="write" to="/write">글 작성</Link>

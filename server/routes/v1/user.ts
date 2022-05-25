@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import { getRepository } from "typeorm";
 import { User } from "../../entity/User";
-import tokenValidator from "../../middlewares/tokenValidator";
+import {accessTokenValidator} from "../../middlewares/tokenValidator";
 import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = Router();
@@ -27,12 +27,12 @@ router.get(
   }
 );
 
-router.get("/me", tokenValidator, async (req, res, next) => {
+router.get("/me", accessTokenValidator, async (req, res, next) => {
   const userRepository = getRepository(User);
 
   try {
     const me = await userRepository.findOne({
-      where: { email: req.body.decodedUserPayload.email },
+      where: { id: req.body.decodedUserId },
       select: [
         "id",
         "username",
@@ -98,14 +98,14 @@ const upload = multer({
 
 router.patch(
   "/intro/:userId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userRepository = getRepository(User);
       const { selfIntroduction } = req.body;
 
       const me = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { email: req.body.decodedUserId.email },
       });
 
       if (!me) {
@@ -140,13 +140,13 @@ router.patch(
 router.patch(
   "/profile/:userId",
   upload.single("profile"),
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userRepository = getRepository(User);
 
       const me = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { email: req.body.decodedUserId.email },
       });
 
       if (!me) {

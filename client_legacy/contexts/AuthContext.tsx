@@ -89,10 +89,10 @@ const AuthProvider: React.FunctionComponent = ({ children }) => {
 
 export default AuthProvider;
 
-export const useAuthState = (): AuthContextType => {
+export const useUserState = (): AuthContextType => {
 	return useContext(AuthStateContext);
 };
 
-export const useAuthDispatch = (): React.Dispatch<any> => {
+export const useUserDispatch = (): React.Dispatch<any> => {
 	return useContext(AuthDispatchContext);
 };
