@@ -8,9 +8,9 @@ import 'draft-js/dist/Draft.css';
 import S from './StyledEditor';
 import useLocalStorage from '@/utils/useLocalStorage';
 import SuccessModal from '@/components/Modal/Success/SuccessModal';
-import customAxios from '@/utils/customAxios';
 import { convertToHTML } from 'draft-convert';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
+import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 
 const styleMap = {
   CODE: {
@@ -23,6 +23,7 @@ const styleMap = {
 
 const HlogEditor = () => {
   const navigate = useNavigate();
+  const customAxios = useInterceptedAxios();
   const [editorTitle, setEditorTitle, clearEditorTitle] = useLocalStorage('hlog_editor_title', '');
   const [editorContent, setEditorContent, clearEditorContent] = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);

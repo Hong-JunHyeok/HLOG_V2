@@ -1,21 +1,18 @@
 import jwt from "jsonwebtoken";
-interface TokenUserPayload {
-  id: number;
-  email: string;
-}
+
 
 export class Token {
-  static createAccessToken(userPayload: TokenUserPayload): string {
-    const accessToken = jwt.sign({ ...userPayload }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
+  static createAccessToken(userId: number): string {
+    const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: "1s",
     });
 
     return accessToken;
   }
 
-  static createRefreshToken() {
-    const refreshToken = jwt.sign({}, process.env.JWT_SECRET, {
-      expiresIn: "1y",
+  static createRefreshToken(userId: number): string {
+    const refreshToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
     });
 
     return refreshToken;

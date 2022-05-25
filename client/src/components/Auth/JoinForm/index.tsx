@@ -1,10 +1,10 @@
 import ErrorModal from "@/components/Modal/Error/ErrorModal";
 import { useForm } from "react-hook-form";
 import useLocationPush from "@/hooks/useLocationPush";
-import customAxios from "@/utils/customAxios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import S from './StyledJoinForm';
+import useInterceptedAxios from "@/hooks/useInterceptedAxios";
 
 interface JoinFormType {
   email: string;
@@ -14,6 +14,7 @@ interface JoinFormType {
 }
 
 const JoinForm = () => {
+  const customAxios = useInterceptedAxios();
   const {
     register, handleSubmit, formState: { errors },
     getValues

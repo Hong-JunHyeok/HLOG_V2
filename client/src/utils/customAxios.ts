@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-const AxiosConfigure = {
+const AxiosConfigure: AxiosRequestConfig = {
   baseURL: process.env.API_SERVER_URL,
   timeout: 1000,
+  withCredentials: true
 }
 
-export default axios.create(AxiosConfigure)
+export default axios.create(AxiosConfigure);

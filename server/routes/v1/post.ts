@@ -5,7 +5,7 @@ import path from "path";
 import setJsonResponser from "../../utils/setJsonResponser";
 import { getRepository } from "typeorm";
 import { Post } from "../../entity/Post";
-import tokenValidator from "../../middlewares/tokenValidator";
+import {accessTokenValidator} from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
 import { Like } from "../../entity/Like";
 
@@ -27,7 +27,7 @@ const upload = multer({
 
 router.post(
   "/",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postTitle, postThumnail, postContent } = req.body;
 
@@ -49,7 +49,7 @@ router.post(
       const userRepository = getRepository(User);
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { email: req.body.decodedUserId.email },
       });
 
       const postRepository = getRepository(Post);
@@ -164,7 +164,7 @@ router.get(
 
 router.delete(
   "/:postId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
     try {
@@ -173,7 +173,7 @@ router.delete(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserPayload.email,
+          email: req.body.decodedUserId.email,
         },
       });
 
@@ -224,7 +224,7 @@ router.delete(
 router.patch(
   "/thumnail/:postId",
   upload.single("thumnail"),
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
     try {
@@ -302,7 +302,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
 
 router.get(
   "/like/:postId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
 
@@ -312,7 +312,7 @@ router.get(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserPayload.email,
+          email: req.body.decodedUserId.email,
         },
       });
 
@@ -336,7 +336,7 @@ router.get(
 
 router.post(
   "/like/:postId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
 
@@ -359,7 +359,7 @@ router.post(
       }
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { email: req.body.decodedUserId.email },
       });
 
       const alreadyLiked = await likeRepository.findOne({
@@ -398,7 +398,7 @@ router.post(
 
 router.delete(
   "/unlike/:postId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
 
@@ -421,7 +421,7 @@ router.delete(
       }
 
       const user = await userRepository.findOne({
-        where: { email: req.body.decodedUserPayload.email },
+        where: { email: req.body.decodedUserId.email },
       });
 
       const alreadyLiked = await likeRepository.findOne({

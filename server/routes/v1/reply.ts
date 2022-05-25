@@ -3,7 +3,7 @@ import { getRepository } from "typeorm";
 import { Comment } from "../../entity/Comment";
 import { Reply } from "../../entity/Reply";
 import { User } from "../../entity/User";
-import tokenValidator from "../../middlewares/tokenValidator";
+import {accessTokenValidator} from "../../middlewares/tokenValidator";
 import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = express.Router();
@@ -63,7 +63,7 @@ router.get(
 
 router.patch(
   "/:replyId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { replyId } = req.params;
     const { commentContent } = req.body;
@@ -81,7 +81,7 @@ router.patch(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserPayload.email,
+          email: req.body.decodedUserId.email,
         },
       });
 
@@ -131,7 +131,7 @@ router.patch(
 
 router.post(
   "/:commentId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { commentId } = req.params;
     const { commentContent } = req.body;
@@ -149,7 +149,7 @@ router.post(
       const replyRepository = getRepository(Reply);
 
       const user = await userRepository.findOne({
-        where: { id: req.body.decodedUserPayload.id },
+        where: { id: req.body.decodedUserId.id },
       });
 
       const exComment = await commentRepository.findOne({
@@ -184,7 +184,7 @@ router.post(
 
 router.delete(
   "/:replyId",
-  tokenValidator,
+  accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { replyId } = req.params;
 
@@ -194,7 +194,7 @@ router.delete(
 
       const me = await userRepository.findOne({
         where: {
-          email: req.body.decodedUserPayload.email,
+          email: req.body.decodedUserId.email,
         },
       });
 

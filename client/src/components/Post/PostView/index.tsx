@@ -5,12 +5,13 @@ import usePost from '@/hooks/usePost';
 import S from './StyledPostView';
 
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
-import customAxios from '@/utils/customAxios';
+import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<"postId">();
   const { data } = usePost(+postId);
   const navigator = useNavigate();
+  const customAxios = useInterceptedAxios();
 
   const post = data.data.payload;
   const { 
