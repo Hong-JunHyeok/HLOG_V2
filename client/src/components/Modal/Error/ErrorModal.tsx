@@ -3,6 +3,7 @@ import StyledErrorModal from "./StyledErrorModal";
 
 interface ErrorModalProps {
   onClose: () => void;
+  confirmFunction?: () => void;
   errorTitle: string;
   errorMessage?: string;
 }

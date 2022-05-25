@@ -75,18 +75,9 @@ const StyledFallbackLoader = {
     PostList: styled.div`
       display: flex;
       flex-wrap: wrap;
+      padding: 1rem;
       margin-left: -1rem;
       margin-right: -1rem;
-      padding: 4rem 1rem 1rem 1rem;
-
-      ${mediaQueryHelper('medium')} {
-        padding-top: 6rem;
-      }
-
-      ${mediaQueryHelper('large')} {
-        padding-top: 8rem;
-      }
-
     `
 }
 

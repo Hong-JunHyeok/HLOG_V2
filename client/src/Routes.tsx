@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { 
   BrowserRouter,
   Routes,
@@ -7,12 +7,9 @@ import {
 import Pages from '@/pages'
 import ErrorModal from './components/Modal/Error/ErrorModal';
 
-class RouteContainer extends React.Component {
-  state = {
-    isOpen: true
-  }
+const RouteContainer = () => {
+  const [notFoundErrorModalOpened, setNotFoundErrorModalOpened] = useState(true);
 
-  render() {
     return (
       <BrowserRouter>
         <Routes>
@@ -21,24 +18,26 @@ class RouteContainer extends React.Component {
           <Route path="post">
             <Route path=":postId" element={<Pages.PostView />} />
           </Route>
+          <Route path="user">
+            <Route path=":userId" element={<Pages.ProfilePage />} />
+          </Route>
           <Route path="write" element={<Pages.WritePostPage />} />
           <Route path="login" element={<Pages.LoginPage />} />
           <Route path="join" element={<Pages.JoinPage />} />
           <Route path="*" element={<>
-          {this.state.isOpen && 
-          <ErrorModal 
-            errorTitle='404'
-            errorMessage='존재하지 않는 주소입니다.'
-            onClose={() => this.setState(() => ({
-              isOpen: false
-            }))}
-          />
+          {notFoundErrorModalOpened && 
+            <ErrorModal 
+              errorTitle='404'
+              errorMessage='존재하지 않는 주소입니다.'
+              onClose={() => {
+                setNotFoundErrorModalOpened(false)
+              }}
+            />
           }
           </>} />
         </Routes>
       </BrowserRouter>
-    )
-  }
+    );
 }
 
 export default RouteContainer;

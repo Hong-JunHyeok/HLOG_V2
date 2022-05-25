@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { Editor, EditorState, DraftEditorCommand, RichUtils, getDefaultKeyBinding, convertFromRaw, convertToRaw } from 'draft-js';
+import { Editor, EditorState, DraftEditorCommand, RichUtils, getDefaultKeyBinding, convertFromRaw, convertToRaw, ContentState } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import 'draft-js/dist/Draft.css';
 import S from './StyledEditor';
 import useLocalStorage from '@/utils/useLocalStorage';
+import SuccessModal from '@/components/Modal/Success/SuccessModal';
+import customAxios from '@/utils/customAxios';
+import { convertToHTML } from 'draft-convert';
+import ErrorModal from '@/components/Modal/Error/ErrorModal';
 
 const styleMap = {
   CODE: {
@@ -19,10 +23,11 @@ const styleMap = {
 
 const HlogEditor = () => {
   const navigate = useNavigate();
-
   const [editorTitle, setEditorTitle, clearEditorTitle] = useLocalStorage('hlog_editor_title', '');
   const [editorContent, setEditorContent, clearEditorContent] = useLocalStorage('hlog_editor_content', '');
-
+  const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
+  const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
+  
   const titleInitialState = editorTitle ? 
   editorTitle : ""
 
@@ -41,11 +46,6 @@ const HlogEditor = () => {
     setEditorTitle(titleState);
     const content = editorState.getCurrentContent();
     setEditorContent(convertToRaw(content));
-  }
-
-  const resetSavedContent = () => {
-    clearEditorTitle();
-    clearEditorContent();
   }
 
   const toggleBlockType = (blockType: string) => changeEditorContent(
@@ -96,42 +96,83 @@ const HlogEditor = () => {
     return getDefaultKeyBinding(event);
   }
 
+  const resetSavedContent = () => {
+    clearEditorTitle();
+    clearEditorContent();
+  }
+
+  const createPost = async() => {
+    try{
+      const response = await customAxios.post('/post', {
+        postTitle: titleState,
+        postContent: convertToHTML({
+          blockToHTML: (block) => {
+            if (block.type === 'blockquote') {
+              return <p className='hlog_blockquote'/>;
+            }
+          },
+        })(editorState.getCurrentContent())
+      });
+
+      const { postId } = response.data.payload;
+      resetSavedContent();
+      navigate(`/post/${postId}`);
+    } catch(error) {
+      setCreatePostErrorModal(true);
+    }
+  }
+
   return (
-    <S.Container>
-      <S.Header>
-      <button className="exit" onClick={handleExit}>나가기</button>
-      <div className="utils">
-        <button className="normal-button" onClick={handleSaveContent}>저장</button>
-        <button className="normal-button post">포스트</button>
-      </div>
-      </S.Header>
-      <AutosizeableTextarea 
-        placeholder="제목을 입력하세요." 
-        value={titleState} 
-        onChange={(e) => setTitleState(e.target.value)}
-        className="title-input"
-      />
-      <div className='RichEditor-root'>
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={toggleBlockType}
+    <>
+      <S.Container>
+        <S.Header>
+        <button className="exit" onClick={handleExit}>나가기</button>
+        <div className="utils">
+          <button className="normal-button" onClick={handleSaveContent}>저장</button>
+          <button className="normal-button post" onClick={createPost}>포스트</button>
+        </div>
+        </S.Header>
+        <AutosizeableTextarea 
+          placeholder="제목을 입력하세요." 
+          value={titleState} 
+          onChange={(e) => setTitleState(e.target.value)}
+          className="title-input"
         />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={toggleInlineStyle}
+        <div className='RichEditor-root'>
+          <BlockStyleControls
+            editorState={editorState}
+            onToggle={toggleBlockType}
+          />
+          <InlineStyleControls
+            editorState={editorState}
+            onToggle={toggleInlineStyle}
+          />
+          <Editor 
+            customStyleMap={styleMap}
+            editorState={editorState}
+            handleKeyCommand={handleKeyCommand}
+            keyBindingFn={mapKeyToEditorCommand}
+            onChange={setEditorState}
+            blockStyleFn={blockStyleClassMap}
+            placeholder="내용을 입력해주세요..."
+            spellCheck
+          />
+        </div>
+      </S.Container>
+      {createPostSuccessModal && 
+        <SuccessModal
+          successTitle='포스트 성공'
+          onClose={() => setCreatePostSuccessModal(false)}
         />
-        <Editor 
-          customStyleMap={styleMap}
-          editorState={editorState}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={mapKeyToEditorCommand}
-          onChange={setEditorState}
-          blockStyleFn={blockStyleClassMap}
-          placeholder="내용을 입력해주세요..."
-          spellCheck
+      }
+
+      {createPostErrorModal &&
+        <ErrorModal 
+          errorTitle='에러 발생'
+          onClose={() => setCreatePostErrorModal(false)}
         />
-      </div>
-    </S.Container>
+      }
+    </>
     );
 };
 

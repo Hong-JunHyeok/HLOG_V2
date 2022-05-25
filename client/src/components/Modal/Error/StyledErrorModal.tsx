@@ -1,8 +1,6 @@
 import ColorSet from "@/styles/colorSet";
 import styled from "@emotion/styled";
 
-
-
 const StyledErrorModal = {
   Container: styled.div`
     display: flex;
@@ -29,7 +27,8 @@ const StyledErrorModal = {
     color: ${ColorSet['--white']};
     background-color: ${ColorSet['--red600']};
     padding: 1rem;
-    border-radius: 10px;
+    padding: .5rem 1rem;
+    border-radius: 5px;
     margin-top: 1rem;
     font-weight: bold;
   `

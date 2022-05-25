@@ -30,7 +30,6 @@ const JoinForm = () => {
       await customAxios.post('/auth/join', { email, password, username });
       handlePushLogin();
     } catch(error) {
-      // Error Modal
       setErrorMessage(error.response.data.message);
       setErrorModalOpened(true);
     }
@@ -112,9 +111,7 @@ const JoinForm = () => {
         {errorModalOpened && 
         <ErrorModal 
           errorTitle={errorMessage}
-          onClose={() => {
-            setErrorModalOpened(false)
-          }} />
+          onClose={() => setErrorModalOpened(false)} />
         }
       </>
   )

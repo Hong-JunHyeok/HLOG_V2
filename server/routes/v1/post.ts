@@ -176,7 +176,6 @@ router.delete(
           email: req.body.decodedUserPayload.email,
         },
       });
-      console.log(me);
 
       if (!me) {
         return setJsonResponser(res, {
@@ -192,10 +191,12 @@ router.delete(
         .where("user.id = :id", { id: me.id })
         .getOne();
 
+      console.log(me);
+
       if (me.id !== post.user.id) {
         return setJsonResponser(res, {
           code: 403,
-          message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
+          message: "자기가 쓴 게시글만 삭제할 수 있습니다.",
         });
       }
 

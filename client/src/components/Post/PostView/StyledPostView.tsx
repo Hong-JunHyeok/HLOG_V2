@@ -7,12 +7,10 @@ interface ThumbnailProps {
 }
 
 const StyledView = {
-  Container: styled.div`
-  `,
   HeadLine: styled.section<ThumbnailProps>`
     position: relative;
-    z-index: -1;
     padding: 5rem 1rem 1rem 1rem;
+    z-index: 0;
     height: 100vh;
     background-image: 
     linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3)),
@@ -20,7 +18,6 @@ const StyledView = {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-color: black;
     
     ${mediaQueryHelper('medium')} {
       padding-top: 6rem;
@@ -48,7 +45,32 @@ const StyledView = {
         font-size: 3.5rem;
       }
     }
+
+    .head_meta {
+      position: absolute;
+      left: 2rem;
+      color: ${ColorSet['--white']};
+      .username {
+        padding-right: 1rem;
+        border-right: 1px solid ${ColorSet['--white']};
+      }
+
+      .meta_btn {
+        margin-left: 1rem;
+        font-size: 1.1rem;
+        cursor: pointer;
+      }
+    }
   `,
+  Container: styled.div`
+    width: 100%;
+    background-color: ${ColorSet['--white']};
+  `,
+  Content: styled.div`
+    max-width: 1000px;
+    padding: 2rem 1rem;
+    margin: 0 auto;
+  `
 }
 
 export default StyledView;

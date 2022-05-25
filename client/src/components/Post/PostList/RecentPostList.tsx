@@ -1,7 +1,6 @@
 import React from 'react';
 import PostItem from "../PostItem";
 import S from './StyledPostList';
-import { Link } from 'react-router-dom';
 import usePosts from '@/hooks/usePosts';
 
 const RecentPostList: React.FunctionComponent = () => {
@@ -14,9 +13,6 @@ const RecentPostList: React.FunctionComponent = () => {
 
   return (
     <S.Container>
-      <S.PostMenu>
-        <MenuList />
-      </S.PostMenu>
         {posts.length 
         ? <S.PostList>{mappedPostList}</S.PostList>
         : <S.NoContent />
@@ -26,14 +22,3 @@ const RecentPostList: React.FunctionComponent = () => {
 }
 
 export default RecentPostList;
-
-const MenuList: React.FC = () => (
-  <React.Fragment>
-    <li>
-      <Link to="/">인기 게시글</Link>
-    </li>
-    <li>
-      <Link to="/recent">최근 게시글</Link>
-    </li>
-  </React.Fragment>
-)
