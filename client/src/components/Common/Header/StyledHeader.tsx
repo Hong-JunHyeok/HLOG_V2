@@ -19,6 +19,7 @@ const StyledHeader = {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     padding: 0 1rem;
     transition: 0.4s;
+    z-index: 9999;
 
     ${mediaQueryHelper('medium')} {
       height: ${CssVariable['--header-height-mid']};

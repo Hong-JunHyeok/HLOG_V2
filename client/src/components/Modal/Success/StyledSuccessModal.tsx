@@ -35,8 +35,8 @@ const StyledSuccessModal = {
     display: flex;
     color: ${ColorSet['--white']};
     background-color: ${ColorSet['--primary']};
-    padding: 1rem;
-    border-radius: 10px;
+    padding: .5rem 1rem;
+    border-radius: 5px;
     margin-top: 1rem;
     font-weight: bold;
   `

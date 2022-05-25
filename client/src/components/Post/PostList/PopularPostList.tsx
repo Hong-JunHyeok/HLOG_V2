@@ -14,9 +14,6 @@ const PopularPostList: React.FunctionComponent = () => {
 
   return (
     <S.Container>
-      <S.PostMenu>
-        <MenuList />
-      </S.PostMenu>
         {posts.length 
         ? <S.PostList>{mappedPostList}</S.PostList>
         : <S.NoContent />
@@ -26,14 +23,3 @@ const PopularPostList: React.FunctionComponent = () => {
 }
 
 export default PopularPostList;
-
-const MenuList: React.FC = () => (
-  <React.Fragment>
-    <li>
-      <Link to="/">인기 게시글</Link>
-    </li>
-    <li>
-      <Link to="/recent">최근 게시글</Link>
-    </li>
-  </React.Fragment>
-)

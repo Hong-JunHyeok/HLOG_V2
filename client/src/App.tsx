@@ -7,6 +7,8 @@ import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
 import ErrorBoundary from "@/components/Common/ErrorBoundary";
 import { store } from '@/modules';
+import useLocalStorage from "@/utils/useLocalStorage";
+import customAxios from "@/utils/customAxios";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,27 +18,29 @@ const queryClient = new QueryClient({
   }
 });
 
-
-class App extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <StrictMode>
-          <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-              <ResetStyle />
-              <ErrorBoundary fallback={<>Error</>}>
-                <Suspense fallback={<>Loading</>}>
-                  <RouteContainer />
-                </Suspense>
-              </ErrorBoundary>
-              <ReactQueryDevtools />
-            </Provider>
-          </QueryClientProvider>
-        </StrictMode>
-      </React.Fragment>
-    );
+const App = () => {
+  const [token] = useLocalStorage('hlog_token', "");
+  if(token) {
+    customAxios.defaults.headers['authorization'] = token;
   }
+
+  return (
+    <React.Fragment>
+      <StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <ResetStyle />
+            <ErrorBoundary fallback={<>Error</>}>
+              <Suspense fallback={<>Loading</>}>
+                <RouteContainer />
+              </Suspense>
+            </ErrorBoundary>
+            <ReactQueryDevtools />
+          </Provider>
+        </QueryClientProvider>
+      </StrictMode>
+    </React.Fragment>
+  );
 }
 
 export default App;

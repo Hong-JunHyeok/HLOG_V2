@@ -5,24 +5,29 @@ interface SuccessModalProps {
   onClose: () => void;
   confirmFunction?: () => void;
   successTitle: string;
-  successMessage: string;
+  successMessage?: string;
 }
 
-const SuccessModalProps: React.FC<SuccessModalProps> = ({ 
+const SuccessModal: React.FC<SuccessModalProps> = ({ 
   onClose,
   successTitle,
   successMessage,
   confirmFunction  
  }) => {
+  console.log("Render");
   return (
     <Modal>
-      <span>{successTitle}</span>
-      <p>{successMessage}</p>
+      <StyledSuccessModal.Container>
+        <div className="info">
+          <span className="title">{successTitle}</span>
+          {successMessage && <p className="message">{successMessage}</p>} 
+        </div>
 
-      {confirmFunction && <StyledSuccessModal.ConfirmButton onClick={confirmFunction}>확인</StyledSuccessModal.ConfirmButton>}
-      <StyledSuccessModal.CloseButton onClick={onClose}>닫기</StyledSuccessModal.CloseButton>
+        {confirmFunction && <StyledSuccessModal.ConfirmButton onClick={confirmFunction}>확인</StyledSuccessModal.ConfirmButton>}
+        <StyledSuccessModal.CloseButton onClick={onClose}>닫기</StyledSuccessModal.CloseButton>
+      </StyledSuccessModal.Container>
     </Modal>
   )
 }
 
-export default SuccessModalProps;
+export default SuccessModal;

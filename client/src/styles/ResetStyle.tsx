@@ -53,6 +53,7 @@ const ResetStyle = () => {
     }
     ol, ul, li {
         list-style: none;
+        line-height: 1.5rem;
     }
     table {
         border-collapse: collapse;
@@ -73,22 +74,36 @@ const ResetStyle = () => {
     }
 
     h1 {
-        font-size: 2em
+        font-size: 2em;
+        line-height: 3rem;
     }
     h2 {
         font-size: 1.4em;
+        line-height: 2.5rem;
     }
     h3 {
         font-size: 1.17em;
+        line-height: 2rem;
     }
     h4 {
         font-size: 1em;
+        line-height: 1.5rem;
     }
     h5 {
         font-size: .83em;
+        line-height: 1.3rem;
     }
     h6 {
         font-size: .67em;
+        line-height: .5rem;
+    }
+
+    p {
+        line-height: 2rem;
+    }
+
+    strong {
+        font-weight: bold;
     }
 
     .hlog_blockquote {
@@ -103,6 +118,17 @@ const ResetStyle = () => {
         color: ${ColorSet['--primary']};
         font-weight: bold;
         text-decoration: none;
+    }   
+
+    em {
+        font-style: italic;
+    }
+
+    code {
+        background-color: rgba(0, 0, 0, 0.05);
+        font-family: Inconsolata, Menlo, Consolas, monospace;
+        font-size: 16px;
+        padding: 2px;
     }
   `} />
 }

@@ -1,17 +1,14 @@
 import React from "react";
-import PostView from "@/components/Post/PostView";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 
-
-const PostViewPage = () => {
+const ProfilePage = () => {
 	return (
 		<React.Fragment>
 			<Header />
-			<PostView />
-			<Footer />
+      <Footer />
 		</React.Fragment>
 	);
-};
+}
 
-export default PostViewPage;
+export default ProfilePage;

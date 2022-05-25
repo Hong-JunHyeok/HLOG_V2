@@ -8,6 +8,7 @@ import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useAuth from "@/hooks/useAuth";
 import useLocationPush from "@/hooks/useLocationPush";
+import useMyInfo from "@/hooks/useMyInfo";
 
 const Header: React.FC = () => {
   const auth = useAuth();
@@ -22,8 +23,8 @@ const Header: React.FC = () => {
   const menuList = useMemo(() => (
     [
       {
-        title: '내 게시글',
-        link: '/my-post'
+        title: '내 프로필',
+        link: '/user'
       },
       {
         title: '새 글 작성',
