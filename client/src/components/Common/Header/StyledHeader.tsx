@@ -99,17 +99,8 @@ const StyledHeader = {
     align-items: center;
     cursor: pointer;
     svg {
-      width: 30px;
-      height: 30px;
-      ${mediaQueryHelper('medium')} {
-        width: 40px;
-        height: 40px; 
-      }
-
-      ${mediaQueryHelper('large')} {
-        width: 50px;
-        height: 50px;
-      }
+      width: 40px;
+      height: 40px; 
     }
 
     &::after {

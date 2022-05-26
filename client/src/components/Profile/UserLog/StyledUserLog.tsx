@@ -8,9 +8,9 @@ interface ProfileProps {
 
 const StyledUserLog = {
   Container: styled.section`
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 20px;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    box-shadow: rgba(17, 12, 46, 0.03) 0px 48px 100px 0px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -18,28 +18,28 @@ const StyledUserLog = {
     background-color: ${ColorSet['--white']};
   `,
   ProfileContainer: styled.div`
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
 
     ${mediaQueryHelper('medium')} {
-      width: 80px;
-      height: 80px; 
+      width: 70px;
+      height: 70px; 
     }
 
     ${mediaQueryHelper('large')} {
-      width: 100px;
-      height: 100px; 
+      width: 90px;
+      height: 90px; 
     }
   `,
   Profile: styled.figure<ProfileProps>`
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    border-radius: 70px;
+    width: 100%;
+    height: 100%;
     background-image: url(${(props) => props.profileUrl});
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-
+/* 
     ${mediaQueryHelper('medium')} {
       width: 80px;
       height: 80px; 
@@ -48,7 +48,7 @@ const StyledUserLog = {
     ${mediaQueryHelper('large')} {
       width: 100px;
       height: 100px; 
-    }
+    } */
   `,
   Meta: styled.div`
     display: flex;

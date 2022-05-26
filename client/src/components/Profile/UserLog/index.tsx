@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import useUserInfo from '@/hooks/useUserInfo';
 import StyledUserLog from './StyledUserLog';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
+import SEOHelmet from '@/components/Common/SEOHelmet';
 
 const UserLog = () => {
   const { userId } = useParams();
@@ -13,6 +14,9 @@ const UserLog = () => {
   } = data.user;
 
   return <>
+    <SEOHelmet
+      title={`${username}님의 프로필 | HLOG`}
+    />
     <StyledUserLog.Container>
       <StyledUserLog.ProfileContainer>
         {profileUrl ? 

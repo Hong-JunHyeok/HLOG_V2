@@ -1,3 +1,4 @@
+import SEOHelmet from "@/components/Common/SEOHelmet";
 import styled from "@emotion/styled";
 import React from "react";
 import JoinForm from "../../components/Auth/JoinForm";
@@ -5,6 +6,9 @@ import JoinForm from "../../components/Auth/JoinForm";
 export default function Join() {
 	return (
 		<React.Fragment>
+      <SEOHelmet
+				title="HLOG | 회원가입"
+			/>
 			<StyledJoinPage.Container>
       	<JoinForm />
 			</StyledJoinPage.Container>

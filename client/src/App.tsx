@@ -1,6 +1,7 @@
 import React, { Suspense, StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { HelmetProvider } from 'react-helmet-async';
 
 import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
@@ -21,7 +22,8 @@ const App = () => {
   return (
     <React.Fragment>
       <StrictMode>
-        <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
             <ResetStyle />
             <ErrorBoundary fallback={<>Error</>}>
               <Suspense fallback={<>Loading</>}>
@@ -31,7 +33,8 @@ const App = () => {
               </Suspense>
             </ErrorBoundary>
             <ReactQueryDevtools />
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </HelmetProvider>
       </StrictMode>
     </React.Fragment>
   );

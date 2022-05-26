@@ -9,7 +9,10 @@ const StyledPostList = {
   PostList: styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    column-gap: 1rem;
+
+    margin-bottom: 1.4rem;
+    column-gap: 1.4rem;
+    row-gap: 1.4rem;
 
     ${mediaQueryHelper('medium')} {
       grid-template-columns: repeat(2, 1fr)

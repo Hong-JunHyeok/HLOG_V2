@@ -15,7 +15,6 @@ const StyledPostItem = {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;;
     transition: 0.3s;
     cursor: pointer;
 
