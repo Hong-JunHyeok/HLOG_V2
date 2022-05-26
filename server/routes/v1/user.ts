@@ -46,7 +46,9 @@ router.get("/me", accessTokenValidator, async (req, res, next) => {
     setJsonResponser(res, {
       code: 200,
       message: "내 정보 조회성공",
-      payload: me,
+      payload: {
+        user: me
+      },
     });
   } catch (error) {
     next(error);
