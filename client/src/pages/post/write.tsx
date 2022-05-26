@@ -2,10 +2,14 @@ import React from "react";
 import Editor from "@/components/Post/Editor";
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
+import SEOHelmet from "@/components/Common/SEOHelmet";
 
 const WritePostPage = () => {
   return (
     <React.Fragment>
+      <SEOHelmet
+				title="HLOG | 글 작성"
+			/>
       <StyledWritePostPage.Container>
         <StyledWritePostPage.EditorContainer>
           <Editor />

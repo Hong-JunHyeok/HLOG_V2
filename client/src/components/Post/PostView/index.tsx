@@ -6,6 +6,7 @@ import S from './StyledPostView';
 
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import useInterceptedAxios from '@/hooks/useInterceptedAxios';
+import SEOHelmet from '@/components/Common/SEOHelmet';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<"postId">();
@@ -39,6 +40,9 @@ const PostView: React.FunctionComponent = () => {
 
   return (
     <S.Container>
+      <SEOHelmet
+				title={`${postTitle} | ${username}님의 포스트`}
+			/>
       <S.HeadLine thumbnailUrl={postThumnail || ThumbnailPlaceholder}>
         <h1>{postTitle}</h1>
 
