@@ -1,8 +1,8 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { UserType } from '@/@types/user';
-import useInterceptedAxios from './useInterceptedAxios';
+import useInterceptedAxios from '../useInterceptedAxios';
 import useLocalStorage from '@/utils/useLocalStorage';
-import useAuth from './useAuth';
+import useAuth from '../useAuth';
 
 interface QueryResult {
   user: UserType;
@@ -17,14 +17,11 @@ export default function useMyInfo(): UseQueryResult<QueryResult> {
   const { loginDispatch } = useAuth();
 
   return useQuery(
-    ['user_info'],
+    ['my_info'],
     () => getMyInfo(),
     {
       enabled: !!hlogToken,
-      onSuccess: () => {
-        console.log('Render');
-        loginDispatch();
-      },
+      onSuccess: loginDispatch,
     },
   );
 }

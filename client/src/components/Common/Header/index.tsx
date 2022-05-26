@@ -7,7 +7,7 @@ import S from './StyledHeader';
 import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useLogout from '@/hooks/useLogout';
-import useMyInfo from '@/hooks/useMyInfo';
+import useMyInfo from '@/hooks/queries/useMyInfo';
 import useAuth from '@/hooks/useAuth';
 
 const Header: React.FC = () => {

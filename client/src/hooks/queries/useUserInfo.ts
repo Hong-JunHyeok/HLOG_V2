@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { UserType } from '@/@types/user';
-import useInterceptedAxios from './useInterceptedAxios';
+import useInterceptedAxios from '../useInterceptedAxios';
 
 interface QueryResult {
   user: UserType

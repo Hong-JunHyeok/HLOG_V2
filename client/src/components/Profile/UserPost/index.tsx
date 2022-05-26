@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useUserPosts from '@/hooks/useUserPost';
+import useUserPosts from '@/hooks/queries/useUserPost';
 import PostList from '@/components/Post/PostList';
 import StyledUserPost from './StyledUserPost';
 

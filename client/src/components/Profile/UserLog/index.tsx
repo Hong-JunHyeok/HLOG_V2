@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import useUserInfo from '@/hooks/useUserInfo';
+import useUserInfo from '@/hooks/queries/useUserInfo';
 import StyledUserLog from './StyledUserLog';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import SEOHelmet from '@/components/Common/SEOHelmet';
