@@ -1,21 +1,8 @@
-import React from "react";
-import LoginForm from "@/components/Auth/LoginForm";
-
+import React from 'react';
 import styled from '@emotion/styled';
-import SEOHelmet from "@/components/Common/SEOHelmet";
+import LoginForm from '@/components/Auth/LoginForm';
 
-export default function Login() {
-	return (
-		<React.Fragment>
-      <SEOHelmet
-				title="HLOG | 로그인"
-			/>
-      <StyledLoginPage.Container>
-        <LoginForm />
-      </StyledLoginPage.Container>
-		</React.Fragment>
-	);
-}
+import SEOHelmet from '@/components/Common/SEOHelmet';
 
 const StyledLoginPage = {
   Container: styled.main`
@@ -24,5 +11,18 @@ const StyledLoginPage = {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    `
+    `,
+};
+
+export default function Login() {
+  return (
+    <>
+      <SEOHelmet
+        title="HLOG | 로그인"
+      />
+      <StyledLoginPage.Container>
+        <LoginForm />
+      </StyledLoginPage.Container>
+    </>
+  );
 }

@@ -1,27 +1,11 @@
-import { useEffect, useState } from 'react';
-import { 
+import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
 } from 'react-router-dom';
-import Pages from '@/pages'
-import ErrorModal from './components/Modal/Error/ErrorModal';
-import useUser from "./hooks/useUser";
-import useInterceptedAxios from "./hooks/useInterceptedAxios";
+import Pages from '@/pages';
 
-const RouteContainer = () => {
-  const [notFoundErrorModalOpened, setNotFoundErrorModalOpened] = useState(true);
-  const customAxios = useInterceptedAxios();
-  const { setUser } = useUser();
-
-  useEffect(() => {
-    const fetchMyInfo = async () => await customAxios.get('/user/me');
-
-    fetchMyInfo().then((response) => {
-      setUser(response.data.payload);
-    })
-  }, [])
-
+function RouteContainer() {
   return (
     <BrowserRouter>
       <Routes>
@@ -33,20 +17,14 @@ const RouteContainer = () => {
         <Route path="user">
           <Route path=":userId" element={<Pages.ProfilePage />} />
         </Route>
+        <Route path="setting" element={<Pages.SettingPage />} />
         <Route path="write" element={<Pages.WritePostPage />} />
         <Route path="login" element={<Pages.LoginPage />} />
         <Route path="join" element={<Pages.JoinPage />} />
-        <Route path="*" element={<>
-        {notFoundErrorModalOpened && 
-          <ErrorModal 
-            errorTitle='404'
-            errorMessage='존재하지 않는 주소입니다.'
-            onClose={() => {
-              setNotFoundErrorModalOpened(false)
-            }}
-          />
-        }
-        </>} />
+        <Route
+          path="*"
+          element={<>Not Found</>}
+        />
       </Routes>
     </BrowserRouter>
   );

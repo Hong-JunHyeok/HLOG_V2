@@ -6,20 +6,22 @@ interface ErrorBoundaryPropType {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryPropType> {
-  state = { hasError: false, error: null };
-  static getDerivedStateFromError(error: Error) {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
     return {
       hasError: true,
-      error
     };
   }
 
   render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
+    const { hasError } = this.state;
+    const { fallback, children } = this.props;
+    if (hasError) {
+      return fallback;
     }
-    return this.props.children;
+    return children;
   }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

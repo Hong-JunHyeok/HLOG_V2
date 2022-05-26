@@ -1,25 +1,8 @@
-import React from "react";
-import Editor from "@/components/Post/Editor";
 import styled from '@emotion/styled';
+import { Suspense } from 'react';
+import Editor from '@/components/Post/Editor';
 import ColorSet from '@/styles/colorSet';
-import SEOHelmet from "@/components/Common/SEOHelmet";
-
-const WritePostPage = () => {
-  return (
-    <React.Fragment>
-      <SEOHelmet
-				title="HLOG | 글 작성"
-			/>
-      <StyledWritePostPage.Container>
-        <StyledWritePostPage.EditorContainer>
-          <Editor />
-        </StyledWritePostPage.EditorContainer>
-      </StyledWritePostPage.Container>
-    </React.Fragment>
-  );
-}
-
-export default WritePostPage;
+import SEOHelmet from '@/components/Common/SEOHelmet';
 
 const StyledWritePostPage = {
   Container: styled.section`
@@ -29,5 +12,20 @@ const StyledWritePostPage = {
   `,
   EditorContainer: styled.main`
     height: 100%;
-  `
-}
+  `,
+};
+
+const WritePostPage = () => (
+  <Suspense>
+    <SEOHelmet
+      title="HLOG | 글 작성"
+    />
+    <StyledWritePostPage.Container>
+      <StyledWritePostPage.EditorContainer>
+        <Editor />
+      </StyledWritePostPage.EditorContainer>
+    </StyledWritePostPage.Container>
+  </Suspense>
+);
+
+export default WritePostPage;

@@ -1,19 +1,21 @@
-import useLocalStorage from "@/utils/useLocalStorage";
-import useInterceptedAxios from "./useInterceptedAxios";
-import useUser from "./useUser";
+import useLocalStorage from '@/utils/useLocalStorage';
+import useInterceptedAxios from './useInterceptedAxios';
+import useAuth from './useAuth';
 
 const useLogout = () => {
-  const [ hlogToken, setHlogToken, removeToken] = useLocalStorage('hlog_access_token','');
-  const { setUser } = useUser();
+  const {
+    remove: removeToken,
+  } = useLocalStorage('hlog_access_token', '');
   const customAxios = useInterceptedAxios();
+  const { logoutDispatch } = useAuth();
 
   const logout = async () => {
     await customAxios.post('/auth/logout');
+    logoutDispatch();
     removeToken();
-    setUser(null);
   };
 
   return logout;
-}
+};
 
 export default useLogout;

@@ -1,16 +1,13 @@
-
-import { PostType } from "@/@types/post";
-import { useQuery, UseQueryResult } from "react-query";
-import useInterceptedAxios from "./useInterceptedAxios";
+import { useQuery, UseQueryResult } from 'react-query';
+import { PostType } from '@/@types/post';
+import useInterceptedAxios from './useInterceptedAxios';
 
 interface QueryResult {
   post: PostType;
 }
 
-export default function usePost (id: number): UseQueryResult<QueryResult> {
+export default function usePost(postId: number): UseQueryResult<QueryResult> {
   const customAxios = useInterceptedAxios();
-  const getPost = (id: number) => {
-    return customAxios.get(`/post/${id}`);
-  }
-  return useQuery([`post_view_${id}`, id], () => getPost(id));
+  const getPost = (id: number) => customAxios.get(`/post/${id}`);
+  return useQuery(['post_view', postId], () => getPost(postId));
 }

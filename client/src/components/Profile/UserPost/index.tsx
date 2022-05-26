@@ -1,10 +1,10 @@
 import React from 'react';
-import useUserPosts from '@/hooks/useUserPost';
 import { useParams } from 'react-router-dom';
+import useUserPosts from '@/hooks/useUserPost';
 import PostList from '@/components/Post/PostList';
 import StyledUserPost from './StyledUserPost';
 
-const UserPost = () => {
+function UserPost() {
   const { userId } = useParams();
   const { data: { posts } } = useUserPosts(+userId);
 

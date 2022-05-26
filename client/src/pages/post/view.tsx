@@ -1,17 +1,14 @@
-import React from "react";
-import Header from "@/components/Common/Header";
+import { Suspense } from 'react';
+import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
-import PostView from "@/components/Post/PostView";
+import PostView from '@/components/Post/PostView';
 
-
-const PostViewPage = (props) => {
-	return (
-		<React.Fragment>
-			<Header />
-			<PostView />
-			<Footer />
-		</React.Fragment>
-	);
-};
+const PostViewPage = () => (
+  <Suspense>
+    <Header />
+    <PostView />
+    <Footer />
+  </Suspense>
+);
 
 export default PostViewPage;

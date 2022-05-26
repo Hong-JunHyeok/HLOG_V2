@@ -5,13 +5,15 @@ import PostView from './post/view';
 import ProfilePage from './profile';
 import JoinPage from './auth/join';
 import LoginPage from './auth/login';
+import SettingPage from './setting';
 
 export default {
-	RecentPage,
-	PopularPage,
-	WritePostPage,
-	PostView,
-	JoinPage,
-	LoginPage,
-	ProfilePage,
-}
+  RecentPage,
+  PopularPage,
+  WritePostPage,
+  PostView,
+  JoinPage,
+  LoginPage,
+  ProfilePage,
+  SettingPage,
+};

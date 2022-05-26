@@ -1,5 +1,4 @@
 import React from 'react';
-import StyledPostList from '@/components/Post/PostList/StyledPostList';
 import S from './StyledFallbackLoader';
 
 const SkeletonPost = () => (
@@ -12,23 +11,19 @@ const SkeletonPost = () => (
     </S.Content>
     <S.Meta />
   </S.SkeletonView>
-)
+);
 
-const PostFallbackLoader: React.FC = () => {
-  return (
-    <StyledPostList.Container>
-      <S.PostList>
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-        <SkeletonPost />
-      </S.PostList>
-    </StyledPostList.Container>
-  );
-}
+const PostFallbackLoader: React.FC = () => (
+  <S.PostList>
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+    <SkeletonPost />
+  </S.PostList>
+);
 
 export default PostFallbackLoader;
