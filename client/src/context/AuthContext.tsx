@@ -1,8 +1,9 @@
+import type { UserType } from "@/@types/user";
 import { createContext, Dispatch, useState } from "react";
 
 type Context = {
-  user: User;
-  setUser: Dispatch<React.SetStateAction<User>>;
+  user: UserType;
+  setUser: Dispatch<React.SetStateAction<UserType>>;
 }
 const AuthContext = createContext<Context>({
   user: null,
@@ -10,7 +11,7 @@ const AuthContext = createContext<Context>({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<UserType>(null);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>

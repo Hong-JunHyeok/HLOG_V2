@@ -1,4 +1,4 @@
-import { UserType } from "./User";
+import type { UserType } from "./User";
 
 export interface ChatType {
 	id: number;

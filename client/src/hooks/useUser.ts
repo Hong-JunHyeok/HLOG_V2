@@ -1,8 +1,9 @@
 import { Dispatch, useContext } from 'react';
 import AuthContext from '@/context/AuthContext';
+import type { UserType } from '@/@types/user';
 
 type Context = {
-  user: User;
+  user: UserType;
   setUser: Dispatch<any>;
 }
 

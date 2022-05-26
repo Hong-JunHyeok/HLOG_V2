@@ -162,6 +162,37 @@ router.get(
   }
 );
 
+router.get(
+  "/user/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const postRepository = getRepository(Post);
+    const userId = +req.params.userId
+
+    try {
+      const posts = await postRepository
+        .find({
+          where: {
+            user: userId
+          },
+        
+          relations: ['user']
+        });
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "유저 포스트 조회 성공",
+        payload: {
+          posts,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
 router.delete(
   "/:postId",
   accessTokenValidator,
@@ -220,6 +251,8 @@ router.delete(
     }
   }
 );
+
+
 
 router.patch(
   "/thumnail/:postId",
@@ -293,7 +326,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     setJsonResponser(res, {
       code: 200,
       message: "포스트 조회성공",
-      payload: post,
+      payload: { post },
     });
   } catch (error) {
     next(error);

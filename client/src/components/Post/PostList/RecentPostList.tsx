@@ -1,24 +1,19 @@
 import React from 'react';
-import PostItem from "../PostItem";
-import S from './StyledPostList';
 import usePosts from '@/hooks/usePosts';
+import PostList from '.';
+import styled from '@emotion/styled';
 
 const RecentPostList: React.FunctionComponent = () => {
   const { data } = usePosts('RECENT');
-  const posts = data.data.payload.posts;
+  const posts = data.posts;
 
-  const mappedPostList = posts.map((postItem) => 
-    <PostItem key={postItem.id} post={postItem} />
-  )
+  return <StyledRecentList.Container><PostList posts={posts}/></StyledRecentList.Container>;
+}
 
-  return (
-    <S.Container>
-        {posts.length 
-        ? <S.PostList>{mappedPostList}</S.PostList>
-        : <S.NoContent />
-        }
-    </S.Container>
-  )
+const StyledRecentList = {
+  Container: styled.section`
+    padding: 0 1rem;
+  `
 }
 
 export default RecentPostList;

@@ -17,14 +17,12 @@ const StyledPostItem = {
     flex-direction: column;
     margin-bottom: 2rem;;
     transition: 0.3s;
-    padding: 0 1rem;
+    cursor: pointer;
 
     ${mediaQueryHelper('medium')} {
-      width: 50%;
-    }
-
-    ${mediaQueryHelper('large')} {
-      width: 33.333333%;
+      &:hover {
+        transform: translateY(-5px);
+      }
     }
   `,
   Thumbnail: styled.figure<ThumbnailProps>`
@@ -68,38 +66,20 @@ const StyledPostItem = {
     p {
       font-weight: lighter;
     }
-    .view-button {
-      margin-left: auto;
-      display: flex;
-
-      button {
-        background-color: ${ColorSet['--grey800']};
-        color: ${ColorSet['--white']};
-        padding: .5rem;
-        &:first-of-type {
-          border-radius: 8px;
-          padding: 0 .5rem;
-          margin-right: 1rem;
-          ${mediaQueryHelper('medium')} {
-            margin-right: 0;
-            border-right: 1px solid ${ColorSet['--whiteOpacity300']};
-            border-radius: 8px 0 0 8px;
-          }
-        }
-        &:last-of-type {
-          font-size: .8rem;
-          border-radius: 8px;
-
-          ${mediaQueryHelper('medium')} {
-            margin-right: 0;
-            border-right: 1px solid ${ColorSet['--whiteOpacity300']};
-            border-radius: 0 8px 8px 0; 
-          }
-        }
-      }
-    }
+  `,
+  Like: styled.div`
+    margin-left: auto;
+    display: flex;
+  `,
+  ProfileContainer: styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
   `,
   Figure: styled.figure<ProfileProps>`
+    width: 100%;
+    height: 100%;
     background-image: url(${(props) => props.profileUrl});
     background-repeat: no-repeat;
     background-size: cover;

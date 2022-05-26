@@ -1,4 +1,4 @@
-import { UserType } from "./User";
+import type { UserType } from "./User";
 import { ReplyType } from "./Reply";
 
 export interface CommentType {

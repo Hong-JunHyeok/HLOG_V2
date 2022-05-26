@@ -1,10 +1,11 @@
-import type { UserType } from "./User";
+import type { UserType } from "./user";
 
 export interface PostType {
   id: number;
   postTitle: string;
   postThumnail: string;
   postContent: string;
-  createdAt: Date;
+  createdAt: string;
+  updatedAt: string;
   user: UserType;
 }
