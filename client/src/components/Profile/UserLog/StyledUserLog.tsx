@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import mediaQueryHelper from '@/styles/mediaHelper'
+import mediaQueryHelper from '@/styles/mediaHelper';
 import ColorSet from '@/styles/colorSet';
 
 interface ProfileProps {
@@ -39,16 +39,6 @@ const StyledUserLog = {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-/* 
-    ${mediaQueryHelper('medium')} {
-      width: 80px;
-      height: 80px; 
-    }
-
-    ${mediaQueryHelper('large')} {
-      width: 100px;
-      height: 100px; 
-    } */
   `,
   Meta: styled.div`
     display: flex;

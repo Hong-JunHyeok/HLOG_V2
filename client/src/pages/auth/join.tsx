@@ -1,20 +1,7 @@
-import SEOHelmet from "@/components/Common/SEOHelmet";
-import styled from "@emotion/styled";
-import React from "react";
-import JoinForm from "../../components/Auth/JoinForm";
-
-export default function Join() {
-	return (
-		<React.Fragment>
-      <SEOHelmet
-				title="HLOG | 회원가입"
-			/>
-			<StyledJoinPage.Container>
-      	<JoinForm />
-			</StyledJoinPage.Container>
-		</React.Fragment>
-	);
-}
+import React from 'react';
+import styled from '@emotion/styled';
+import SEOHelmet from '@/components/Common/SEOHelmet';
+import JoinForm from '../../components/Auth/JoinForm';
 
 const StyledJoinPage = {
   Container: styled.main`
@@ -23,5 +10,18 @@ const StyledJoinPage = {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    `
+    `,
+};
+
+export default function Join() {
+  return (
+    <>
+      <SEOHelmet
+        title="HLOG | 회원가입"
+      />
+      <StyledJoinPage.Container>
+        <JoinForm />
+      </StyledJoinPage.Container>
+    </>
+  );
 }

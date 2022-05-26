@@ -1,6 +1,6 @@
-import { UserType } from "@/@types/user";
-import { useQuery, UseQueryResult } from "react-query";
-import useInterceptedAxios from "./useInterceptedAxios";
+import { useQuery, UseQueryResult } from 'react-query';
+import { UserType } from '@/@types/user';
+import useInterceptedAxios from './useInterceptedAxios';
 
 interface QueryResult {
   user: UserType
@@ -9,8 +9,6 @@ interface QueryResult {
 export default function useUserInfo(userId: number): UseQueryResult<QueryResult> {
   const customAxios = useInterceptedAxios();
 
-  const getUserInfo = (id: number) => {
-    return customAxios.get(`/user/${id}`);
-  }
-  return useQuery(`user_info`, () => getUserInfo(userId));
+  const getUserInfo = (id: number) => customAxios.get(`/user/${id}`);
+  return useQuery('user_info', () => getUserInfo(userId));
 }

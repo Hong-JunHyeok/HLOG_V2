@@ -1,11 +1,11 @@
-import React, { Ref, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-function useOutsideRef(closeCallback: Function) {
+function useOutsideRef(closeCallback: () => void) {
   const ref = useRef(null);
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
-      if(ref.current && !ref.current.contains((event.target as Node))) closeCallback();
+      if (ref.current && !ref.current.contains((event.target as Node))) closeCallback();
     }
 
     document.addEventListener('mousedown', handleOutsideClick);

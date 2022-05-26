@@ -1,43 +1,42 @@
-import React, { Suspense, StrictMode } from "react";
+import { StrictMode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
+import { AxiosResponse } from 'axios';
 import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
-import ErrorBoundary from "@/components/Common/ErrorBoundary";
-import { AuthProvider } from "./context/AuthContext";
-import { AxiosResponse } from 'axios';
+import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import rootReducer from './modules';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      select: (response: AxiosResponse) => response.data.payload
-    }
-  }
+      useErrorBoundary: true,
+      select: (response: AxiosResponse) => response.data.payload,
+    },
+  },
 });
 
-const App = () => {
-  return (
-    <React.Fragment>
-      <StrictMode>
-        <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            <ResetStyle />
-            <ErrorBoundary fallback={<>Error</>}>
-              <Suspense fallback={<>Loading</>}>
-                <AuthProvider>
-                  <RouteContainer />
-                </AuthProvider>
-              </Suspense>
-            </ErrorBoundary>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </HelmetProvider>
-      </StrictMode>
-    </React.Fragment>
-  );
-}
+const store = createStore(rootReducer);
+const App = () => (
+
+  <StrictMode>
+    <HelmetProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ResetStyle />
+          <ErrorBoundary fallback={<>Error</>}>
+            <RouteContainer />
+          </ErrorBoundary>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </Provider>
+    </HelmetProvider>
+  </StrictMode>
+);
 
 export default App;

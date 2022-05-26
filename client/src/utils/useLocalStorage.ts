@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -6,29 +6,27 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
       const item = localStorage.getItem(key);
 
       return item ? JSON.parse(item) : initialValue;
-    } catch(error) {
-      console.error(error);
+    } catch (error) {
       return initialValue;
     }
   });
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore = 
-        value instanceof Function ? value(storedValue) : value;
-      
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+
       setStoredValue(valueToStore);
-      localStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch(error) {
-      console.error(error);
+      return localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      return error;
     }
-  }
+  };
 
   const remove = () => {
     localStorage.removeItem(key);
-  }
+  };
 
-  return [storedValue, setValue, remove];
-}
+  return { storedValue, setValue, remove };
+};
 
 export default useLocalStorage;

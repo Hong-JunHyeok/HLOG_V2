@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface PropTypes {
-  placeholder?: string;  
+  placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   className?: string;
@@ -11,15 +11,15 @@ const AutosizeableTextarea: React.FunctionComponent<PropTypes> = (props) => {
   const textAreaRef = React.useRef<null | HTMLTextAreaElement>(null);
 
   React.useEffect(() => {
-    if(textAreaRef) {
+    if (textAreaRef) {
       const { current: textareaEl } = textAreaRef;
       textareaEl.style.height = 'auto';
-      let height = textareaEl.scrollHeight;
+      const height = textareaEl.scrollHeight;
       textareaEl.style.height = `${height}px`;
     }
   }, [props.value, textAreaRef]);
 
-  return <textarea {...props} ref={textAreaRef}></textarea>
-}
+  return <textarea {...props} ref={textAreaRef} />;
+};
 
 export default AutosizeableTextarea;

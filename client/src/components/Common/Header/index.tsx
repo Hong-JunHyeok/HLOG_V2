@@ -1,79 +1,79 @@
-import React, { useMemo } from "react";
-import { Link } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import MenuList from "@/components/Common/MenuList";
+import MenuList from '@/components/Common/MenuList';
 import useToggle from '@/hooks/useToggle';
 import S from './StyledHeader';
 import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
-import useLocationPush from "@/hooks/useLocationPush";
-import useLogout from "@/hooks/useLogout";
-import useMyInfo from "@/hooks/useMyInfo";
-import useUser from "@/hooks/useUser";
+import useLogout from '@/hooks/useLogout';
+import useMyInfo from '@/hooks/useMyInfo';
+import useAuth from '@/hooks/useAuth';
 
 const Header: React.FC = () => {
-  const { user } = useUser();
   const [userMenuToggleState, toggleUserMenu] = useToggle();
   const headerMenuRef = useOutsideRef(() => {
-    userMenuToggleState && toggleUserMenu();
+    if (userMenuToggleState) {
+      toggleUserMenu();
+    }
   });
-  const logout = useLogout();
 
-  const handlePushHome = useLocationPush('/');
-  const handlePushLogin = useLocationPush('/login');
+  const logout = useLogout();
+  const { data } = useMyInfo();
+  const { state: { isAuthenticated } } = useAuth();
+
+  const navigate = useNavigate();
+  const handlePushHome = () => navigate('/');
+  const handlePushLogin = () => navigate('/login');
 
   const menuList = useMemo(() => (
     [
       {
         title: '내 프로필',
-        link: `/user/${user?.id}`
+        link: `/user/${data?.user.id}`,
       },
       {
         title: '새 글 작성',
-        link: '/write'
+        link: '/write',
       },
       {
         title: '설정',
-        link: '/settings'
+        link: '/setting',
       },
       {
         title: '로그아웃',
-        action: logout
-      }
+        action: logout,
+      },
     ]
-  ), [user]);
+  ), [data, logout]);
 
   return (
-    <React.Fragment>
-      <S.HeaderContainer>
-        <S.HeaderTitle onClick={handlePushHome}> 
-          HLOG
-        </S.HeaderTitle>
-          {user ? 
+    <S.HeaderContainer>
+      <S.HeaderTitle onClick={handlePushHome}>
+        HLOG
+      </S.HeaderTitle>
+      {isAuthenticated
+        ? (
           <>
             <S.HeaderMenus>
               <Link className="write" to="/write">글 작성</Link>
             </S.HeaderMenus>
             <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
               <S.ProfileContainer>
-                {user?.profileUrl ? 
-                  <S.Figure profileUrl={user.profileUrl} />
-                  :
-                  <DefaultProfile />
-                }
+                {data.user?.profileUrl
+                  ? <S.Figure profileUrl={data.user.profileUrl} />
+                  : <DefaultProfile />}
               </S.ProfileContainer>
               <MenuList
                 items={menuList}
                 visible={userMenuToggleState}
               />
-            </S.HeaderProfile> 
+            </S.HeaderProfile>
           </>
-          :
-          <S.LoginButton onClick={handlePushLogin}>로그인</S.LoginButton>
-          }
-      </S.HeaderContainer>
-    </React.Fragment>
-  )
-}
+        )
+        : <S.LoginButton onClick={handlePushLogin}>로그인</S.LoginButton>}
+    </S.HeaderContainer>
+  );
+};
 
 export default Header;
