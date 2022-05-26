@@ -1,27 +1,51 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
-import useUser from "@/hooks/useUser";
 import ErrorModal from "@/components/Modal/Error/ErrorModal";
+import UserLog from "@/components/Profile/UserLog";
+
+import styled from '@emotion/styled';
+import mediaQueryHelper from "@/styles/mediaHelper";
+import UserPost from "@/components/Profile/UserPost";
 
 const ProfilePage = () => {
-	const { user } = useUser();
 	const [errorModalOpened, setErrorModalOpened] = useState(false);
 
-	if(!user) return null;
-
 	return (
-		<React.Fragment>
+		<>
 			<Header />
-      <Footer />
+			<StyledProfilePage.ProfileContainer>
+				<UserLog />
+				<UserPost />
+			</StyledProfilePage.ProfileContainer>
+			<Footer />
+
 			{errorModalOpened && 
 			<ErrorModal 
 				errorTitle="에러가 발생했습니다."
 				onClose={() => {setErrorModalOpened(false)}}
 			/> 
 			}
-		</React.Fragment>
+		</>
 	);
+}
+
+const StyledProfilePage = {
+	ProfileContainer: styled.main`
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		min-height: 90vh;
+		
+		padding: 5rem 1rem 1rem 1rem;
+		${mediaQueryHelper('medium')} {
+      padding-top: 6rem;
+    }
+
+    ${mediaQueryHelper('large')} {
+      padding-top: 7rem;
+    }
+	`
 }
 
 export default ProfilePage;

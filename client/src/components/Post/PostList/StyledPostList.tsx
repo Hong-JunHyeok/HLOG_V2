@@ -3,20 +3,21 @@ import mediaQueryHelper from '@/styles/mediaHelper'
 
 const StyledPostList = {
   Container: styled.section`
-    overflow-x: hidden;
     min-height: 90vh;
-
-    ${mediaQueryHelper('medium')} {
-      overflow-x: hidden;
-    }
   `,
   
   PostList: styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    padding: 1rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 1rem;
+
+    ${mediaQueryHelper('medium')} {
+      grid-template-columns: repeat(2, 1fr)
+    }
+
+    ${mediaQueryHelper('large')} {
+      grid-template-columns: repeat(3, 1fr)
+    }
   `,
   NoContent: styled.div`
     display: flex;

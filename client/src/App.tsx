@@ -1,18 +1,18 @@
 import React, { Suspense, StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Provider } from 'react-redux';
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
 import ErrorBoundary from "@/components/Common/ErrorBoundary";
-import { store } from '@/modules';
 import { AuthProvider } from "./context/AuthContext";
+import { AxiosResponse } from 'axios';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      suspense: true
+      suspense: true,
+      select: (response: AxiosResponse) => response.data.payload
     }
   }
 });
@@ -22,7 +22,6 @@ const App = () => {
     <React.Fragment>
       <StrictMode>
         <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
             <ResetStyle />
             <ErrorBoundary fallback={<>Error</>}>
               <Suspense fallback={<>Loading</>}>
@@ -32,7 +31,6 @@ const App = () => {
               </Suspense>
             </ErrorBoundary>
             <ReactQueryDevtools />
-          </Provider>
         </QueryClientProvider>
       </StrictMode>
     </React.Fragment>

@@ -8,6 +8,10 @@ const CssVariable = {
   ['--header-height-max']: '90px' 
 }
 
+interface ProfileProps {
+  profileUrl?: string;
+}
+
 const StyledHeader = {
   HeaderContainer: styled.header`
     position: fixed;
@@ -136,6 +140,20 @@ const StyledHeader = {
         padding: 1rem;
       }
     }
+  `,
+  ProfileContainer: styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+  `,
+  Figure: styled.figure<ProfileProps>`
+    width: 100%;
+    height: 100%;
+    background-image: url(${(props) => props.profileUrl});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   `,
   LoginButton: styled.button`
       margin: auto 0 auto auto; 

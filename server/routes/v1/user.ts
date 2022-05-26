@@ -8,7 +8,6 @@ import setJsonResponser from "../../utils/setJsonResponser";
 
 const router = Router();
 
-
 router.get(
   "/users",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -76,7 +75,7 @@ router.get("/:userId", async (req, res, next) => {
     setJsonResponser(res, {
       code: 200,
       message: "유저 정보 조회성공",
-      payload: foundUser,
+      payload: { user: foundUser },
     });
   } catch (error) {
     next(error);

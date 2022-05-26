@@ -13,7 +13,7 @@ const PostView: React.FunctionComponent = () => {
   const navigator = useNavigate();
   const customAxios = useInterceptedAxios();
 
-  const post = data.data.payload;
+  const post = data.post;
   const { 
     id,
     postThumnail, 

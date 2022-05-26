@@ -1,23 +1,25 @@
-import { useQuery } from 'react-query';
-import customAxios from '@/utils/customAxios';
+import { useQuery, UseQueryResult } from 'react-query';
+import useInterceptedAxios from './useInterceptedAxios';
+import { PostType } from '@/@types/post';
 
-interface AxiosResponseWithPayload<T=any> {
-  payload: {
-    [key: string]: T;
-  }
-}
-
-const getRecentPosts =  () => {
-  return customAxios.get<AxiosResponseWithPayload>('/post/recent');
-}
-
-const getPopularPosts =  () => {
-  return customAxios.get<AxiosResponseWithPayload>('/post/popular');
-}
 
 type PostsQueryType = "RECENT" | "POPULAR";
 
-export default function usePosts (queryType: PostsQueryType) {
+interface QueryResult {
+  posts: PostType[];
+}
+
+export default function usePosts (queryType: PostsQueryType): UseQueryResult<QueryResult> {
+  const customAxios = useInterceptedAxios()
+
+  const getRecentPosts =  () => {
+    return customAxios.get('/post/recent');
+  }
+  
+  const getPopularPosts =  () => {
+    return customAxios.get('/post/popular');
+  }
+  
   switch(queryType) {
     case "RECENT":
       return useQuery('recent_posts', getRecentPosts);

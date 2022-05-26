@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react";
-import { UserType } from "../types/User";
+import type { UserType } from "../types/User";
 
 export type AuthContextType = {
 	isLoggedIn: boolean;
