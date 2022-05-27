@@ -10,6 +10,7 @@ import { PostType } from '@/@types/post';
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useToggle from '@/hooks/useToggle';
+import startWithURL from '@/utils/startWithURL';
 
 const PostItem: React.FunctionComponent<PostType> = ({
   id,
@@ -36,7 +37,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
       <S.Meta>
         <S.ProfileContainer>
           {profileUrl
-            ? <S.Figure profileUrl={profileUrl} />
+            ? <S.Figure profileUrl={startWithURL(profileUrl)} />
             : <DefaultProfile />}
         </S.ProfileContainer>
         <span>{username}</span>

@@ -23,12 +23,12 @@ const httpServer = createServer(app);
 app.set("PORT", process.env.PORT || 8003);
 
 //* middlewares
-app.use(logger("dev"));
-app.use("/profiles", express.static("profiles"));
-app.use("/thumnails", express.static("thumnails"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(logger("dev"));
 app.use(cookieParser());
+app.use("/profiles", express.static("profiles"));
+app.use("/thumbnails", express.static("thumbnails"));
 
 app.use(
   cors({
@@ -39,6 +39,10 @@ app.use(
 
 if(!fs.existsSync('./profiles')) {
   fs.mkdirSync('./profiles');
+}
+
+if(!fs.existsSync('./thumbnails')) {
+  fs.mkdirSync('./thumbnails');
 }
 
 //* DB connection

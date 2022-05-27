@@ -9,6 +9,7 @@ import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useLogout from '@/hooks/useLogout';
 import useMyInfo from '@/hooks/queries/useMyInfo';
 import useAuth from '@/hooks/useAuth';
+import startWithURL from '@/utils/startWithURL';
 
 const Header: React.FC = () => {
   const [userMenuToggleState, toggleUserMenu] = useToggle();
@@ -19,8 +20,8 @@ const Header: React.FC = () => {
   });
 
   const logout = useLogout();
-  const { data } = useMyInfo();
   const { state: { isAuthenticated } } = useAuth();
+  const { data } = useMyInfo();
 
   const navigate = useNavigate();
   const handlePushHome = () => navigate('/');
@@ -52,7 +53,7 @@ const Header: React.FC = () => {
       <S.HeaderTitle onClick={handlePushHome}>
         HLOG
       </S.HeaderTitle>
-      {isAuthenticated
+      {isAuthenticated && data.user
         ? (
           <>
             <S.HeaderMenus>
@@ -61,7 +62,7 @@ const Header: React.FC = () => {
             <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
               <S.ProfileContainer>
                 {data.user?.profileUrl
-                  ? <S.Figure profileUrl={data.user.profileUrl} />
+                  ? <S.Figure profileUrl={startWithURL(data?.user.profileUrl)} />
                   : <DefaultProfile />}
               </S.ProfileContainer>
               <MenuList

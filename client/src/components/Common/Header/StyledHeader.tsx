@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
-import mediaQueryHelper from '@/styles/mediaHelper'
+import mediaQueryHelper from '@/styles/mediaHelper';
 
 const CssVariable = {
-  ['--header-height-min']: '50px',
-  ['--header-height-mid']: '70px',
-  ['--header-height-max']: '90px' 
-}
+  '--header-height-min': '50px',
+  '--header-height-mid': '70px',
+  '--header-height-max': '90px',
+};
 
 interface ProfileProps {
   profileUrl?: string;
@@ -165,7 +165,7 @@ const StyledHeader = {
         color: ${ColorSet['--greyOpacity700']};;
         background-color: ${ColorSet['--white']};
       }    
-  `
+  `,
 };
 
-export default StyledHeader
+export default StyledHeader;
