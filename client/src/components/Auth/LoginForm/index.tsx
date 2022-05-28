@@ -1,9 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
 import S from './StyledLoginForm';
 import useLogin from '@/hooks/mutations/useLogin';
-import customAxios from '@/utils/customAxios';
 
 interface LoginFormType {
   email: string;

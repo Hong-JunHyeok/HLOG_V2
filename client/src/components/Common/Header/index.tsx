@@ -6,18 +6,14 @@ import useToggle from '@/hooks/useToggle';
 import S from './StyledHeader';
 import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
-import useLogout from '@/hooks/useLogout';
+import useLogout from '@/hooks/mutations/useLogout';
 import startWithURL from '@/utils/startWithURL';
-import { UserType } from '@/types/User';
 import useMyInfo from '@/hooks/queries/useMyInfo';
+import useAuth from '@/hooks/useAuth';
 
-interface HeaderProps {
-  user: UserType
-}
-
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC = () => {
+  const { state: { isAuthenticated } } = useAuth();
   const { data } = useMyInfo();
-  console.log(data);
   const [userMenuToggleState, toggleUserMenu] = useToggle();
   const headerMenuRef = useOutsideRef(() => {
     if (userMenuToggleState) {
@@ -30,33 +26,37 @@ const Header: React.FC<HeaderProps> = () => {
   const handlePushHome = () => navigate('/');
   const handlePushLogin = () => navigate('/login');
 
-  const menuList = useMemo(() => (
-    [
-      {
-        title: '내 프로필',
-        link: `/user/${data?.user.id}`,
-      },
-      {
-        title: '새 글 작성',
-        link: '/write',
-      },
-      {
-        title: '설정',
-        link: '/setting',
-      },
-      {
-        title: '로그아웃',
-        action: logout,
-      },
-    ]
-  ), [data, logout]);
+  // FIXME: 로그아웃 시 캐싱되는 문제
+  const menuList = useMemo(() => {
+    if (isAuthenticated) {
+      return [
+        {
+          title: '내 프로필',
+          link: `/user/${data?.user.id}`,
+        },
+        {
+          title: '새 글 작성',
+          link: '/write',
+        },
+        {
+          title: '설정',
+          link: '/setting',
+        },
+        {
+          title: '로그아웃',
+          action: logout,
+        },
+      ];
+    }
+    return null;
+  }, [isAuthenticated, data, logout]);
 
   return (
     <S.HeaderContainer>
       <S.HeaderTitle onClick={handlePushHome}>
         HLOG
       </S.HeaderTitle>
-      {data?.user
+      {isAuthenticated
         ? (
           <>
             <S.HeaderMenus>
@@ -64,8 +64,8 @@ const Header: React.FC<HeaderProps> = () => {
             </S.HeaderMenus>
             <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
               <S.ProfileContainer>
-                {data.user.profileUrl
-                  ? <S.Figure profileUrl={startWithURL(data.user.profileUrl)} />
+                {isAuthenticated && data.user.profileUrl
+                  ? <S.Figure profileUrl={startWithURL(data?.user.profileUrl)} />
                   : <DefaultProfile />}
               </S.ProfileContainer>
               <MenuList

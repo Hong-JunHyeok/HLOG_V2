@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 import useInterceptedAxios from '../useInterceptedAxios';
-import useLogout from '../useLogout';
+import useLogout from './useLogout';
 
 const useWithdrawal = () => {
   const customAxios = useInterceptedAxios();

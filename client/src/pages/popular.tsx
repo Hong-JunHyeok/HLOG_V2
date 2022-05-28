@@ -15,7 +15,7 @@ const PopularPage = () => (
     <PageLayout>
       <HomeTab />
       <ErrorBoundary fallback={<PostListError />}>
-        <Suspense>
+        <Suspense fallback={<>Loading</>}>
           <PopularPostList />
         </Suspense>
       </ErrorBoundary>

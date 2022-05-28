@@ -1,15 +1,14 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { UserType } from '@/@types/user';
-import useInterceptedAxios from '../useInterceptedAxios';
 import useLocalStorage from '@/utils/useLocalStorage';
 import useAuth from '../useAuth';
+import customAxios from '@/utils/customAxios';
 
 interface QueryResult {
   user: UserType;
 }
 
 export default function useMyInfo(): UseQueryResult<QueryResult> {
-  const customAxios = useInterceptedAxios();
   const {
     storedValue: hlogToken,
   } = useLocalStorage('hlog_access_token', '');
@@ -18,10 +17,13 @@ export default function useMyInfo(): UseQueryResult<QueryResult> {
 
   return useQuery(
     ['my_info'],
-    () => getMyInfo(),
+    getMyInfo,
     {
       enabled: !!hlogToken,
-      onSuccess: loginDispatch,
+      onSuccess: (data) => {
+        console.log(data);
+        loginDispatch();
+      },
     },
   );
 }

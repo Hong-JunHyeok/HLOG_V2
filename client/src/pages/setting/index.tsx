@@ -5,7 +5,6 @@ import Header from '@/components/Common/Header';
 import mediaQueryHelper from '@/styles/mediaHelper';
 import ProfileForm from '@/components/Setting/ProfileForm';
 import usePreventNormalUser from '@/hooks/usePreventNormalUser';
-import useMyInfo from '@/hooks/queries/useMyInfo';
 
 const StyledSettingPage = {
   SettingContainer: styled.main`
@@ -27,7 +26,6 @@ const StyledSettingPage = {
 
 function SettingPage() {
   const redirector = usePreventNormalUser();
-  const { data } = useMyInfo();
 
   useEffect(() => {
     redirector();
@@ -35,7 +33,7 @@ function SettingPage() {
 
   return (
     <>
-      <Header user={data?.user} />
+      <Header />
       <StyledSettingPage.SettingContainer>
         <Suspense>
           <ProfileForm />

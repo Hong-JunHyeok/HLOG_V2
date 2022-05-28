@@ -1,22 +1,25 @@
 import { useMutation, useQueryClient } from 'react-query';
 import useLocalStorage from '@/utils/useLocalStorage';
 import customAxios from '@/utils/customAxios';
+import useAuth from '../useAuth';
 
 interface LoginProps {
   email: string;
   password: string;
 }
+
 const useLogin = () => {
-  const { invalidateQueries } = useQueryClient();
+  const { loginDispatch } = useAuth();
+  const queryClient = useQueryClient();
   const { setValue } = useLocalStorage('hlog_access_token', '');
 
   const login = (data: LoginProps) => customAxios.post('/auth/login', data);
 
   const { mutate } = useMutation(login, {
-    onSuccess: (response: any) => {
+    onSuccess: (response) => {
+      loginDispatch();
       setValue(response.data.payload.accessToken);
-
-      invalidateQueries(['my_info']);
+      queryClient.invalidateQueries(['my_info']);
     },
   });
 
