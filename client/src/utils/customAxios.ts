@@ -34,7 +34,6 @@ customAxios.interceptors.response.use(
       prevRequest.headers.authorization = accessToken;
       return customAxios(prevRequest);
     }
-    return customAxios;
   },
 );
 

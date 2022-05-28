@@ -8,14 +8,12 @@ import { createStore } from 'redux';
 import { AxiosResponse } from 'axios';
 import ResetStyle from './styles/ResetStyle';
 import RouteContainer from '@/Routes';
-import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import rootReducer from './modules';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      useErrorBoundary: true,
       select: (response: AxiosResponse) => response.data.payload,
     },
   },
@@ -29,9 +27,7 @@ const App = () => (
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ResetStyle />
-          <ErrorBoundary fallback={<>Error</>}>
-            <RouteContainer />
-          </ErrorBoundary>
+          <RouteContainer />
           <ReactQueryDevtools />
         </QueryClientProvider>
       </Provider>

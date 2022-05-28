@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import MenuList from '@/components/Common/MenuList';
@@ -7,21 +7,24 @@ import S from './StyledHeader';
 import useOutsideRef from '@/hooks/useOutsideRef';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useLogout from '@/hooks/useLogout';
-import useMyInfo from '@/hooks/queries/useMyInfo';
-import useAuth from '@/hooks/useAuth';
 import startWithURL from '@/utils/startWithURL';
+import { UserType } from '@/types/User';
+import useMyInfo from '@/hooks/queries/useMyInfo';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  user: UserType
+}
+
+const Header: React.FC<HeaderProps> = () => {
+  const { data } = useMyInfo();
+  console.log(data);
   const [userMenuToggleState, toggleUserMenu] = useToggle();
   const headerMenuRef = useOutsideRef(() => {
     if (userMenuToggleState) {
       toggleUserMenu();
     }
   });
-
   const logout = useLogout();
-  const { state: { isAuthenticated } } = useAuth();
-  const { data } = useMyInfo();
 
   const navigate = useNavigate();
   const handlePushHome = () => navigate('/');
@@ -53,7 +56,7 @@ const Header: React.FC = () => {
       <S.HeaderTitle onClick={handlePushHome}>
         HLOG
       </S.HeaderTitle>
-      {isAuthenticated && data.user
+      {data?.user
         ? (
           <>
             <S.HeaderMenus>
@@ -61,8 +64,8 @@ const Header: React.FC = () => {
             </S.HeaderMenus>
             <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
               <S.ProfileContainer>
-                {data.user?.profileUrl
-                  ? <S.Figure profileUrl={startWithURL(data?.user.profileUrl)} />
+                {data.user.profileUrl
+                  ? <S.Figure profileUrl={startWithURL(data.user.profileUrl)} />
                   : <DefaultProfile />}
               </S.ProfileContainer>
               <MenuList

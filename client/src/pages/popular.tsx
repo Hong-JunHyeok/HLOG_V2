@@ -1,30 +1,25 @@
-import { Suspense, lazy } from 'react';
-
+import { lazy, Suspense } from 'react';
+import PageLayout from '@/components/Common/PageLayout';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
-import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
-
-import Header from '@/components/Common/Header';
-import HomeTab from '@/components/Common/HomeTab';
-import Footer from '@/components/Common/Footer';
 import SEOHelmet from '@/components/Common/SEOHelmet';
+import HomeTab from '@/components/Common/HomeTab';
+import PostListError from '@/components/Common/Error/PostListError';
 
 const PopularPostList = lazy(() => import('@/components/Post/PostList/PopularPostList'));
 
 const PopularPage = () => (
   <>
     <SEOHelmet
-      title="HLOG | 인기 게시글"
+      title="HLOG | 최신 게시글"
     />
-    <Header />
-    <HomeTab />
-    <ErrorBoundary fallback={<>error...</>}>
-      <Suspense fallback={<FallbackLoader />}>
-        <ErrorBoundary fallback={<>Error</>}>
+    <PageLayout>
+      <HomeTab />
+      <ErrorBoundary fallback={<PostListError />}>
+        <Suspense>
           <PopularPostList />
-        </ErrorBoundary>
-      </Suspense>
-    </ErrorBoundary>
-    <Footer />
+        </Suspense>
+      </ErrorBoundary>
+    </PageLayout>
   </>
 );
 

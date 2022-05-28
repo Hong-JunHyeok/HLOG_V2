@@ -183,6 +183,8 @@ function HlogEditor() {
     remove: clearEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
+
+  const [createPostErrorMessage, setCreatePostErrorMessage] = useState('');
   const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
 
   const titleInitialState = editorTitle || '';
@@ -239,33 +241,43 @@ function HlogEditor() {
     }
   };
 
-  // const mapKeyToEditorCommand = (event) => getDefaultKeyBinding(event);
-
   const resetSavedContent = () => {
     clearEditorTitle();
     clearEditorContent();
   };
 
-  const createPost = async () => {
-    try {
-      const response = await customAxios.post('/post', {
-        postTitle: titleState,
-        postContent: convertToHTML({
-          blockToHTML: (block) => {
-            if (block.type === 'blockquote') {
-              return <p className="hlog_blockquote" />;
-            }
-            return null;
-          },
-        })(editorState.getCurrentContent()),
-      });
+  const createPost = () => {
+    if (!titleState) {
+      setCreatePostErrorMessage('제목을 입력해주세요.');
+      setCreatePostErrorModal(true);
+      return;
+    }
 
+    if (!editorState.getCurrentContent().hasText()) {
+      setCreatePostErrorMessage('본문을 입력해주세요.');
+      setCreatePostErrorModal(true);
+      return;
+    }
+
+    const contentToHtml = convertToHTML({
+      blockToHTML: (block) => {
+        if (block.type === 'blockquote') {
+          return <p className="hlog_blockquote" />;
+        }
+        return null;
+      },
+    })(editorState.getCurrentContent());
+
+    customAxios.post('/post', {
+      postTitle: titleState,
+      postContent: contentToHtml,
+    }).then((response) => {
       const { postId } = response.data.payload;
       resetSavedContent();
       navigate(`/post/${postId}`);
-    } catch (error) {
+    }).catch(() => {
       setCreatePostErrorModal(true);
-    }
+    });
   };
 
   return (
@@ -274,7 +286,7 @@ function HlogEditor() {
         <S.Header>
           <button type="button" className="exit" onClick={handleExit}>나가기</button>
           <div className="utils">
-            <button type="button" className="normal-button" onClick={handleSaveContent}>저장</button>
+            <button type="button" className="normal-button" onClick={handleSaveContent}>임시저장</button>
             <button type="button" className="normal-button post" onClick={createPost}>포스트</button>
           </div>
         </S.Header>
@@ -297,7 +309,6 @@ function HlogEditor() {
             customStyleMap={styleMap}
             editorState={editorState}
             handleKeyCommand={handleKeyCommand}
-            // keyBindingFn={mapKeyToEditorCommand}
             onChange={setEditorState}
             blockStyleFn={blockStyleClassMap}
             placeholder="내용을 입력해주세요..."
@@ -316,7 +327,7 @@ function HlogEditor() {
       {createPostErrorModal
         && (
         <ErrorModal
-          errorTitle="에러 발생"
+          errorTitle={createPostErrorMessage}
           onClose={() => setCreatePostErrorModal(false)}
         />
         )}

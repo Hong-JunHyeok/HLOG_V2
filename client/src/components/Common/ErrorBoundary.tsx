@@ -1,14 +1,15 @@
 import React from 'react';
 
 interface ErrorBoundaryPropType {
-  fallback: React.ReactChild,
-  children: React.ReactChild
+  fallback: React.ReactNode,
+  children: React.ReactNode
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryPropType> {
   state = { hasError: false };
 
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(error) {
+    console.log(error);
     return {
       hasError: true,
     };

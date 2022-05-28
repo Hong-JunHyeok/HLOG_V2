@@ -9,6 +9,7 @@ import mediaQueryHelper from '@/styles/mediaHelper';
 import UserPost from '@/components/Profile/UserPost';
 import useScroller from '@/hooks/useScroller';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import useMyInfo from '@/hooks/queries/useMyInfo';
 
 const StyledProfilePage = {
   ProfileContainer: styled.main`
@@ -30,6 +31,7 @@ const StyledProfilePage = {
 
 const ProfilePage = () => {
   const [errorModalOpened, setErrorModalOpened] = useState(false);
+  const { data } = useMyInfo();
   const { scrollTop } = useScroller();
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const ProfilePage = () => {
 
   return (
     <Suspense>
-      <Header />
+      <Header user={data?.user} />
       <StyledProfilePage.ProfileContainer>
         <ErrorBoundary fallback={<>로딩중</>}>
           <>
