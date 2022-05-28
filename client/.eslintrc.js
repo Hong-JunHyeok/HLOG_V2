@@ -17,7 +17,8 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "default-param-last": "off",
     "@typescript-eslint/default-param-last": ["off"],
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "jsx-a11y/label-has-associated-control": "off"
   },
   plugins: ["@typescript-eslint"],
   extends: [

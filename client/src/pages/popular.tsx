@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
@@ -11,7 +11,7 @@ import SEOHelmet from '@/components/Common/SEOHelmet';
 const PopularPostList = lazy(() => import('@/components/Post/PostList/PopularPostList'));
 
 const PopularPage = () => (
-  <Suspense>
+  <>
     <SEOHelmet
       title="HLOG | 인기 게시글"
     />
@@ -19,11 +19,13 @@ const PopularPage = () => (
     <HomeTab />
     <ErrorBoundary fallback={<>error...</>}>
       <Suspense fallback={<FallbackLoader />}>
-        <PopularPostList />
+        <ErrorBoundary fallback={<>Error</>}>
+          <PopularPostList />
+        </ErrorBoundary>
       </Suspense>
     </ErrorBoundary>
     <Footer />
-  </Suspense>
+  </>
 );
 
 export default PopularPage;

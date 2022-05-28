@@ -55,6 +55,7 @@ router.get("/me", accessTokenValidator, async (req, res, next) => {
   }
 });
 
+
 router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
 
@@ -84,26 +85,13 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, callback) => {
-      callback(null, "profiles/");
-    },
-    filename: (req, file, callback) => {
-      const ext = path.extname(file.originalname); // 확장자 추출(png)
-      const basename = path.basename(file.originalname, ext);
-      callback(null, basename + "_" + new Date().getTime() + ext);
-    },
-  }),
-});
-
 router.patch(
-  "/intro/:userId",
+  "/meta",
   accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userRepository = getRepository(User);
-      const { selfIntroduction } = req.body;
+      const { username, selfIntroduction } = req.body;
 
       const me = await userRepository.findOne({
         where: { id: req.body.decodedUserId },
@@ -116,20 +104,19 @@ router.patch(
         });
       }
 
-      console.log(selfIntroduction);
-
       await userRepository
         .createQueryBuilder()
         .update()
         .set({
-          selfIntroduction,
+          username,
+          selfIntroduction
         })
         .where("id = :id", { id: me.id })
         .execute();
 
       return setJsonResponser(res, {
         code: 201,
-        message: "자기소개를 변경했습니다.",
+        message: "유저 정보를 변경했습니다.",
       });
     } catch (error) {
       console.error(error);
@@ -138,45 +125,53 @@ router.patch(
   }
 );
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, "profiles/");
+    },
+    filename: (req, file, callback) => {
+      const ext = path.extname(file.originalname); // 확장자 추출(png)
+      const basename = path.basename(file.originalname, ext);
+      callback(null, basename + ext);
+    },
+  }),
+}).single("profile");
+
 router.patch(
-  "/profile/:userId",
-  upload.single("profile"),
+  "/profile",
   accessTokenValidator,
+  upload,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userRepository = getRepository(User);
+    const userRepository = getRepository(User);
+    const me = await userRepository.findOne({
+      where: { id: req.body.userId },
+    });
 
-      const me = await userRepository.findOne({
-        where: { id: req.body.decodedUserId },
+    if (!me) {
+      return setJsonResponser(res, {
+        code: 403,
+        message: "유저 정보가 없습니다.",
       });
+    }
 
-      if (!me) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "유저 정보가 없습니다.",
-        });
-      }
-      
-      await userRepository
+    await userRepository
         .createQueryBuilder()
         .update()
         .set({
-          profileUrl: res.req.file.path,
+          profileUrl: req.file.path,
         })
         .where("id = :id", { id: me.id })
         .execute();
 
-      return setJsonResponser(res, {
-        code: 201,
-        message: "프로필 이미지를 변경했습니다.",
-        payload: {
-          profileImage: res.req.file.path,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
+    return setJsonResponser(res, {
+      code: 201,
+      message: "프로필 이미지를 변경했습니다.",
+      payload: {
+          profileImage: req.file.path,
+        }
+      }
+    );
   }
 );
 export default router;

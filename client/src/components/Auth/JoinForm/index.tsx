@@ -13,27 +13,27 @@ interface JoinFormType {
 }
 
 const JoinForm = () => {
-  const customAxios = useInterceptedAxios();
   const {
     register, handleSubmit, formState: { errors },
     getValues,
   } = useForm({ mode: 'onChange' });
-
-  const navigate = useNavigate();
   const [errorModalOpened, setErrorModalOpened] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const customAxios = useInterceptedAxios();
 
-  const handlePushLogin = () => navigate('/login');
-
-  const onSubmit = async (data: JoinFormType) => {
-    const { email, password, username } = data;
-    try {
-      await customAxios.post('/auth/join', { email, password, username });
-      handlePushLogin();
-    } catch (error) {
-      setErrorMessage(error.response.data.message);
-      setErrorModalOpened(true);
-    }
+  const onSubmit = (data: JoinFormType) => {
+    customAxios({
+      method: 'post',
+      url: '/auth/join',
+      data,
+    }).then((response) => {
+      console.log(response);
+      // navigate();
+    })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onError = (error) => error;
@@ -76,6 +76,7 @@ const JoinForm = () => {
             className="join_input"
             id="password"
             name="password"
+            autoComplete="on"
             {...register('password', {
               required: {
                 message: '비밀번호를 입력해주세요.',
@@ -95,6 +96,7 @@ const JoinForm = () => {
             className="join_input"
             id="password_check"
             name="passwordCheck"
+            autoComplete="on"
             {...register('passwordCheck', {
               required: {
                 message: '비밀번호를 입력해주세요.',
@@ -120,7 +122,7 @@ const JoinForm = () => {
           />
           <span className="form_error">{errors.username && errors.username.message}</span>
 
-          <button className="join_btn">회원가입</button>
+          <button className="join_btn" type="submit">회원가입</button>
 
           <Link to="/login" className="go_to_login">이미 회원이신가요?</Link>
         </S.Form>
@@ -128,8 +130,6 @@ const JoinForm = () => {
           <span className="info_text">HLOG에서 양질의 포스트들을 확인해보세요.</span>
         </S.Info>
       </S.Container>
-
-      {errors && <p>{errors.toString()}</p>}
 
       {errorModalOpened
         && (

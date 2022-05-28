@@ -8,14 +8,16 @@ interface ProfileProps {
 
 const StyledUserLog = {
   Container: styled.section`
+    width: 100%;
     padding: 1rem;
     border-radius: 20px;
     box-shadow: rgba(17, 12, 46, 0.03) 0px 48px 100px 0px;
-    display: flex;
     align-items: center;
-    width: 100%;
     margin-bottom: 2rem;
     background-color: ${ColorSet['--white']};
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   `,
   ProfileContainer: styled.div`
     width: 70px;
@@ -43,7 +45,6 @@ const StyledUserLog = {
   Meta: styled.div`
     display: flex;
     flex-direction: column;
-    padding-left: 2rem;
   `,
   Name: styled.h3`
     font-size: 24px;

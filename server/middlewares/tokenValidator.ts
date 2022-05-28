@@ -8,7 +8,7 @@ type TokenInterface = {
 
 export const refreshTokenValidator = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const refreshToken = req.cookies.JWT;
+    const refreshToken = req.cookies.hlogRefreshToken;
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
     if(decoded) {

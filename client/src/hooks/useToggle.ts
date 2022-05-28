@@ -1,23 +1,23 @@
-import { Dispatch, useState } from 'react';
+import { useState } from 'react';
 
 type ReturnTypes = [
-  boolean, 
-  () => void, 
+  boolean,
   () => void,
-  () => void
+  () => void,
+  () => void,
 ];
 
-const useToggle = (initialState: boolean = false): ReturnTypes => {
-  const [state, setState] = useState<boolean>(false);
+const useToggle = (initialState = false): ReturnTypes => {
+  const [state, setState] = useState<boolean>(initialState);
 
   const toggleState = () => {
-    setState(prev => !prev)
+    setState((prev) => !prev);
   };
 
-  const toggleOpen = () => setState(true)
-  const toggleClose = () => setState(false)
+  const toggleOpen = () => setState(true);
+  const toggleClose = () => setState(false);
 
   return [state, toggleState, toggleOpen, toggleClose];
-}
+};
 
 export default useToggle;

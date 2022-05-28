@@ -172,7 +172,6 @@ function InlineStyleControls(props: {
 
 function HlogEditor() {
   const navigate = useNavigate();
-  const customAxios = useInterceptedAxios();
   const {
     storedValue: editorTitle,
     setValue: setEditorTitle,
@@ -194,6 +193,7 @@ function HlogEditor() {
 
   const [titleState, setTitleState] = useState(titleInitialState);
   const [editorState, setEditorState] = useState(contentInitialState);
+  const customAxios = useInterceptedAxios();
 
   const handleExit = () => navigate(-1);
 

@@ -7,10 +7,8 @@ interface BreakPointType {
 export const breakPoints: BreakPointType = {
   large: 1200,
   medium: 600,
-}
+};
 
-const mediaQueryHelper = (n: BreakType) => 
-  `@media (min-width: ${breakPoints[n]}px)`
-
+const mediaQueryHelper = (n: BreakType) => `@media (min-width: ${breakPoints[n]}px)`;
 
 export default mediaQueryHelper;

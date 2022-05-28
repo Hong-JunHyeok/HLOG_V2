@@ -23,29 +23,31 @@ const httpServer = createServer(app);
 app.set("PORT", process.env.PORT || 8003);
 
 //* middlewares
-app.use(logger("dev"));
-app.use("/profiles", express.static("profiles"));
-app.use("/thumnails", express.static("thumnails"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
 app.use(
   cors({
     origin: true,
     credentials: true
   })
 );
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use("/profiles", express.static("profiles"));
+app.use("/thumbnails", express.static("thumbnails"));
 
 if(!fs.existsSync('./profiles')) {
   fs.mkdirSync('./profiles');
+}
+
+if(!fs.existsSync('./thumbnails')) {
+  fs.mkdirSync('./thumbnails');
 }
 
 //* DB connection
 setImmediate(async () => {
   try {
     await createConnection();
-
     console.log("DB Connecting success");
   } catch (error) {
     console.error(error);

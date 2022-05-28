@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
-import useUserInfo from '@/hooks/useUserInfo';
+import useUserInfo from '@/hooks/queries/useUserInfo';
 import StyledUserLog from './StyledUserLog';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import SEOHelmet from '@/components/Common/SEOHelmet';
+import startWithURL from '@/utils/startWithURL';
 
 function UserLog() {
   const { userId } = useParams();
@@ -23,7 +24,7 @@ function UserLog() {
           {profileUrl
             ? (
               <StyledUserLog.Profile
-                profileUrl={profileUrl}
+                profileUrl={startWithURL(profileUrl)}
               />
             )
             : <DefaultProfile />}

@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
-import mediaQueryHelper from '@/styles/mediaHelper'
+import mediaQueryHelper from '@/styles/mediaHelper';
 
 const StyledPostList = {
   Container: styled.section`
     min-height: 90vh;
   `,
-  
+
   PostList: styled.div`
     display: grid;
     grid-template-columns: 1fr;
-
+    justify-items: center;
+    justify-content: center;
     margin-bottom: 1.4rem;
     column-gap: 1.4rem;
     row-gap: 1.4rem;
@@ -32,6 +33,6 @@ const StyledPostList = {
       content: "이런... 게시글이 없습니다."
     }
 `,
-}
+};
 
 export default StyledPostList;

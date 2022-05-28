@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import usePost from '@/hooks/usePost';
+import usePost from '@/hooks/queries/usePost';
 import S from './StyledPostView';
 
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
