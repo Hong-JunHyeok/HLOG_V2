@@ -11,19 +11,19 @@ import SEOHelmet from '@/components/Common/SEOHelmet';
 const RecentPostList = lazy(() => import('@/components/Post/PostList/RecentPostList'));
 
 const RecentPage = () => (
-  <Suspense>
+  <>
     <SEOHelmet
       title="HLOG | 최신 게시글"
     />
     <Header />
     <HomeTab />
-    <ErrorBoundary fallback={<>error...</>}>
-      <Suspense fallback={<FallbackLoader />}>
+    <Suspense fallback={<FallbackLoader />}>
+      <ErrorBoundary fallback={<>error...</>}>
         <RecentPostList />
-      </Suspense>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </Suspense>
     <Footer />
-  </Suspense>
+  </>
 );
 
 export default RecentPage;

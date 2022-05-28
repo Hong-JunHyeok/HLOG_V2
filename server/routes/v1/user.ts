@@ -55,6 +55,7 @@ router.get("/me", accessTokenValidator, async (req, res, next) => {
   }
 });
 
+
 router.get("/:userId", async (req, res, next) => {
   const { userId } = req.params;
 
@@ -85,12 +86,12 @@ router.get("/:userId", async (req, res, next) => {
 });
 
 router.patch(
-  "/intro/:userId",
+  "/meta",
   accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userRepository = getRepository(User);
-      const { selfIntroduction } = req.body;
+      const { username, selfIntroduction } = req.body;
 
       const me = await userRepository.findOne({
         where: { id: req.body.decodedUserId },
@@ -103,20 +104,19 @@ router.patch(
         });
       }
 
-      console.log(selfIntroduction);
-
       await userRepository
         .createQueryBuilder()
         .update()
         .set({
-          selfIntroduction,
+          username,
+          selfIntroduction
         })
         .where("id = :id", { id: me.id })
         .execute();
 
       return setJsonResponser(res, {
         code: 201,
-        message: "자기소개를 변경했습니다.",
+        message: "유저 정보를 변경했습니다.",
       });
     } catch (error) {
       console.error(error);
@@ -141,23 +141,21 @@ const upload = multer({
 router.patch(
   "/profile",
   accessTokenValidator,
+  upload,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userRepository = getRepository(User);
+    const userRepository = getRepository(User);
+    const me = await userRepository.findOne({
+      where: { id: req.body.userId },
+    });
 
-      const me = await userRepository.findOne({
-        where: { id: req.body.decodedUserId },
+    if (!me) {
+      return setJsonResponser(res, {
+        code: 403,
+        message: "유저 정보가 없습니다.",
       });
+    }
 
-      if (!me) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "유저 정보가 없습니다.",
-        });
-      };
-
-      upload(req, res, async () => {
-        await userRepository
+    await userRepository
         .createQueryBuilder()
         .update()
         .set({
@@ -165,21 +163,15 @@ router.patch(
         })
         .where("id = :id", { id: me.id })
         .execute();
-        
-  
-        return setJsonResponser(res, {
-          code: 201,
-          message: "프로필 이미지를 변경했습니다.",
-          payload: {
-            profileImage: req.file.path,
-          },
-        });
-      });
-      
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
+
+    return setJsonResponser(res, {
+      code: 201,
+      message: "프로필 이미지를 변경했습니다.",
+      payload: {
+          profileImage: req.file.path,
+        }
+      }
+    );
   }
 );
 export default router;

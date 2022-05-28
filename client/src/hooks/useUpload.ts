@@ -10,13 +10,14 @@ const useUpload = (endPoint: string) => {
     throw new Error('endPoint is required');
   }
 
-  const upload = async (file: FormData) => {
+  const upload = async (formData: FormData) => {
     setUploading(true);
     await customAxios({
-      data: file,
+      data: formData,
       url: endPoint,
       method: 'patch',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       },
       onUploadProgress: (progressEvent) => {

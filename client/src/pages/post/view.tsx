@@ -4,7 +4,7 @@ import Footer from '@/components/Common/Footer';
 import PostView from '@/components/Post/PostView';
 
 const PostViewPage = () => (
-  <Suspense>
+  <Suspense fallback={<>Error</>}>
     <Header />
     <PostView />
     <Footer />

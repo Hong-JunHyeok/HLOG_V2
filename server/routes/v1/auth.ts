@@ -6,7 +6,7 @@ import { getRepository } from "typeorm";
 import { LoginTypes } from "../../types/LoginTypes";
 import bcrypt from "bcrypt";
 import { Token } from "../../utils/token";
-import { refreshTokenValidator } from "../../middlewares/tokenValidator";
+import { accessTokenValidator, refreshTokenValidator } from "../../middlewares/tokenValidator";
 
 const router = Router();
 
@@ -81,6 +81,29 @@ router.post('/refresh',refreshTokenValidator, (req,res) => {
   })
 })
 
+router.delete('/:userId', accessTokenValidator, async (req, res, next) => {
+  const userId = req.params.userId;
+  
+  try {
+    const userRepository = getRepository(User);
+
+    await userRepository.createQueryBuilder()
+    .delete()
+    .from(User)
+    .where("id = :id", { id: userId })
+    .execute();
+
+    setJsonResponser(res, {
+      code: 201,
+      message: "성공적으로 탈퇴를 했습니다.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    next(error);
+  }
+})
+
 router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -124,10 +147,11 @@ router.post(
       const accessToken = Token.createAccessToken(existUser.id);
       const refreshToken = Token.createRefreshToken(existUser.id);
 
-      res.cookie('JWT', refreshToken, {
+      res.cookie('hlogRefreshToken', refreshToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 1d
       });
+
       setJsonResponser(res, {
         code: 201,
         message: "로그인 성공",

@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import S from './StyledLoginForm';
-import customAxios from '@/utils/customAxios';
 import useLocalStorage from '@/utils/useLocalStorage';
 import useAuth from '@/hooks/useAuth';
+import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 
 interface LoginFormType {
   email: string;
@@ -21,6 +21,7 @@ const LoginForm = () => {
 
   const { loginDispatch } = useAuth();
   const navigate = useNavigate();
+  const customAxios = useInterceptedAxios();
 
   const handlePushMain = () => navigate('/');
 
@@ -87,7 +88,7 @@ const LoginForm = () => {
         />
         {errors.password && <span className="form_error">{errors.password.message}</span>}
 
-        <button className="login_btn">로그인</button>
+        <button className="login_btn" type="submit">로그인</button>
 
         <Link to="/join" className="not_a_user">회원이 아니신가요?</Link>
         <Link to="/forgot" className="forgot_password">비밀번호를 잊으셨나요?</Link>

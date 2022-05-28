@@ -9,7 +9,8 @@ const StyledPostList = {
   PostList: styled.div`
     display: grid;
     grid-template-columns: 1fr;
-
+    justify-items: center;
+    justify-content: center;
     margin-bottom: 1.4rem;
     column-gap: 1.4rem;
     row-gap: 1.4rem;

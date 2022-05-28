@@ -10,19 +10,41 @@ const StyledProfileForm = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
   `,
   Section: styled.section`
     width: 100%;
     padding: 1rem 0;
     margin: 1rem 0;
-    border-top: 1px solid ${ColorSet['--greyOpacity200']};
-    border-bottom: 1px solid ${ColorSet['--greyOpacity200']};
-    .action_button {
-      text-decoration: underline;
+    background-color: ${ColorSet['--white']};
+    padding: 1rem;
+    border-radius: 10px;
+    .section_title {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: flex;
+      .label {
+        width: 100px;
+        font-weight: bold;
+      }
+      .value {
+        margin-left: 1rem;
+      }
     }
     .edit {
-      font-size: 1rem;
+      width: 100%;
       color: ${ColorSet['--primary']};
+      display: flex;
+      justify-content: flex-end;
+      & > button {
+        color: ${ColorSet['--primary']};
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
     .warning {
       color: ${ColorSet['--red400']};
@@ -65,6 +87,10 @@ const StyledProfileForm = {
         background: ${ColorSet['--primary']};
         color: ${ColorSet['--white']};
       }
+    }
+    svg {
+      width: 120px;
+      height: 120px;
     }
   `,
   Profile: styled.figure<ProfileProps>`

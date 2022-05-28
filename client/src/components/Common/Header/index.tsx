@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import MenuList from '@/components/Common/MenuList';
