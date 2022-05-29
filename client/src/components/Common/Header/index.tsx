@@ -13,18 +13,18 @@ import useAuth from '@/hooks/useAuth';
 
 const Header: React.FC = () => {
   const { state: { isAuthenticated } } = useAuth();
-  const { data } = useMyInfo();
   const [userMenuToggleState, toggleUserMenu] = useToggle();
   const headerMenuRef = useOutsideRef(() => {
     if (userMenuToggleState) {
       toggleUserMenu();
     }
   });
-  const logout = useLogout();
 
   const navigate = useNavigate();
   const handlePushHome = () => navigate('/');
   const handlePushLogin = () => navigate('/login');
+  const logout = useLogout();
+  const { data } = useMyInfo();
 
   // FIXME: 로그아웃 시 캐싱되는 문제
   const menuList = useMemo(() => {
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
             </S.HeaderMenus>
             <S.HeaderProfile ref={headerMenuRef} onClick={toggleUserMenu}>
               <S.ProfileContainer>
-                {isAuthenticated && data.user.profileUrl
+                {data?.user.profileUrl
                   ? <S.Figure profileUrl={startWithURL(data?.user.profileUrl)} />
                   : <DefaultProfile />}
               </S.ProfileContainer>

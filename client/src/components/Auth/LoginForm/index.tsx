@@ -19,18 +19,14 @@ const LoginForm = () => {
   const handlePushMain = () => navigate('/');
 
   const onSubmit = async (data: LoginFormType) => {
-    try {
-      const { email, password } = data;
+    const { email, password } = data;
 
-      login({
-        email,
-        password,
-      });
-
-      return handlePushMain();
-    } catch (error) {
-      return error;
-    }
+    login({
+      email,
+      password,
+    })
+      .then(handlePushMain)
+      .catch(console.error);
   };
 
   const onError = (error) => {

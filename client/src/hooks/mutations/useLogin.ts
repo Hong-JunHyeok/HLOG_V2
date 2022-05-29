@@ -15,15 +15,15 @@ const useLogin = () => {
 
   const login = (data: LoginProps) => customAxios.post('/auth/login', data);
 
-  const { mutate } = useMutation(login, {
+  const { mutateAsync } = useMutation(login, {
     onSuccess: (response) => {
-      loginDispatch();
       setValue(response.data.payload.accessToken);
+      loginDispatch();
       queryClient.invalidateQueries(['my_info']);
     },
   });
 
-  return mutate;
+  return mutateAsync;
 };
 
 export default useLogin;

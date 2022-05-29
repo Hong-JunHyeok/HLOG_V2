@@ -13,15 +13,14 @@ export default function useMyInfo(): UseQueryResult<QueryResult> {
     storedValue: hlogToken,
   } = useLocalStorage('hlog_access_token', '');
   const getMyInfo = () => customAxios.get('/user/me');
-  const { loginDispatch } = useAuth();
+  const { state: { isAuthenticated }, loginDispatch } = useAuth();
 
   return useQuery(
     ['my_info'],
     getMyInfo,
     {
-      enabled: !!hlogToken,
-      onSuccess: (data) => {
-        console.log(data);
+      enabled: !!hlogToken || isAuthenticated,
+      onSuccess: () => {
         loginDispatch();
       },
     },

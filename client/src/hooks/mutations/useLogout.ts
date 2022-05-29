@@ -4,16 +4,15 @@ import useAuth from '../useAuth';
 import customAxios from '@/utils/customAxios';
 
 const useLogout = () => {
+  const { remove: removeToken } = useLocalStorage('hlog_access_token');
   const { logoutDispatch } = useAuth();
-  const { remove: removeToken } = useLocalStorage('hlog_access_token', '');
 
   const logout = () => customAxios.post('/auth/logout');
 
-  const { mutate, reset } = useMutation(logout, {
+  const { mutate } = useMutation(logout, {
     onSuccess: () => {
-      removeToken();
       logoutDispatch();
-      reset();
+      removeToken();
     },
   });
 
