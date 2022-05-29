@@ -6,8 +6,11 @@ interface QueryResult {
   post: PostType;
 }
 
-export default function usePost(postId: number): UseQueryResult<QueryResult> {
+export default function usePost(postId: number, enabled = true): UseQueryResult<QueryResult> {
   const customAxios = useInterceptedAxios();
   const getPost = (id: number) => customAxios.get(`/post/${id}`);
-  return useQuery(['post', postId], () => getPost(postId));
+
+  return useQuery(['post', postId], () => getPost(postId), {
+    enabled,
+  });
 }

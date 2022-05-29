@@ -18,7 +18,8 @@ module.exports = {
     "default-param-last": "off",
     "@typescript-eslint/default-param-last": ["off"],
     "react/state-in-constructor": "off",
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "no-unsafe-optional-chaining": "off"
   },
   plugins: ["@typescript-eslint"],
   extends: [
