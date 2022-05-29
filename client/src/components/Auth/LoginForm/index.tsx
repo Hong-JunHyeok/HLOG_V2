@@ -1,9 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import S from './StyledLoginForm';
-import useLocalStorage from '@/utils/useLocalStorage';
-import useAuth from '@/hooks/useAuth';
-import useInterceptedAxios from '@/hooks/useInterceptedAxios';
+import useLogin from '@/hooks/mutations/useLogin';
 
 interface LoginFormType {
   email: string;
@@ -15,32 +13,20 @@ const LoginForm = () => {
     register, handleSubmit, formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const {
-    setValue: setHlogToken,
-  } = useLocalStorage('hlog_access_token', '');
-
-  const { loginDispatch } = useAuth();
   const navigate = useNavigate();
-  const customAxios = useInterceptedAxios();
+  const login = useLogin();
 
   const handlePushMain = () => navigate('/');
 
   const onSubmit = async (data: LoginFormType) => {
-    try {
-      const { email, password } = data;
+    const { email, password } = data;
 
-      const response = await customAxios.post('/auth/login', {
-        email,
-        password,
-      });
-      const { accessToken } = response.data.payload;
-      setHlogToken(accessToken); // AccessToken을 LocalStorage에서 관리
-      loginDispatch();
-
-      return handlePushMain();
-    } catch (error) {
-      return error;
-    }
+    login({
+      email,
+      password,
+    })
+      .then(handlePushMain)
+      .catch(console.error);
   };
 
   const onError = (error) => {

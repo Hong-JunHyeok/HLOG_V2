@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Editor, EditorState, DraftEditorCommand, RichUtils,
@@ -6,7 +6,7 @@ import {
 } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { convertToHTML } from 'draft-convert';
+import { convertToHTML, convertFromHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import 'draft-js/dist/Draft.css';
 import S from './StyledEditor';
@@ -14,6 +14,9 @@ import useLocalStorage from '@/utils/useLocalStorage';
 import SuccessModal from '@/components/Modal/Success/SuccessModal';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
 import useInterceptedAxios from '@/hooks/useInterceptedAxios';
+import useSearchParam from '@/hooks/useSearchParam';
+import usePost from '@/hooks/queries/usePost';
+import useEditPost from '@/hooks/mutations/useEditPost';
 
 const styleMap = {
   CODE: {
@@ -172,6 +175,34 @@ function InlineStyleControls(props: {
 
 function HlogEditor() {
   const navigate = useNavigate();
+
+  const [titleState, setTitleState] = useState('');
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const [isEdit, setIsEdit] = useState(false);
+  const searchData = useSearchParam();
+  const loadEditData = useCallback(() => {
+    setIsEdit(true);
+  }, []);
+
+  const { data } = usePost(+searchData?.postId, isEdit);
+
+  useEffect(() => {
+    if (searchData) {
+      loadEditData();
+    }
+  }, [searchData, isEdit, loadEditData]);
+
+  useEffect(() => {
+    if (isEdit && data) {
+      setTitleState(data.post.postTitle);
+
+      const contentState = EditorState.createWithContent(convertFromHTML((data.post.postContent)));
+
+      setEditorState(contentState);
+    }
+  }, [data, isEdit]);
+
   const {
     storedValue: editorTitle,
     setValue: setEditorTitle,
@@ -183,16 +214,19 @@ function HlogEditor() {
     remove: clearEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
+
+  const [createPostErrorMessage, setCreatePostErrorMessage] = useState('');
   const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
 
-  const titleInitialState = editorTitle || '';
+  useEffect(() => {
+    setTitleState(editorTitle || '');
 
-  const contentInitialState = editorContent
-    ? EditorState.createWithContent(convertFromRaw(editorContent))
-    : EditorState.createEmpty();
+    if (editorContent) {
+      const savedEditorState = EditorState.createWithContent(convertFromRaw(editorContent));
+      setEditorState(savedEditorState);
+    }
+  }, [editorTitle, editorContent]);
 
-  const [titleState, setTitleState] = useState(titleInitialState);
-  const [editorState, setEditorState] = useState(contentInitialState);
   const customAxios = useInterceptedAxios();
 
   const handleExit = () => navigate(-1);
@@ -239,33 +273,62 @@ function HlogEditor() {
     }
   };
 
-  // const mapKeyToEditorCommand = (event) => getDefaultKeyBinding(event);
-
   const resetSavedContent = () => {
     clearEditorTitle();
     clearEditorContent();
   };
 
-  const createPost = async () => {
-    try {
-      const response = await customAxios.post('/post', {
-        postTitle: titleState,
-        postContent: convertToHTML({
-          blockToHTML: (block) => {
-            if (block.type === 'blockquote') {
-              return <p className="hlog_blockquote" />;
-            }
-            return null;
-          },
-        })(editorState.getCurrentContent()),
-      });
+  const editPostMutate = useEditPost();
 
+  const editPost = () => {
+    const contentToHtml = convertToHTML({
+      blockToHTML: (block) => {
+        if (block.type === 'blockquote') {
+          return <blockquote className="hlog_blockquote" />;
+        }
+        return null;
+      },
+    })(editorState.getCurrentContent());
+
+    editPostMutate({
+      postId: +searchData?.postId,
+      postTitle: titleState,
+      postContent: contentToHtml,
+    });
+  };
+
+  const createPost = () => {
+    if (!titleState) {
+      setCreatePostErrorMessage('제목을 입력해주세요.');
+      setCreatePostErrorModal(true);
+      return;
+    }
+
+    if (!editorState.getCurrentContent().hasText()) {
+      setCreatePostErrorMessage('본문을 입력해주세요.');
+      setCreatePostErrorModal(true);
+      return;
+    }
+
+    const contentToHtml = convertToHTML({
+      blockToHTML: (block) => {
+        if (block.type === 'blockquote') {
+          return <blockquote className="hlog_blockquote" />;
+        }
+        return null;
+      },
+    })(editorState.getCurrentContent());
+
+    customAxios.post('/post', {
+      postTitle: titleState,
+      postContent: contentToHtml,
+    }).then((response) => {
       const { postId } = response.data.payload;
       resetSavedContent();
       navigate(`/post/${postId}`);
-    } catch (error) {
+    }).catch(() => {
       setCreatePostErrorModal(true);
-    }
+    });
   };
 
   return (
@@ -274,8 +337,8 @@ function HlogEditor() {
         <S.Header>
           <button type="button" className="exit" onClick={handleExit}>나가기</button>
           <div className="utils">
-            <button type="button" className="normal-button" onClick={handleSaveContent}>저장</button>
-            <button type="button" className="normal-button post" onClick={createPost}>포스트</button>
+            <button type="button" className="normal-button" onClick={handleSaveContent}>임시저장</button>
+            <button type="button" className="normal-button post" onClick={isEdit ? editPost : createPost}>포스트</button>
           </div>
         </S.Header>
         <AutosizeableTextarea
@@ -297,7 +360,6 @@ function HlogEditor() {
             customStyleMap={styleMap}
             editorState={editorState}
             handleKeyCommand={handleKeyCommand}
-            // keyBindingFn={mapKeyToEditorCommand}
             onChange={setEditorState}
             blockStyleFn={blockStyleClassMap}
             placeholder="내용을 입력해주세요..."
@@ -316,7 +378,7 @@ function HlogEditor() {
       {createPostErrorModal
         && (
         <ErrorModal
-          errorTitle="에러 발생"
+          errorTitle={createPostErrorMessage}
           onClose={() => setCreatePostErrorModal(false)}
         />
         )}

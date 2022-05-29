@@ -15,12 +15,11 @@ export default function usePosts(queryType: PostsQueryType): UseQueryResult<Quer
 
   const getPopularPosts = () => customAxios.get('/post/popular');
 
-  switch (queryType) {
-    case 'RECENT':
-      return useQuery('recent_posts', getRecentPosts);
-    case 'POPULAR':
-      return useQuery('popular_posts', getPopularPosts);
-    default:
-      throw new Error(`Unhandled Query Type : ${queryType}`);
-  }
+  return useQuery(
+    queryType === 'RECENT' ? 'recent_posts' : 'popular_posts',
+    queryType === 'RECENT' ? getRecentPosts : getPopularPosts,
+    {
+      onSuccess: () => {},
+    },
+  );
 }

@@ -193,6 +193,52 @@ router.get(
   }
 );
 
+router.patch(
+  '/:postId', 
+  accessTokenValidator, 
+  async(req,res,next) => {
+    const { postId } = req.params;
+    try {
+      const postRepository = getRepository(Post);
+      const { postTitle, postContent } = req.body;
+
+      const existPost = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existPost) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      await postRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          postTitle,
+          postContent
+        })
+        .where("id = :id", { id: Number(postId) })
+        .execute();
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "포스트를 성공적으로 수정했습니다.",
+        payload: {
+          location: `/post/${postId}`
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.delete(
   "/:postId",
   accessTokenValidator,
@@ -251,8 +297,6 @@ router.delete(
     }
   }
 );
-
-
 
 router.patch(
   "/thumnail/:postId",

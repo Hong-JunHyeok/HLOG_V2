@@ -7,10 +7,11 @@ const AxiosConfigure: AxiosRequestConfig = {
 };
 
 const customAxios = axios.create(AxiosConfigure);
-const hlogToken = localStorage.getItem('hlog_access_token');
 
 customAxios.interceptors.request.use((config) => {
   // 모든 Request Header에 Access토큰을 넣어주는 역할
+  const hlogToken = localStorage.getItem('hlog_access_token');
+
   if (!config.headers.authorization && hlogToken) {
     config.headers.authorization = JSON.parse(hlogToken);
   }
@@ -24,6 +25,7 @@ customAxios.interceptors.response.use(
     const prevRequest = error?.config;
     if (error?.response?.status === 403 && !prevRequest?.sent) {
       prevRequest.sent = true;
+      console.log('토큰 만료');
       const refreshToken = async () => {
         const response = await customAxios.post('/auth/refresh');
         const { accessToken } = response.data.payload;
@@ -32,9 +34,9 @@ customAxios.interceptors.response.use(
       };
       const accessToken = await refreshToken();
       prevRequest.headers.authorization = accessToken;
+      console.log('토큰 리프레쉬 완료');
       return customAxios(prevRequest);
     }
-    return customAxios;
   },
 );
 
