@@ -32,6 +32,7 @@ const StyledProfileForm = {
         font-weight: bold;
       }
       .value {
+        width: calc(100% - 100px);
         margin-left: 1rem;
       }
     }
