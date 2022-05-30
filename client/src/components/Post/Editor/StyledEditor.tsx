@@ -23,12 +23,6 @@ const StyledEditor = {
     margin-top: 10px;
   }
 
-  .RichEditor-editor .public-DraftEditorPlaceholder-root,
-  .RichEditor-editor .public-DraftEditor-content {
-    margin: 0 -15px -15px;
-    padding: 15px;
-  }
-
   .RichEditor-editor .public-DraftEditor-content {
     min-height: 100px;
   }
@@ -45,12 +39,15 @@ const StyledEditor = {
     margin: 16px 0;
     padding: 10px 20px;
   }
-
-  .RichEditor-editor .public-DraftStyleDefault-pre {
-    background-color: rgba(0, 0, 0, 0.05);
-    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  
+  .public-DraftStyleDefault-pre {
+    width: 100%;
+    background-color: #282a36;
+    color: #f8f8f2;
+    font-family: Inconsolata, Menlo, Consolas, monospace;
     font-size: 16px;
-    padding: 20px;
+    padding: 1rem;
+    border-radius: 10px;
   }
 
   .RichEditor-controls {
@@ -71,6 +68,7 @@ const StyledEditor = {
       border-bottom: 0;
     }
   }
+
   .inline_controls {
     display: inline-block;
     ${mediaQueryHelper('medium')} {
@@ -123,7 +121,8 @@ const StyledEditor = {
       height: 28vw;
     }
   }
-`,
+  `,
+
   ToolContainer: styled.ul`
   display: flex;
   flex-wrap: wrap;

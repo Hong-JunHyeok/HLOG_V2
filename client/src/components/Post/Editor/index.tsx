@@ -1,33 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Editor, EditorState, DraftEditorCommand, RichUtils,
-  convertFromRaw, convertToRaw,
+  EditorState, DraftEditorCommand, RichUtils,
+  convertFromRaw, convertToRaw, Editor,
 } from 'draft-js';
+import 'draft-js/dist/Draft.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { convertToHTML, convertFromHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
-import 'draft-js/dist/Draft.css';
 import S from './StyledEditor';
 import useLocalStorage from '@/utils/useLocalStorage';
 import SuccessModal from '@/components/Modal/Success/SuccessModal';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
-import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';
 import useModal from '@/hooks/useModal';
 import useEditor from '@/hooks/useEditor';
-
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2,
-  },
-};
 
 interface StyleButtonProps {
   active: boolean;
@@ -177,7 +167,10 @@ function HlogEditor() {
     if (isEdit && data) {
       setPostTitle(data.post.postTitle);
 
-      const contentState = EditorState.createWithContent(convertFromHTML((data.post.postContent)));
+      const contentState = EditorState
+        .createWithContent(
+          convertFromHTML((data.post.postContent)),
+        );
 
       setPostContent(contentState);
     }
@@ -195,7 +188,6 @@ function HlogEditor() {
     remove: clearEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
-
   const [createPostErrorMessage, setCreatePostErrorMessage] = useState('');
   const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
 
@@ -203,7 +195,8 @@ function HlogEditor() {
     setPostTitle(editorTitle || '');
 
     if (editorContent) {
-      const savedEditorState = EditorState.createWithContent(convertFromRaw(editorContent));
+      const savedEditorState = EditorState
+        .createWithContent(convertFromRaw(editorContent));
       setPostContent(savedEditorState);
     }
   }, [editorTitle, editorContent, setPostTitle, setPostContent]);
@@ -247,6 +240,8 @@ function HlogEditor() {
     switch (type) {
       case 'blockquote':
         return 'hlog_blockquote';
+      case 'code-block':
+        return 'hlog_code';
       default:
         return null;
     }
@@ -265,7 +260,19 @@ function HlogEditor() {
         if (block.type === 'blockquote') {
           return <blockquote className="hlog_blockquote" />;
         }
+
+        if (block.type === 'pre') {
+          return <pre className="hlog_code" />;
+        }
         return null;
+      },
+
+      entityToHTML: (entiry, originalText) => {
+        console.log(entiry);
+        if (entiry.type === 'CODE') {
+          return <code>{originalText}</code>;
+        }
+        return originalText;
       },
     })(postContent.getCurrentContent());
 
@@ -318,7 +325,6 @@ function HlogEditor() {
             onToggle={toggleInlineStyle}
           />
           <Editor
-            customStyleMap={styleMap}
             editorState={postContent}
             handleKeyCommand={handleKeyCommand}
             onChange={setPostContent}

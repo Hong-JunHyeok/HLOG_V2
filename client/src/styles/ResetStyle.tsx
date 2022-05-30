@@ -100,6 +100,7 @@ const ResetStyle = () => (
 
     p {
         line-height: 2rem;
+        margin: 1.5rem 0;
     }
 
     strong {
@@ -120,15 +121,18 @@ const ResetStyle = () => (
         text-decoration: none;
     }   
 
-    em {
-        font-style: italic;
-    }
-
-    code {
-        background-color: rgba(0, 0, 0, 0.05);
+    pre {
+        width: 100%;
+        background-color: #282a36;
+        color: #f8f8f2;
         font-family: Inconsolata, Menlo, Consolas, monospace;
         font-size: 16px;
-        padding: 2px;
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    em {
+        font-style: italic;
     }
   `}
   />

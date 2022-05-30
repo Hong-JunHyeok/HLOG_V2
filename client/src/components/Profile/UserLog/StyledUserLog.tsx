@@ -43,6 +43,7 @@ const StyledUserLog = {
     background-position: center;
   `,
   Meta: styled.div`
+    margin-top: .6rem;
     display: flex;
     flex-direction: column;
   `,
