@@ -138,6 +138,40 @@ const upload = multer({
   }),
 }).single("profile");
 
+router.delete(
+  "/profile",
+  accessTokenValidator,
+  upload,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userRepository = getRepository(User);
+    const me = await userRepository.findOne({
+      where: { id: req.body.decodedUserId },
+    });
+
+    if (!me) {
+      return setJsonResponser(res, {
+        code: 403,
+        message: "유저 정보가 없습니다.",
+      });
+    }
+
+    await userRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          profileUrl: null,
+        })
+        .where("id = :id", { id: me.id })
+        .execute();
+
+    return setJsonResponser(res, {
+      code: 201,
+      message: "프로필 이미지 삭제했습니다.",
+      }
+    );
+  }
+);
+
 router.patch(
   "/profile",
   accessTokenValidator,
@@ -174,4 +208,5 @@ router.patch(
     );
   }
 );
+
 export default router;

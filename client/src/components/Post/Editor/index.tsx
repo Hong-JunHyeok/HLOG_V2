@@ -268,7 +268,6 @@ function HlogEditor() {
       },
 
       entityToHTML: (entiry, originalText) => {
-        console.log(entiry);
         if (entiry.type === 'CODE') {
           return <code>{originalText}</code>;
         }
