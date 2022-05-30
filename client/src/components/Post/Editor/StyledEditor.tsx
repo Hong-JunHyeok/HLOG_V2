@@ -124,13 +124,13 @@ const StyledEditor = {
     }
   }
 `,
-ToolContainer: styled.ul`
+  ToolContainer: styled.ul`
   display: flex;
   flex-wrap: wrap;
   background-color: ${ColorSet['--white']};
   border-bottom: 1px solid ${ColorSet['--greyOpacity200']};
 `,
-ToolItem: styled.li`
+  ToolItem: styled.li`
   border-radius: 5px;
   margin: 0.4rem;
   padding: 0.6rem;
@@ -140,7 +140,7 @@ ToolItem: styled.li`
     background-color: ${ColorSet['--greyOpacity300']}
   }
 `,
-Header: styled.div`
+  Header: styled.div`
   display: flex;
     height: 50px;
     background-color: ${ColorSet['--white']};
@@ -175,7 +175,7 @@ Header: styled.div`
         margin-left: 1rem;
       }
     }
-`
-}
+`,
+};
 
 export default StyledEditor;

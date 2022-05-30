@@ -11,25 +11,11 @@ import { Like } from "../../entity/Like";
 
 const router = express.Router();
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, callback) => {
-      callback(null, "thumnails/");
-    },
-    filename: (req, file, callback) => {
-      const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext);
-
-      callback(null, basename + "_" + new Date().getTime() + ext);
-    },
-  }),
-});
-
 router.post(
   "/",
   accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { postTitle, postThumnail, postContent } = req.body;
+    const { postTitle, postThumbnail, postContent } = req.body;
 
     if (!postTitle.trim()) {
       return setJsonResponser(res, {
@@ -57,7 +43,7 @@ router.post(
       const newPost = new Post();
 
       newPost.postTitle = postTitle;
-      newPost.postThumnail = postThumnail;
+      newPost.postThumbnail = postThumbnail;
       newPost.postContent = postContent;
       newPost.user = user;
 
@@ -89,7 +75,7 @@ router.get(
           "posts.id",
           "posts.createdAt",
           "posts.updatedAt",
-          "posts.postThumnail",
+          "posts.postThumbnail",
           "posts.postTitle",
           "posts.postContent",
           "user.username",
@@ -129,7 +115,7 @@ router.get(
           "posts.id",
           "posts.createdAt",
           "posts.updatedAt",
-          "posts.postThumnail",
+          "posts.postThumbnail",
           "posts.postTitle",
           "posts.postContent",
           "user.username",
@@ -192,6 +178,69 @@ router.get(
     }
   }
 );
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, "thumbnails/");
+    },
+    filename: (req, file, callback) => {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext);
+
+      callback(null, basename + ext);
+    },
+  }),
+}).single('thumbnail');
+
+router.patch(
+  "/thumbnail/:postId",
+  accessTokenValidator,
+  upload,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { postId } = req.params;
+      const postRepository = getRepository(Post);
+
+      const existPost = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existPost) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+      
+      
+
+      await postRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          postThumbnail: req.file.path,
+        })
+        .where("id = :id", { id: Number(postId) })
+        .execute();
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "포스트의 썸네일을 수정했습니다.",
+        payload: {
+          url: req.file.path,
+          postId
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 
 router.patch(
   '/:postId', 
@@ -298,49 +347,6 @@ router.delete(
   }
 );
 
-router.patch(
-  "/thumnail/:postId",
-  upload.single("thumnail"),
-  accessTokenValidator,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params;
-    try {
-      const postRepository = getRepository(Post);
-
-      const existPost = await postRepository.findOne({
-        where: {
-          id: Number(postId),
-        },
-      });
-
-      if (!existPost) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "게시글 정보가 없습니다.",
-        });
-      }
-
-      await postRepository
-        .createQueryBuilder()
-        .update()
-        .set({
-          postThumnail: res.req.file.path,
-        })
-        .where("id = :id", { id: Number(postId) })
-        .execute();
-
-      return setJsonResponser(res, {
-        code: 201,
-        message: "포스트의 썸네일을 수정했습니다.",
-        payload: res.req.file.path,
-      });
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
-  }
-);
-
 router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   const id = Number(req.params.id);
 
@@ -355,7 +361,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
         "posts.id",
         "posts.createdAt",
         "posts.updatedAt",
-        "posts.postThumnail",
+        "posts.postThumbnail",
         "posts.postContent",
         "posts.postTitle",
         "user.username",

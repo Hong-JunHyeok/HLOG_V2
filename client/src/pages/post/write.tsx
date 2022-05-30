@@ -5,6 +5,9 @@ import ColorSet from '@/styles/colorSet';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import useScroller from '@/hooks/useScroller';
+import CreatePostConfigure from '@/components/Post/CreatePostConfigure';
+import Modal from '../../components/Modal/Modal';
+import useModal from '@/hooks/useModal';
 
 const StyledWritePostPage = {
   Container: styled.section`
@@ -19,6 +22,7 @@ const StyledWritePostPage = {
 
 const WritePostPage = () => {
   const { scrollTop } = useScroller();
+  const { isOpen } = useModal();
 
   useEffect(() => {
     scrollTop();
@@ -36,6 +40,9 @@ const WritePostPage = () => {
           </ErrorBoundary>
         </StyledWritePostPage.EditorContainer>
       </StyledWritePostPage.Container>
+      <Modal visible={isOpen}>
+        <CreatePostConfigure />
+      </Modal>
     </Suspense>
   );
 };

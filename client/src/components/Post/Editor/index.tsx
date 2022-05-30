@@ -17,6 +17,8 @@ import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';
+import useModal from '@/hooks/useModal';
+import useEditor from '@/hooks/useEditor';
 
 const styleMap = {
   CODE: {
@@ -85,33 +87,6 @@ const BLOCK_TYPES = [
     ),
     style: 'header-three',
   },
-  {
-    label: (
-      <>
-        <FontAwesomeIcon icon={solid('h')} />
-        4
-      </>
-    ),
-    style: 'header-four',
-  },
-  {
-    label: (
-      <>
-        <FontAwesomeIcon icon={solid('h')} />
-        5
-      </>
-    ),
-    style: 'header-five',
-  },
-  {
-    label: (
-      <>
-        <FontAwesomeIcon icon={solid('h')} />
-        6
-      </>
-    ),
-    style: 'header-six',
-  },
   { label: 'Blockquote', style: 'blockquote' },
   { label: <FontAwesomeIcon icon={solid('list-ul')} />, style: 'unordered-list-item' },
   { label: <FontAwesomeIcon icon={solid('list-ol')} />, style: 'ordered-list-item' },
@@ -176,8 +151,12 @@ function InlineStyleControls(props: {
 function HlogEditor() {
   const navigate = useNavigate();
 
-  const [titleState, setTitleState] = useState('');
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const {
+    postTitle,
+    postContent,
+    setPostTitle,
+    setPostContent,
+  } = useEditor();
 
   const [isEdit, setIsEdit] = useState(false);
   const searchData = useSearchParam();
@@ -186,6 +165,7 @@ function HlogEditor() {
   }, []);
 
   const { data } = usePost(+searchData?.postId, isEdit);
+  const { openModal } = useModal();
 
   useEffect(() => {
     if (searchData) {
@@ -195,19 +175,20 @@ function HlogEditor() {
 
   useEffect(() => {
     if (isEdit && data) {
-      setTitleState(data.post.postTitle);
+      setPostTitle(data.post.postTitle);
 
       const contentState = EditorState.createWithContent(convertFromHTML((data.post.postContent)));
 
-      setEditorState(contentState);
+      setPostContent(contentState);
     }
-  }, [data, isEdit]);
+  }, [data, isEdit, setPostContent, setPostTitle]);
 
   const {
     storedValue: editorTitle,
     setValue: setEditorTitle,
     remove: clearEditorTitle,
   } = useLocalStorage('hlog_editor_title', '');
+
   const {
     storedValue: editorContent,
     setValue: setEditorContent,
@@ -219,45 +200,43 @@ function HlogEditor() {
   const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
 
   useEffect(() => {
-    setTitleState(editorTitle || '');
+    setPostTitle(editorTitle || '');
 
     if (editorContent) {
       const savedEditorState = EditorState.createWithContent(convertFromRaw(editorContent));
-      setEditorState(savedEditorState);
+      setPostContent(savedEditorState);
     }
-  }, [editorTitle, editorContent]);
-
-  const customAxios = useInterceptedAxios();
+  }, [editorTitle, editorContent, setPostTitle, setPostContent]);
 
   const handleExit = () => navigate(-1);
 
-  const changeEditorContent = (state: EditorState) => setEditorState(state);
+  const changeEditorContent = (state: EditorState) => setPostContent(state);
 
   const handleSaveContent = () => {
-    setEditorTitle(titleState);
-    const content = editorState.getCurrentContent();
+    setEditorTitle(postTitle);
+    const content = postContent.getCurrentContent();
     // @ts-ignore
     setEditorContent(convertToRaw(content));
   };
 
   const toggleBlockType = (blockType: string) => changeEditorContent(
     RichUtils.toggleBlockType(
-      editorState,
+      postContent,
       blockType,
     ),
   );
 
   const toggleInlineStyle = (inlineStyle: string) => changeEditorContent(
     RichUtils.toggleInlineStyle(
-      editorState,
+      postContent,
       inlineStyle,
     ),
   );
 
   const handleKeyCommand = (command: DraftEditorCommand) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
+    const newState = RichUtils.handleKeyCommand(postContent, command);
     if (newState) {
-      setEditorState(newState);
+      setPostContent(newState);
       return 'handled';
     }
     return 'not-handled';
@@ -288,47 +267,29 @@ function HlogEditor() {
         }
         return null;
       },
-    })(editorState.getCurrentContent());
+    })(postContent.getCurrentContent());
 
     editPostMutate({
       postId: +searchData?.postId,
-      postTitle: titleState,
+      postTitle,
       postContent: contentToHtml,
-    });
+    }).then(resetSavedContent);
   };
 
   const createPost = () => {
-    if (!titleState) {
+    if (!postTitle) {
       setCreatePostErrorMessage('제목을 입력해주세요.');
       setCreatePostErrorModal(true);
       return;
     }
 
-    if (!editorState.getCurrentContent().hasText()) {
+    if (!postContent.getCurrentContent().hasText()) {
       setCreatePostErrorMessage('본문을 입력해주세요.');
       setCreatePostErrorModal(true);
       return;
     }
 
-    const contentToHtml = convertToHTML({
-      blockToHTML: (block) => {
-        if (block.type === 'blockquote') {
-          return <blockquote className="hlog_blockquote" />;
-        }
-        return null;
-      },
-    })(editorState.getCurrentContent());
-
-    customAxios.post('/post', {
-      postTitle: titleState,
-      postContent: contentToHtml,
-    }).then((response) => {
-      const { postId } = response.data.payload;
-      resetSavedContent();
-      navigate(`/post/${postId}`);
-    }).catch(() => {
-      setCreatePostErrorModal(true);
-    });
+    openModal();
   };
 
   return (
@@ -343,30 +304,31 @@ function HlogEditor() {
         </S.Header>
         <AutosizeableTextarea
           placeholder="제목을 입력하세요."
-          value={titleState}
-          onChange={(e) => setTitleState(e.target.value)}
+          value={postTitle}
+          onChange={(e) => setPostTitle(e.target.value)}
           className="title-input"
         />
         <div className="RichEditor-root">
           <BlockStyleControls
-            editorState={editorState}
+            editorState={postContent}
             onToggle={toggleBlockType}
           />
           <InlineStyleControls
-            editorState={editorState}
+            editorState={postContent}
             onToggle={toggleInlineStyle}
           />
           <Editor
             customStyleMap={styleMap}
-            editorState={editorState}
+            editorState={postContent}
             handleKeyCommand={handleKeyCommand}
-            onChange={setEditorState}
+            onChange={setPostContent}
             blockStyleFn={blockStyleClassMap}
             placeholder="내용을 입력해주세요..."
             spellCheck
           />
         </div>
       </S.Container>
+
       {createPostSuccessModal
         && (
         <SuccessModal

@@ -1,5 +1,5 @@
-import ColorSet from "@/styles/colorSet";
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
+import ColorSet from '@/styles/colorSet';
 
 const StyledModal = {
   Container: styled.div`
@@ -18,7 +18,9 @@ const StyledModal = {
     flex-shrink: 0;
     border-radius: 10px;
     background-color: ${ColorSet['--white']};
-  `
+    position: absolute;
+    bottom: 0;
+  `,
 };
 
 export default StyledModal;
