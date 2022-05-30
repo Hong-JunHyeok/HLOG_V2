@@ -14,6 +14,7 @@ import usePreventNormalUser from '@/hooks/usePreventNormalUser';
 import useEditProfile from '@/hooks/mutations/useEditProfile';
 import useEditMeta from '@/hooks/mutations/useEditMeta';
 import useWithdrawal from '@/hooks/mutations/useWithdrawal';
+import useDeleteProfile from '@/hooks/mutations/useDeleteProfile';
 
 const ProfileForm = () => {
   const { data } = useMyInfo();
@@ -23,6 +24,7 @@ const ProfileForm = () => {
   const editProfile = useEditProfile();
   const editMeta = useEditMeta();
   const withdrawal = useWithdrawal();
+  const deleteProfile = useDeleteProfile();
 
   const [editedMeta, setEditedMeta] = useState({
     username: data?.user.username,
@@ -62,6 +64,10 @@ const ProfileForm = () => {
     withdrawal(String(data.user.id));
   };
 
+  const handleDeleteUserProfile = () => {
+    deleteProfile();
+  };
+
   useEffect(() => {
     redirector();
   }, [redirector]);
@@ -79,7 +85,7 @@ const ProfileForm = () => {
           : <DefaultProfile />}
         <div className="profile_edits">
           <button type="button" onClick={handleClickProfileChange} className="profile_edit primary">프로필 사진 변경하기</button>
-          <button type="button" className="profile_edit">프로필 사진 제거하기</button>
+          <button type="button" className="profile_edit" onClick={handleDeleteUserProfile}>프로필 사진 제거하기</button>
           <input type="file" id="profile_input" ref={profileInputRef} onChange={handleChangeProfile} />
         </div>
       </StyledProfileForm.ProfileContainer>
