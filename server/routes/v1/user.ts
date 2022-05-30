@@ -131,7 +131,7 @@ const upload = multer({
       callback(null, "profiles/");
     },
     filename: (req, file, callback) => {
-      const ext = path.extname(file.originalname); // 확장자 추출(png)
+      const ext = path.extname(file.originalname);
       const basename = path.basename(file.originalname, ext);
       callback(null, basename + ext);
     },

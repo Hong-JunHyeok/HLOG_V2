@@ -12,7 +12,7 @@ const useEditPost = () => {
   const navigate = useNavigate();
   const updateEditPost = (payload: PayloadType) => customAxios.patch(`/post/${payload.postId}`, payload);
 
-  const { mutate } = useMutation(updateEditPost, {
+  const { mutateAsync } = useMutation(updateEditPost, {
     onSuccess: (response) => {
       const replaceURL = response.data.payload.location;
       navigate(replaceURL, {
@@ -21,7 +21,7 @@ const useEditPost = () => {
     },
   });
 
-  return mutate;
+  return mutateAsync;
 };
 
 export default useEditPost;

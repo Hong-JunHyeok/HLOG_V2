@@ -14,7 +14,7 @@ import startWithURL from '@/utils/startWithURL';
 
 const PostItem: React.FunctionComponent<PostType> = ({
   id,
-  postThumnail,
+  postThumbnail,
   postTitle,
   postContent,
   user: {
@@ -29,7 +29,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
 
   return (
     <S.Container onClick={handlePushPostView}>
-      <S.Thumbnail thumbnailUrl={postThumnail || ThumbnailPlaceholder} />
+      <S.Thumbnail thumbnailUrl={startWithURL(postThumbnail) || ThumbnailPlaceholder} />
       <S.Content>
         <h1>{postTitle}</h1>
         <p>{stringCutter(postContent, 150)}</p>

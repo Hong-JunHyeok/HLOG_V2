@@ -30,7 +30,7 @@ const StyledPostList = {
     font-size: 1.2rem;
 
     &::after {
-      content: "이런... 게시글이 없습니다."
+      content: "게시글이 없습니다."
     }
 `,
 };

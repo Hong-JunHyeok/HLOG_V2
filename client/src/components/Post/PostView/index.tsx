@@ -7,6 +7,7 @@ import S from './StyledPostView';
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 import SEOHelmet from '@/components/Common/SEOHelmet';
+import startWithURL from '@/utils/startWithURL';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<'postId'>();
@@ -17,7 +18,7 @@ const PostView: React.FunctionComponent = () => {
   const { post } = data;
   const {
     id,
-    postThumnail,
+    postThumbnail,
     postTitle,
     postContent,
     user: {
@@ -43,7 +44,7 @@ const PostView: React.FunctionComponent = () => {
       <SEOHelmet
         title={`${postTitle} | ${username}님의 포스트`}
       />
-      <S.HeadLine thumbnailUrl={postThumnail || ThumbnailPlaceholder}>
+      <S.HeadLine thumbnailUrl={startWithURL(postThumbnail) || ThumbnailPlaceholder}>
         <h1>{postTitle}</h1>
 
         <div className="head_meta">
