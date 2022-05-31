@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import mediaQueryHelper from '@/styles/mediaHelper'
+import mediaQueryHelper from '@/styles/mediaHelper';
 import ColorSet from '@/styles/colorSet';
 
 interface ThumbnailProps {
@@ -53,6 +53,10 @@ const StyledView = {
       .username {
         padding-right: 1rem;
         border-right: 1px solid ${ColorSet['--white']};
+        .user_link {
+          color: ${ColorSet['--white']};
+          text-decoration: underline;
+        }
       }
 
       .meta_btn {
@@ -70,7 +74,11 @@ const StyledView = {
     max-width: 1000px;
     padding: 2rem 1rem;
     margin: 0 auto;
-  `
-}
+  `,
+  CommentContainer: styled.div`
+    max-width: 1000px;
+    margin: 0 auto;
+  `,
+};
 
 export default StyledView;

@@ -16,14 +16,14 @@ const PostItem: React.FunctionComponent<PostType> = ({
   id,
   postThumbnail,
   postTitle,
-  postContent,
+  postSummary,
   user: {
     username,
     profileUrl,
   },
 }) => {
   const navigate = useNavigate();
-  const [liked, toggleLiked] = useToggle(false);
+  // const [liked, toggleLiked] = useToggle(false);
 
   const handlePushPostView = () => navigate(`/post/${id}`);
 
@@ -32,7 +32,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
       <S.Thumbnail thumbnailUrl={startWithURL(postThumbnail) || ThumbnailPlaceholder} />
       <S.Content>
         <h1>{postTitle}</h1>
-        <p>{stringCutter(postContent, 150)}</p>
+        <p>{stringCutter(postSummary, 150)}</p>
       </S.Content>
       <S.Meta>
         <S.ProfileContainer>
@@ -41,7 +41,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
             : <DefaultProfile />}
         </S.ProfileContainer>
         <span>{username}</span>
-        <S.Like onClick={(event) => {
+        {/* <S.Like onClick={(event) => {
           event.stopPropagation();
           toggleLiked();
         }}
@@ -49,7 +49,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
           {liked
             ? <FontAwesomeIcon icon={solid('thumbs-up')} />
             : <FontAwesomeIcon icon={regular('thumbs-up')} />}
-        </S.Like>
+        </S.Like> */}
       </S.Meta>
     </S.Container>
   );
