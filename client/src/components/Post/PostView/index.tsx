@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import usePost from '@/hooks/queries/usePost';
 import S from './StyledPostView';
@@ -8,25 +8,39 @@ import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import useInterceptedAxios from '@/hooks/useInterceptedAxios';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import startWithURL from '@/utils/startWithURL';
+import useMyInfo from '@/hooks/queries/useMyInfo';
+import CommentInput from '@/components/Comment/CommentInput/CommentInput';
+import useComments from '@/hooks/queries/useComment';
+import CommentList from '@/components/Comment/CommentList';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<'postId'>();
-  const { data } = usePost(+postId);
   const navigator = useNavigate();
   const customAxios = useInterceptedAxios();
+  const { data: postData } = usePost(+postId);
+  const { data: userData } = useMyInfo();
+  const { data: commentData } = useComments(+postId);
 
-  const { post } = data;
+  const { post } = postData;
   const {
     id,
     postThumbnail,
     postTitle,
     postContent,
     user: {
+      id: userId,
       username,
     },
   } = post;
 
+  const isMyPost = useMemo(() => {
+    if (userData?.user.id === userId) return true;
+    return false;
+  }, [userId, userData]);
+
   const handleDelete = async () => {
+    if (!isMyPost) return null;
+
     try {
       await customAxios.delete(`/post/${id}`);
       return navigator('/');
@@ -36,11 +50,13 @@ const PostView: React.FunctionComponent = () => {
   };
 
   const handleUpdate = () => {
+    if (!isMyPost) return;
+
     navigator(`/write?postId=${id}`);
   };
 
   return (
-    <S.Container>
+    <>
       <SEOHelmet
         title={`${postTitle} | ${username}님의 포스트`}
       />
@@ -49,11 +65,16 @@ const PostView: React.FunctionComponent = () => {
 
         <div className="head_meta">
           <span className="username">
-            {username}
+            <Link className="user_link" to={`/user/${userId}`}>{username}</Link>
             님의 게시글
           </span>
-          <span className="meta_btn" onKeyPress={handleUpdate} role="button" tabIndex={0} onClick={handleUpdate}>수정</span>
-          <span className="meta_btn" onKeyPress={handleDelete} role="button" tabIndex={0} onClick={handleDelete}>삭제</span>
+          {isMyPost
+          && (
+          <>
+            <span className="meta_btn" onKeyPress={handleUpdate} role="button" tabIndex={0} onClick={handleUpdate}>수정</span>
+            <span className="meta_btn" onKeyPress={handleDelete} role="button" tabIndex={0} onClick={handleDelete}>삭제</span>
+          </>
+          )}
         </div>
       </S.HeadLine>
       <S.Container>
@@ -61,8 +82,14 @@ const PostView: React.FunctionComponent = () => {
           __html: postContent,
         }}
         />
+
+        <S.CommentContainer>
+          <CommentInput postId={id} />
+          <CommentList comments={commentData} />
+        </S.CommentContainer>
       </S.Container>
-    </S.Container>
+
+    </>
   );
 };
 

@@ -45,6 +45,12 @@ const StyledCreatePostConfigure = {
 
       input[type="file"] { display: none }
     }
+
+    .dragging {
+      transition: ease-in .2s;
+      background-color: ${ColorSet['--greyOpacity400']};
+    }
+
     ${mediaQueryHelper('medium')} {
       width: 100%;
       display: flex;

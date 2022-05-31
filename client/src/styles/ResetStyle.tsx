@@ -49,7 +49,6 @@ const ResetStyle = () => (
     }
     div, span, article, section, header, footer, aside, p, ul, li, fieldset, legend, label, a, nav, form {
         box-sizing: border-box;
-        /* content-box */
     }
     ol, ul, li {
         list-style: none;
@@ -128,7 +127,6 @@ const ResetStyle = () => (
         font-family: Inconsolata, Menlo, Consolas, monospace;
         font-size: 16px;
         padding: 1rem;
-        border-radius: 10px;
     }
 
     em {

@@ -47,9 +47,11 @@ router.delete(
         .where("user.id = :id", { id: me.id })
         .getOne();
 
-      if (me.id !== comment.user.id) {
+        
+        if (me.id !== comment.user.id) {
+        console.log(comment);
         return setJsonResponser(res, {
-          code: 403,
+          code: 401,
           message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
         });
       }
@@ -77,9 +79,9 @@ router.post(
   accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
-    const { commentContent } = req.body;
+    const { comment } = req.body;
 
-    if (!commentContent.trim()) {
+    if (!comment.trim()) {
       return setJsonResponser(res, {
         code: 400,
         message: "댓글을 작성해주세요.",
@@ -92,7 +94,7 @@ router.post(
       const postRepository = getRepository(Post);
 
       const user = await userRepository.findOne({
-        where: { id: req.body.decodedUserId.id },
+        where: { id: req.body.decodedUserId},
       });
 
       const exPost = await postRepository.findOne({
@@ -108,7 +110,7 @@ router.post(
 
       const newComment = new Comment();
 
-      newComment.commentContent = commentContent;
+      newComment.commentContent = comment;
       newComment.post = exPost;
       newComment.user = user;
 

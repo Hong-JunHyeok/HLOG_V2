@@ -13,7 +13,7 @@ const CreatePostConfigure = () => {
   const { closeModal } = useModal();
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
-  useDragAndDrop({
+  const isDragging = useDragAndDrop({
     dragRef: thumbnailInputRef,
     onChange: (data: FileList) => {
       const dropData = data[0];
@@ -52,7 +52,7 @@ const CreatePostConfigure = () => {
           prevThumbnail
             ? <img className="prev_thumbnail" src={prevThumbnail} alt="" />
             : (
-              <div className="upload_thumbnail" ref={thumbnailInputRef}>
+              <div className={`upload_thumbnail ${isDragging && 'dragging'}`} ref={thumbnailInputRef}>
                 <button type="button">썸네일 업로드</button>
                 <input type="file" />
               </div>

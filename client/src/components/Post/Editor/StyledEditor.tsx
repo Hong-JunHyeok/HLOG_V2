@@ -47,7 +47,6 @@ const StyledEditor = {
     font-family: Inconsolata, Menlo, Consolas, monospace;
     font-size: 16px;
     padding: 1rem;
-    border-radius: 10px;
   }
 
   .RichEditor-controls {

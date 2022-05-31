@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
+import mediaQueryHelper from '@/styles/mediaHelper';
 
 const StyledHomeTab = {
   PostMenu: styled.ul`
@@ -26,6 +27,15 @@ const StyledHomeTab = {
         background-color: ${ColorSet['--greyOpacity100']}
      }
      }
+    }
+
+    padding: 5rem 0 0 0;
+    ${mediaQueryHelper('medium')} {
+      padding-top: 6rem;
+    }
+
+    ${mediaQueryHelper('large')} {
+      padding-top: 7rem;
     }
  `,
 };
