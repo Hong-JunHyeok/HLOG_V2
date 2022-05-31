@@ -23,9 +23,9 @@ customAxios.interceptors.response.use(
   async (error) => {
     // 토큰이 만료되었을 때 새로운 토큰을 발급하는 역할
     const prevRequest = error?.config;
-    if (error?.response?.status === 403 && !prevRequest?.sent) {
+    const errorMessage = error.response.data?.message;
+    if (error?.response?.status === 403 && !prevRequest?.sent && errorMessage === 'jwt expired') {
       prevRequest.sent = true;
-      console.log('토큰 만료');
       const refreshToken = async () => {
         const response = await customAxios.post('/auth/refresh');
         const { accessToken } = response.data.payload;
@@ -34,9 +34,9 @@ customAxios.interceptors.response.use(
       };
       const accessToken = await refreshToken();
       prevRequest.headers.authorization = accessToken;
-      console.log('토큰 리프레쉬 완료');
       return customAxios(prevRequest);
     }
+    return Promise.reject(error);
   },
 );
 

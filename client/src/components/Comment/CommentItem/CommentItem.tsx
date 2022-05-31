@@ -56,6 +56,11 @@ const CommentItem = ({
     return false;
   }, [myData, id]);
 
+  const handleEdit = () => {
+    setEditCommentValue(commentContent);
+    onEdit();
+  };
+
   const handleUnEdit = () => {
     setEditCommentValue(commentContent);
     unEdit();
@@ -106,7 +111,7 @@ const CommentItem = ({
           )
           : (
             <>
-              <button type="button" onClick={onEdit}>수정</button>
+              <button type="button" onClick={handleEdit}>수정</button>
               <button type="button" onClick={handleDeleteComment}>삭제</button>
             </>
           )}

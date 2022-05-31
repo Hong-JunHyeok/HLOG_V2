@@ -8,8 +8,7 @@ interface ErrorBoundaryPropType {
 class ErrorBoundary extends React.Component<ErrorBoundaryPropType> {
   state = { hasError: false };
 
-  static getDerivedStateFromError(error) {
-    console.log(error);
+  static getDerivedStateFromError() {
     return {
       hasError: true,
     };

@@ -17,7 +17,7 @@ const PageLayout = ({ children }: PageLayoutProps) => (
     />
     <ErrorBoundary fallback={<PageError />}>
       <ErrorBoundary fallback={<>Header Error</>}>
-        <Suspense>
+        <Suspense fallback={<>Loading...</>}>
           <Header />
         </Suspense>
       </ErrorBoundary>

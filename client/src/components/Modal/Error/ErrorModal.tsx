@@ -1,30 +1,29 @@
-import Modal from "../Modal"
-import StyledErrorModal from "./StyledErrorModal";
+import useModal from '@/hooks/useModal';
+import Modal from '../Modal';
+import StyledErrorModal from './StyledErrorModal';
 
 interface ErrorModalProps {
-  onClose: () => void;
-  confirmFunction?: () => void;
   errorTitle: string;
-  errorMessage?: string;
+  visible: boolean;
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ 
-  onClose,
+const ErrorModal = ({
   errorTitle,
-  errorMessage,
- }) => {
+  visible,
+}: ErrorModalProps) => {
+  const { closeModal } = useModal();
+
   return (
-    <Modal>
+    <Modal visible={visible}>
       <StyledErrorModal.Container>
         <div className="info">
           <span className="title">{errorTitle}</span>
-          {errorMessage && <p className="message">{errorMessage}</p>}
         </div>
 
-        <StyledErrorModal.CloseButton onClick={onClose}>닫기</StyledErrorModal.CloseButton>
+        <StyledErrorModal.CloseButton onClick={closeModal}>닫기</StyledErrorModal.CloseButton>
       </StyledErrorModal.Container>
     </Modal>
-  )
-}
+  );
+};
 
 export default ErrorModal;

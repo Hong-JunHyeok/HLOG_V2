@@ -26,7 +26,7 @@ const CreatePostConfigure = () => {
   const publishPost = usePublishPost();
   const uploadThumbnail = useEditThumbnail();
   const {
-    postTitle, postContent, clearContent,
+    postTitle, postContent,
   } = useEditor();
 
   const handlePublishPost = async () => {
@@ -46,14 +46,14 @@ const CreatePostConfigure = () => {
     });
     const { postId } = response.data.payload;
 
-    const formedThumbnail = new FormData();
-    formedThumbnail.append('thumbnail', thumbnail);
-    await uploadThumbnail({
-      postId,
-      thumbnail: formedThumbnail,
-    });
-
-    clearContent();
+    if (thumbnail) {
+      const formedThumbnail = new FormData();
+      formedThumbnail.append('thumbnail', thumbnail);
+      await uploadThumbnail({
+        postId,
+        thumbnail: formedThumbnail,
+      });
+    }
   };
 
   useEffect(() => {

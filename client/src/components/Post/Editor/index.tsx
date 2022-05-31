@@ -12,7 +12,6 @@ import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import S from './StyledEditor';
 import useLocalStorage from '@/utils/useLocalStorage';
 import SuccessModal from '@/components/Modal/Success/SuccessModal';
-import ErrorModal from '@/components/Modal/Error/ErrorModal';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';
@@ -179,17 +178,13 @@ function HlogEditor() {
   const {
     storedValue: editorTitle,
     setValue: setEditorTitle,
-    remove: clearEditorTitle,
   } = useLocalStorage('hlog_editor_title', '');
 
   const {
     storedValue: editorContent,
     setValue: setEditorContent,
-    remove: clearEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
-  const [createPostErrorMessage, setCreatePostErrorMessage] = useState('');
-  const [createPostErrorModal, setCreatePostErrorModal] = useState(false);
 
   useEffect(() => {
     setPostTitle(editorTitle || '');
@@ -247,11 +242,6 @@ function HlogEditor() {
     }
   };
 
-  const resetSavedContent = () => {
-    clearEditorTitle();
-    clearEditorContent();
-  };
-
   const editPostMutate = useEditPost();
 
   const editPost = () => {
@@ -279,19 +269,15 @@ function HlogEditor() {
       postId: +searchData?.postId,
       postTitle,
       postContent: contentToHtml,
-    }).then(resetSavedContent);
+    });
   };
 
   const createPost = () => {
     if (!postTitle) {
-      setCreatePostErrorMessage('제목을 입력해주세요.');
-      setCreatePostErrorModal(true);
       return;
     }
 
     if (!postContent.getCurrentContent().hasText()) {
-      setCreatePostErrorMessage('본문을 입력해주세요.');
-      setCreatePostErrorModal(true);
       return;
     }
 
@@ -339,14 +325,6 @@ function HlogEditor() {
         <SuccessModal
           successTitle="포스트 성공"
           onClose={() => setCreatePostSuccessModal(false)}
-        />
-        )}
-
-      {createPostErrorModal
-        && (
-        <ErrorModal
-          errorTitle={createPostErrorMessage}
-          onClose={() => setCreatePostErrorModal(false)}
         />
         )}
     </>

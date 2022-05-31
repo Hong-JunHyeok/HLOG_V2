@@ -29,7 +29,7 @@ router.post(
 
       if (existEmail) {
         return setJsonResponser(res, {
-          code: 403,
+          code: 400,
           message: "이미 존재하는 이메일입니다.",
         });
       }
@@ -40,7 +40,7 @@ router.post(
 
       if (existUsername) {
         return setJsonResponser(res, {
-          code: 403,
+          code: 400,
           message: "이미 존재하는 이름입니다.",
         });
       }
