@@ -17,7 +17,9 @@ const PageLayout = ({ children }: PageLayoutProps) => (
     />
     <ErrorBoundary fallback={<PageError />}>
       <ErrorBoundary fallback={<>Header Error</>}>
-        <Header />
+        <Suspense>
+          <Header />
+        </Suspense>
       </ErrorBoundary>
       <StyledPageLayout.Container>
         {children}

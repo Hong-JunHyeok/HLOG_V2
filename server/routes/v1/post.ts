@@ -15,7 +15,12 @@ router.post(
   "/",
   accessTokenValidator,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { postTitle, postThumbnail, postContent } = req.body;
+    const { 
+      postTitle, 
+      postThumbnail, 
+      postContent,
+      postSummary
+    } = req.body;
 
     if (!postTitle.trim()) {
       return setJsonResponser(res, {
@@ -45,6 +50,7 @@ router.post(
       newPost.postTitle = postTitle;
       newPost.postThumbnail = postThumbnail;
       newPost.postContent = postContent;
+      newPost.postSummary = postSummary || "";
       newPost.user = user;
 
       await postRepository.save(newPost);
@@ -77,7 +83,7 @@ router.get(
           "posts.updatedAt",
           "posts.postThumbnail",
           "posts.postTitle",
-          "posts.postContent",
+          "posts.postSummary",
           "user.username",
           "user.id",
           "user.profileUrl",
@@ -117,7 +123,7 @@ router.get(
           "posts.updatedAt",
           "posts.postThumbnail",
           "posts.postTitle",
-          "posts.postContent",
+          "posts.postSummary",
           "user.username",
           "user.id",
           "user.profileUrl",
@@ -316,8 +322,6 @@ router.delete(
         .leftJoin("posts.user", "user")
         .where("user.id = :id", { id: me.id })
         .getOne();
-
-      console.log(me);
 
       if (me.id !== post.user.id) {
         return setJsonResponser(res, {

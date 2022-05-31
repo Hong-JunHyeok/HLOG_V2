@@ -15,6 +15,9 @@ export class Post extends Common {
   @Column({ nullable: true, comment: "게시글의 썸네일", type: "text" })
   postThumbnail: string;
 
+  @Column({ nullable: true, comment: "게시글의 요약", type: "text" })
+  postSummary: string;
+
   @Column({ nullable: false, comment: "게시글의 본문", type: "text" })
   postContent: string;
 

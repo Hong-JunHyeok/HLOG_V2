@@ -40,7 +40,7 @@ const StyledPostItem = {
     padding: 1em;
 
     h1 {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: bold;
     }
     p {
@@ -83,7 +83,7 @@ const StyledPostItem = {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-  `
-}
+  `,
+};
 
 export default StyledPostItem;

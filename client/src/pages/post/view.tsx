@@ -1,18 +1,13 @@
 import { Suspense } from 'react';
-import Header from '@/components/Common/Header';
-import Footer from '@/components/Common/Footer';
 import PostView from '@/components/Post/PostView';
+import PageLayout from '@/components/Common/PageLayout';
 
 const PostViewPage = () => (
-  <>
-    <Suspense>
-      <Header />
-    </Suspense>
+  <PageLayout>
     <Suspense>
       <PostView />
     </Suspense>
-    <Footer />
-  </>
+  </PageLayout>
 );
 
 export default PostViewPage;

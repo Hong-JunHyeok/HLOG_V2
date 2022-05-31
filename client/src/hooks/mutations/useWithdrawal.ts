@@ -12,7 +12,6 @@ const useWithdrawal = () => {
     onSuccess: () => {
       logout();
     },
-    onError: () => {},
   });
 
   return mutate;
