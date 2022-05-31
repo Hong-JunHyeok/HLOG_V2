@@ -1,22 +1,21 @@
 import { useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
-import useDeleteComment from '@/hooks/mutations/useDeleteComment';
-import { CommentType } from '@/types/Comment';
 import StyledCommentItem from './StyledCommentItem';
 import startWithURL from '@/utils/startWithURL';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useMyInfo from '@/hooks/queries/useMyInfo';
 import useToggle from '@/hooks/useToggle';
 import useInput from '@/hooks/useInput';
-import useEditComment from '@/hooks/mutations/useEditComment';
+import { ReplyType } from '@/types/Reply';
+import useEditReply from '@/hooks/mutations/useEditReply';
+import useDeleteReply from '@/hooks/mutations/useDeleteReply';
 
 interface CommentItemProps {
-  comment: CommentType
+  reply: ReplyType
 }
 
-const CommentItem = ({
-  comment,
+const ReplyItem = ({
+  reply,
 }: CommentItemProps) => {
   const {
     user: {
@@ -25,15 +24,19 @@ const CommentItem = ({
       id,
     },
     commentContent,
-  } = comment;
+  } = reply;
   const { data: myData } = useMyInfo();
-  const { postId } = useParams<{ postId: string }>();
   const queryClient = useQueryClient();
 
-  const [editCommentValue, changeEditCommentValue, setEditCommentValue] = useInput(commentContent);
-  const [isEdit,,onEdit, unEdit] = useToggle(false);
-  const editComment = useEditComment(comment.id);
-  const deleteComment = useDeleteComment(comment.id);
+  const [editReplyValue, changeEditReplyValue, setEditReplyValue] = useInput(commentContent);
+  const editReply = useEditReply(reply.id);
+  const deleteReply = useDeleteReply(reply.id);
+
+  const {
+    state: isEdit,
+    toggleOpen: onEdit,
+    toggleClose: unEdit,
+  } = useToggle(false);
 
   const isMyComment = useMemo(() => {
     if (myData?.user.id === id) return true;
@@ -41,19 +44,19 @@ const CommentItem = ({
   }, [myData, id]);
 
   const handleUnEdit = () => {
-    setEditCommentValue(commentContent);
+    setEditReplyValue(commentContent);
     unEdit();
   };
 
-  const handleEditComment = async () => {
-    await editComment(editCommentValue);
-    queryClient.invalidateQueries(['comment', +postId]);
+  const handleEditReply = async () => {
+    await editReply(editReplyValue);
+    queryClient.invalidateQueries(['reply']);
     handleUnEdit();
   };
 
-  const handleDeleteComment = async () => {
-    await deleteComment();
-    queryClient.invalidateQueries(['comment', +postId]);
+  const handleDeleteReply = async () => {
+    await deleteReply();
+    queryClient.invalidateQueries(['reply']);
   };
 
   return (
@@ -68,7 +71,7 @@ const CommentItem = ({
           <span className="comment_username">{username}</span>
           {isEdit
             ? (
-              <input type="text" className="edit_comment_input" value={editCommentValue} onChange={changeEditCommentValue} />
+              <input type="text" className="edit_comment_input" value={editReplyValue} onChange={changeEditReplyValue} />
             )
             : (
               <p className="comment_content">
@@ -84,21 +87,22 @@ const CommentItem = ({
         {isEdit
           ? (
             <>
-              <button type="button" onClick={handleEditComment}>수정</button>
+              <button type="button" onClick={handleEditReply}>수정</button>
               <button type="button" onClick={handleUnEdit}>취소</button>
             </>
           )
           : (
             <>
               <button type="button" onClick={onEdit}>수정</button>
-              <button type="button" onClick={handleDeleteComment}>삭제</button>
+              <button type="button" onClick={handleDeleteReply}>삭제</button>
             </>
           )}
 
       </StyledCommentItem.Setting>
       )}
+
     </StyledCommentItem.Container>
   );
 };
 
-export default CommentItem;
+export default ReplyItem;

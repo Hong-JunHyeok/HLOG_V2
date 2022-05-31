@@ -37,7 +37,7 @@ const CommentInput = ({
       <StyledCommentInput.Container onSubmit={handleCreateComment}>
         <input value={comment} onChange={(event) => setComment(event.target.value)} className="comment_input" placeholder="여기에 댓글을 입력해주세요." />
         <button type="submit" className="comment_button">
-          <FontAwesomeIcon icon={solid('comment')} />
+          <FontAwesomeIcon icon={solid('paper-plane')} />
         </button>
       </StyledCommentInput.Container>
       {isOpen

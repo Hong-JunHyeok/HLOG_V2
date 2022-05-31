@@ -31,7 +31,6 @@ const StyledCommentInput = {
       padding: 0px;
       cursor: pointer;
       color: ${ColorSet['--primary']};
-      
     }
   `,
 };

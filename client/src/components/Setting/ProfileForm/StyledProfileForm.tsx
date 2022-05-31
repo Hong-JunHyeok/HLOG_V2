@@ -27,8 +27,9 @@ const StyledProfileForm = {
     }
     label {
       display: flex;
+      align-items: center;
       .label {
-        width: 100px;
+        width: 120px;
         font-weight: bold;
       }
       .value {
@@ -58,7 +59,6 @@ const StyledProfileForm = {
       padding: .3rem 0;
       font-size: 1rem;
     }
-    
   `,
   ProfileContainer: styled.div`
     display: flex;
@@ -104,7 +104,20 @@ const StyledProfileForm = {
     background-size: cover;
     background-position: center;
   `,
-  Meta: styled.div``,
+  Meta: styled.div`
+    .meta_input {
+      width: 100%;
+      border: 1px solid ${ColorSet['--greyOpacity200']};
+      padding: .5rem 1rem;
+      border-radius: 10px;
+      outline: none;
+      transition: ease-in .2s;
+      height: 3rem;
+      &:focus {
+        border: 1px solid ${ColorSet['--primary']};
+      }
+    }
+  `,
 };
 
 export default StyledProfileForm;

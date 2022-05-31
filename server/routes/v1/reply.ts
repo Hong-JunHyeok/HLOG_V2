@@ -68,13 +68,6 @@ router.patch(
     const { replyId } = req.params;
     const { commentContent } = req.body;
 
-    if (!commentContent.trim()) {
-      return setJsonResponser(res, {
-        code: 403,
-        message: "수정된 내용이 없습니다.",
-      });
-    }
-
     try {
       const userRepository = getRepository(User);
       const replyRepository = getRepository(Reply);
@@ -147,7 +140,7 @@ router.post(
       const replyRepository = getRepository(Reply);
 
       const user = await userRepository.findOne({
-        where: { id: req.body.decodedUserId.id },
+        where: { id: req.body.decodedUserId },
       });
 
       const exComment = await commentRepository.findOne({
@@ -228,7 +221,7 @@ router.delete(
       await replyRepository
         .createQueryBuilder()
         .delete()
-        .from(Comment)
+        .from(Reply)
         .where("id = :id", { id: replyId })
         .execute();
 

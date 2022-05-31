@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import usePost from '@/hooks/queries/usePost';
@@ -11,7 +11,7 @@ import startWithURL from '@/utils/startWithURL';
 import useMyInfo from '@/hooks/queries/useMyInfo';
 import CommentInput from '@/components/Comment/CommentInput/CommentInput';
 import useComments from '@/hooks/queries/useComment';
-import CommentList from '@/components/Comment/CommentList';
+import CommentList from '@/components/Comment/CommentList/CommentList';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<'postId'>();
@@ -85,7 +85,9 @@ const PostView: React.FunctionComponent = () => {
 
         <S.CommentContainer>
           <CommentInput postId={id} />
-          <CommentList comments={commentData} />
+          <Suspense>
+            <CommentList comments={commentData} />
+          </Suspense>
         </S.CommentContainer>
       </S.Container>
 

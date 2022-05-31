@@ -4,7 +4,7 @@ import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import HomeTab from '@/components/Common/HomeTab';
 import PostListError from '@/components/Common/Error/PostListError';
-import PostFallbackLoader from '@/components/Common/Loader/FallbackLoader';
+import { PostFallbackLoader } from '@/components/Common/Loader/FallbackLoader';
 
 const PopularPostList = lazy(() => import('@/components/Post/PostList/PopularPostList'));
 

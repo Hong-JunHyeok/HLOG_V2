@@ -75,14 +75,17 @@ const ResetStyle = () => (
     h1 {
         font-size: 2em;
         line-height: 3rem;
+        font-weight: bold;
     }
     h2 {
         font-size: 1.4em;
         line-height: 2.5rem;
+        font-weight: bold;
     }
     h3 {
         font-size: 1.17em;
         line-height: 2rem;
+        font-weight: bold;
     }
     h4 {
         font-size: 1em;
@@ -127,6 +130,8 @@ const ResetStyle = () => (
         font-family: Inconsolata, Menlo, Consolas, monospace;
         font-size: 16px;
         padding: 1rem;
+        white-space: pre-wrap;
+        word-break: keep-all;
     }
 
     em {

@@ -13,7 +13,10 @@ import useAuth from '@/hooks/useAuth';
 
 const Header: React.FC = () => {
   const { state: { isAuthenticated } } = useAuth();
-  const [userMenuToggleState, toggleUserMenu] = useToggle();
+  const {
+    state: userMenuToggleState,
+    toggleState: toggleUserMenu,
+  } = useToggle();
   const headerMenuRef = useOutsideRef(() => {
     if (userMenuToggleState) {
       toggleUserMenu();
