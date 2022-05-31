@@ -2,7 +2,7 @@ import React from 'react';
 import S from './StyledFallbackLoader';
 
 const SkeletonPost = () => (
-  <S.SkeletonView>
+  <S.PostSkeletonView>
     <S.Thumbnail />
     <S.Content>
       <S.ContentLine />
@@ -10,10 +10,10 @@ const SkeletonPost = () => (
       <S.ContentLine />
     </S.Content>
     <S.Meta />
-  </S.SkeletonView>
+  </S.PostSkeletonView>
 );
 
-const PostFallbackLoader: React.FC = () => (
+export const PostFallbackLoader: React.FC = () => (
   <S.PostList>
     <SkeletonPost />
     <SkeletonPost />
@@ -26,4 +26,17 @@ const PostFallbackLoader: React.FC = () => (
   </S.PostList>
 );
 
-export default PostFallbackLoader;
+const SkeletonComment = () => (
+  <S.CommentSkeletonView />
+);
+
+export const CommentFallbackLoader = () => (
+  <S.CommentList>
+    <SkeletonComment />
+    <SkeletonComment />
+    <SkeletonComment />
+    <SkeletonComment />
+    <SkeletonComment />
+    <SkeletonComment />
+  </S.CommentList>
+);

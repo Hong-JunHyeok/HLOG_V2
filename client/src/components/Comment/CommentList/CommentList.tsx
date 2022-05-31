@@ -1,9 +1,10 @@
 import { CommentType } from '@/types/Comment';
-import CommentItem from '../CommentItem';
+import { ReplyType } from '@/types/Reply';
+import CommentItem from '../CommentItem/CommentItem';
 import StyledCommentList from './StyledCommentList';
 
 interface CommentListProps {
-  comments: CommentType[]
+  comments: CommentType[] | ReplyType[]
 }
 
 const CommentList = ({

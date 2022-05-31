@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react';
 
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
-import FallbackLoader from '@/components/Common/Loader/FallbackLoader';
+import { PostFallbackLoader } from '@/components/Common/Loader/FallbackLoader';
 
 import HomeTab from '@/components/Common/HomeTab';
 import SEOHelmet from '@/components/Common/SEOHelmet';
@@ -18,7 +18,7 @@ const RecentPage = () => (
     <PageLayout>
       <HomeTab />
       <ErrorBoundary fallback={<PostListError />}>
-        <Suspense fallback={<FallbackLoader />}>
+        <Suspense fallback={<PostFallbackLoader />}>
           <RecentPostList />
         </Suspense>
       </ErrorBoundary>

@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import mediaQueryHelper from '@/styles/mediaHelper';
+import ColorSet from '@/styles/colorSet';
 
 const StyledFallbackLoader = {
-  SkeletonView: styled.div`
+  PostSkeletonView: styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 2rem;;
@@ -79,6 +80,22 @@ const StyledFallbackLoader = {
       margin-left: -1rem;
       margin-right: -1rem;
     `,
+  CommentList: styled.div``,
+
+  CommentSkeletonView: styled.div`
+    animation: skeleton-gradient 1.8s infinite ease-in-out;
+    border-bottom: 1px solid ${ColorSet['--grey200']};
+    padding: 2rem 0rem;
+    .reply_button {
+      margin-bottom: 1rem;
+      width: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .active {
+      color: ${ColorSet['--primary']};
+    }
+ `,
 };
 
 export default StyledFallbackLoader;

@@ -14,18 +14,20 @@ const ReplyInput = ({
   const [reply, setReply] = useState('');
   const createReply = useCreateReply();
 
-  const handleCreateReply = () => {
-    createReply({
+  const handleCreateReply = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await createReply({
       commentId,
       reply,
     });
+    setReply('');
   };
 
   return (
     <StyledCommentInput.Container onSubmit={handleCreateReply}>
       <input value={reply} onChange={(event) => setReply(event.target.value)} className="comment_input" placeholder="여기에 답글을 입력해주세요." />
       <button type="submit" className="comment_button">
-        <FontAwesomeIcon icon={solid('comment')} />
+        <FontAwesomeIcon icon={solid('paper-plane')} />
       </button>
     </StyledCommentInput.Container>
   );

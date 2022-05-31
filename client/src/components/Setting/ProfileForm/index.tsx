@@ -20,7 +20,10 @@ const ProfileForm = () => {
   const { data } = useMyInfo();
   const redirector = usePreventNormalUser();
   const profileInputRef = useRef<HTMLInputElement>();
-  const [metaEditable, toggleMetaEditable] = useToggle(false);
+  const {
+    state: metaEditable,
+    toggleState: toggleMetaEditable,
+  } = useToggle(false);
   const editProfile = useEditProfile();
   const editMeta = useEditMeta();
   const withdrawal = useWithdrawal();
@@ -97,7 +100,7 @@ const ProfileForm = () => {
             <p className="label">이름</p>
             {metaEditable
               ? (
-                <input type="text" value={editedMeta.username} name="username" onChange={handleChangeMeta} />
+                <input type="text" value={editedMeta.username} className="meta_input" name="username" onChange={handleChangeMeta} />
               )
               : (
                 <p id="username" className="value">{data?.user.username}</p>
@@ -107,7 +110,7 @@ const ProfileForm = () => {
             <p className="label">한줄 자기소개</p>
             {metaEditable
               ? (
-                <input type="text" value={editedMeta.selfIntroduction} name="selfIntroduction" onChange={handleChangeMeta} />
+                <input type="text" value={editedMeta.selfIntroduction} className="meta_input" name="selfIntroduction" onChange={handleChangeMeta} />
               )
               : (
                 <p id="selfIntroduction" className="value">{data?.user.selfIntroduction}</p>

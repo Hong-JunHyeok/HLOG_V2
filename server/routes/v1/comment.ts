@@ -228,7 +228,7 @@ router.get(
         .leftJoin("comments.user", "user")
         .leftJoinAndSelect("comments.like", "like")
         .where("comments.postId = :id", { id: postId })
-        .orderBy("comments.createdAt", "DESC")
+        .orderBy("comments.createdAt", "ASC")
         .orderBy("comments.updatedAt", "DESC")
         .getMany();
 

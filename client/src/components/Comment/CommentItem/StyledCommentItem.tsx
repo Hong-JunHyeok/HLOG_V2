@@ -8,7 +8,17 @@ interface ProfileProps {
 const StyledCommentItem = {
   Container: styled.div`
     border-bottom: 1px solid ${ColorSet['--grey200']};
-    padding: 2rem 0rem;
+    padding: 1rem 0rem;
+    .reply_button {
+      padding-left: 1rem;
+      /* margin-bottom: 1rem; */
+      width: 70px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .active {
+      color: ${ColorSet['--primary']};
+    }
   `,
   Meta: styled.div`
     display: flex;
@@ -53,6 +63,13 @@ const StyledCommentItem = {
   Setting: styled.div`
     display: flex;
     justify-content: flex-end;
+  `,
+  ReplyContainer: styled.div`
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-end;
+    padding: 1rem 1rem 1rem 2rem;
+    background-color: ${ColorSet['--whiteOpacity500']};
   `,
 };
 
