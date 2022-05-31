@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { useNavigate } from 'react-router-dom';
 import stringCutter from '@/utils/stringCutter';
@@ -9,7 +7,6 @@ import { PostType } from '@/@types/post';
 
 import ThumbnailPlaceholder from '@/../public/assets/HLOG.png';
 import DefaultProfile from '@/../public/assets/default_profile.svg';
-import useToggle from '@/hooks/useToggle';
 import startWithURL from '@/utils/startWithURL';
 
 const PostItem: React.FunctionComponent<PostType> = ({

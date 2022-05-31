@@ -25,11 +25,17 @@ const useEditor = () => {
     });
   }, [dispatch]);
 
+  const clearContent = useCallback(() => {
+    setPostTitle('');
+    setPostContent(EditorState.createEmpty());
+  }, [setPostTitle, setPostContent]);
+
   return {
     postTitle,
     postContent,
     setPostTitle,
     setPostContent,
+    clearContent,
   };
 };
 

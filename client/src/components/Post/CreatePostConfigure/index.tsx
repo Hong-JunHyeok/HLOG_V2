@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { convertToHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import StyledCreatePostConfigure from './StyledCreatePostConfigure';
 import useModal from '@/hooks/useModal';
 import useDragAndDrop from '@/hooks/useDragAndDrop';
 import usePublishPost from '@/hooks/mutations/usePublishPost';
 import useEditThumbnail from '@/hooks/mutations/useEditThumbnail';
+import useEditor from '@/hooks/useEditor';
 
 const CreatePostConfigure = () => {
   const [thumbnail, setThumbnail] = useState<File>(null);
@@ -23,9 +25,25 @@ const CreatePostConfigure = () => {
 
   const publishPost = usePublishPost();
   const uploadThumbnail = useEditThumbnail();
+  const {
+    postTitle, postContent, clearContent,
+  } = useEditor();
 
   const handlePublishPost = async () => {
-    const response = await publishPost();
+    const contentToHtml = convertToHTML({
+      blockToHTML: (block) => {
+        if (block.type === 'blockquote') {
+          return <blockquote className="hlog_blockquote" />;
+        }
+        return null;
+      },
+    })(postContent.getCurrentContent());
+
+    const response = await publishPost({
+      postTitle,
+      postContent: contentToHtml,
+      postSummary: summary,
+    });
     const { postId } = response.data.payload;
 
     const formedThumbnail = new FormData();
@@ -34,6 +52,8 @@ const CreatePostConfigure = () => {
       postId,
       thumbnail: formedThumbnail,
     });
+
+    clearContent();
   };
 
   useEffect(() => {
