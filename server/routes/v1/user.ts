@@ -132,8 +132,9 @@ const upload = multer({
     },
     filename: (req, file, callback) => {
       const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext);
-      callback(null, basename + ext);
+      const timestamp = new Date().getTime().valueOf();
+      const filename = path.basename(file.originalname, ext) + timestamp + ext;
+      callback(null, filename + ext);
     },
   }),
 }).single("profile");

@@ -1,10 +1,5 @@
-import { AxiosResponse } from 'axios';
-import useInterceptedAxios from './useInterceptedAxios';
-
-interface JoinProps {
-  onSuccess?: (data: AxiosResponse) => void;
-  onError?: (error) => void;
-}
+import { useMutation } from 'react-query';
+import customAxios from '@/utils/customAxios';
 
 interface PayloadType {
   email: string;
@@ -12,15 +7,12 @@ interface PayloadType {
   username: string;
 }
 
-const useJoin = ({
-  onSuccess,
-  onError,
-}: JoinProps) => {
-  const customAxios = useInterceptedAxios();
+const useJoin = () => {
+  const join = (payload: PayloadType) => customAxios.post('/auth/join', payload);
 
-  const join = (payload: PayloadType) => customAxios.post('/auth/join', payload).then(onSuccess).catch(onError);
+  const { mutateAsync } = useMutation(join);
 
-  return join;
+  return mutateAsync;
 };
 
 export default useJoin;

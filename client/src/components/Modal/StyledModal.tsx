@@ -19,7 +19,6 @@ const StyledModal = {
     border-radius: 10px;
     background-color: ${ColorSet['--white']};
     position: absolute;
-    bottom: 0;
   `,
 };
 

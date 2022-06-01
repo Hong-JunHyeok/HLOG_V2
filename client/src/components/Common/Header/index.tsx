@@ -29,7 +29,6 @@ const Header: React.FC = () => {
   const logout = useLogout();
   const { data } = useMyInfo();
 
-  // FIXME: 로그아웃 시 캐싱되는 문제
   const menuList = useMemo(() => {
     if (isAuthenticated) {
       return [

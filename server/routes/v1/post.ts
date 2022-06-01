@@ -137,6 +137,7 @@ router.get(
         .leftJoin("posts.user", "user")
         .leftJoinAndSelect("posts.like", "likes")
         .orderBy("likeCount", "DESC")
+        .orderBy('posts.createdAt', "DESC")
         .getMany();
 
       setJsonResponser(res, {
@@ -166,7 +167,9 @@ router.get(
           where: {
             user: userId
           },
-        
+          order: {
+            createdAt: "DESC",
+          },
           relations: ['user']
         });
 
@@ -192,9 +195,13 @@ const upload = multer({
     },
     filename: (req, file, callback) => {
       const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext);
-
-      callback(null, basename + ext);
+      const timestamp = new Date().getTime().valueOf();
+      const basename = path.basename(file.originalname)
+        .replace(" ","")
+        .replace(/\(/g, "")
+        .replace(/\)/g, "")
+      const filename = basename + timestamp + ext;  
+      callback(null, filename + ext);
     },
   }),
 }).single('thumbnail');
@@ -221,8 +228,6 @@ router.patch(
         });
       }
       
-      
-
       await postRepository
         .createQueryBuilder()
         .update()

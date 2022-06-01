@@ -28,6 +28,9 @@ const StyledCommentItem = {
       display: flex;
       flex-direction: column;
       margin-left: 1rem;
+      width: 100%;
+      padding-right: 1rem;
+      margin-bottom: 1rem;
       .comment_username {
         font-weight: bold;
       }
@@ -37,6 +40,7 @@ const StyledCommentItem = {
         border-radius: 10px;
         outline: none;
         transition: ease-in .2s;
+        width: 100%;
         &:focus {
           border: 1px solid ${ColorSet['--primary']};
         }

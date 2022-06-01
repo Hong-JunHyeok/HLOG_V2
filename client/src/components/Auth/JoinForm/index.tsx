@@ -1,9 +1,10 @@
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import ErrorModal from '@/components/Modal/Error/ErrorModal';
 import S from './StyledJoinForm';
-import useInterceptedAxios from '@/hooks/useInterceptedAxios';
+import useJoin from '@/hooks/useJoin';
+import useModal from '@/hooks/useModal';
+import ErrorModal from '@/components/Modal/Error/ErrorModal';
 
 interface JoinFormType {
   email: string;
@@ -17,31 +18,27 @@ const JoinForm = () => {
     register, handleSubmit, formState: { errors },
     getValues,
   } = useForm({ mode: 'onChange' });
-  const [errorModalOpened, setErrorModalOpened] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const { isOpen, openModal } = useModal();
+  const [joinErrorMessage, setJoinErrorMessage] = useState('');
+  const join = useJoin();
   const navigate = useNavigate();
-  const customAxios = useInterceptedAxios();
 
-  const onSubmit = (data: JoinFormType) => {
-    customAxios({
-      method: 'post',
-      url: '/auth/join',
-      data,
-    }).then((response) => {
-      console.log(response);
-      // navigate();
-    })
-      .catch((error) => {
-        console.log(error);
+  const onSubmit = async (data: JoinFormType) => {
+    try {
+      await join(data);
+      navigate('/login', {
+        replace: true,
       });
+    } catch (error) {
+      openModal();
+      setJoinErrorMessage(error.response.data.message);
+    }
   };
-
-  const onError = (error) => error;
 
   return (
     <>
       <S.Container>
-        <S.Form onSubmit={handleSubmit(onSubmit, onError)}>
+        <S.Form onSubmit={handleSubmit(onSubmit)}>
           <div className="form_head">
             <h1>회원가입</h1>
             <span>정보를 입력하여 HLOG에 합류해주세요.</span>
@@ -130,14 +127,10 @@ const JoinForm = () => {
           <span className="info_text">HLOG에서 양질의 포스트들을 확인해보세요.</span>
         </S.Info>
       </S.Container>
-
-      {errorModalOpened
-        && (
-        <ErrorModal
-          errorTitle={errorMessage}
-          onClose={() => setErrorModalOpened(false)}
-        />
-        )}
+      <ErrorModal
+        errorTitle={joinErrorMessage}
+        visible={isOpen}
+      />
     </>
   );
 };

@@ -43,6 +43,11 @@ const ReplyItem = ({
     return false;
   }, [myData, id]);
 
+  const handleEdit = () => {
+    setEditReplyValue(commentContent);
+    onEdit();
+  };
+
   const handleUnEdit = () => {
     setEditReplyValue(commentContent);
     unEdit();
@@ -87,13 +92,13 @@ const ReplyItem = ({
         {isEdit
           ? (
             <>
-              <button type="button" onClick={handleEditReply}>수정</button>
+              <button type="button" onClick={handleEditReply}>확인</button>
               <button type="button" onClick={handleUnEdit}>취소</button>
             </>
           )
           : (
             <>
-              <button type="button" onClick={onEdit}>수정</button>
+              <button type="button" onClick={handleEdit}>수정</button>
               <button type="button" onClick={handleDeleteReply}>삭제</button>
             </>
           )}

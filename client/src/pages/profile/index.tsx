@@ -1,8 +1,7 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
-import ErrorModal from '@/components/Modal/Error/ErrorModal';
 import UserLog from '@/components/Profile/UserLog';
 
 import mediaQueryHelper from '@/styles/mediaHelper';
@@ -29,7 +28,6 @@ const StyledProfilePage = {
 };
 
 const ProfilePage = () => {
-  const [errorModalOpened, setErrorModalOpened] = useState(false);
   const { scrollTop } = useScroller();
 
   useEffect(() => {
@@ -48,16 +46,6 @@ const ProfilePage = () => {
         </ErrorBoundary>
       </StyledProfilePage.ProfileContainer>
       <Footer />
-
-      {
-      errorModalOpened
-      && (
-        <ErrorModal
-          errorTitle="에러가 발생했습니다."
-          onClose={() => { setErrorModalOpened(false); }}
-        />
-      )
-     }
     </Suspense>
   );
 };

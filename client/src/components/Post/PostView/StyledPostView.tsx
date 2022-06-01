@@ -12,8 +12,7 @@ const StyledView = {
     padding: 5rem 1rem 1rem 1rem;
     z-index: 0;
     height: 100vh;
-    background-image: 
-    linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3)),
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3)),
     url(${(props) => props.thumbnailUrl});
     background-repeat: no-repeat;
     background-size: cover;
@@ -55,7 +54,6 @@ const StyledView = {
         border-right: 1px solid ${ColorSet['--white']};
         .user_link {
           color: ${ColorSet['--white']};
-          text-decoration: underline;
         }
       }
 

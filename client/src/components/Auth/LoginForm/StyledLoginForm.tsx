@@ -95,6 +95,6 @@ const StyledLoginForm = {
       display: flex;
     }
   `,
-}
+};
 
-export default StyledLoginForm
+export default StyledLoginForm;
