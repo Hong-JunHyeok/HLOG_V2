@@ -145,6 +145,7 @@ function HlogEditor() {
     postContent,
     setPostTitle,
     setPostContent,
+    clearContent,
   } = useEditor();
 
   const [isEdit, setIsEdit] = useState(false);
@@ -154,57 +155,27 @@ function HlogEditor() {
   }, []);
 
   const { data } = usePost(+searchData?.postId, isEdit);
-  const { openModal } = useModal();
-
-  useEffect(() => {
-    if (searchData) {
-      loadEditData();
-    }
-  }, [searchData, isEdit, loadEditData]);
-
-  useEffect(() => {
-    if (isEdit && data) {
-      setPostTitle(data.post.postTitle);
-
-      const contentState = EditorState
-        .createWithContent(
-          convertFromHTML((data.post.postContent)),
-        );
-
-      setPostContent(contentState);
-    }
-  }, [data, isEdit, setPostContent, setPostTitle]);
+  const { openModal: openPostConfigureModal } = useModal();
 
   const {
-    storedValue: editorTitle,
-    setValue: setEditorTitle,
+    storedValue: savedEditorTitle,
+    setValue: setSavedEditorTitle,
   } = useLocalStorage('hlog_editor_title', '');
 
   const {
-    storedValue: editorContent,
-    setValue: setEditorContent,
+    storedValue: savedEditorContent,
+    setValue: setSavedEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
   const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
-
-  useEffect(() => {
-    setPostTitle(editorTitle || '');
-
-    if (editorContent) {
-      const savedEditorState = EditorState
-        .createWithContent(convertFromRaw(editorContent));
-      setPostContent(savedEditorState);
-    }
-  }, [editorTitle, editorContent, setPostTitle, setPostContent]);
 
   const handleExit = () => navigate(-1);
 
   const changeEditorContent = (state: EditorState) => setPostContent(state);
 
   const handleSaveContent = () => {
-    setEditorTitle(postTitle);
+    setSavedEditorTitle(postTitle);
     const content = postContent.getCurrentContent();
-    // @ts-ignore
-    setEditorContent(convertToRaw(content));
+    setSavedEditorContent(convertToRaw(content));
   };
 
   const toggleBlockType = (blockType: string) => changeEditorContent(
@@ -273,16 +244,48 @@ function HlogEditor() {
   };
 
   const createPost = () => {
-    if (!postTitle) {
+    if (!postTitle || !postContent.getCurrentContent().hasText()) {
       return;
     }
 
-    if (!postContent.getCurrentContent().hasText()) {
-      return;
-    }
-
-    openModal();
+    openPostConfigureModal();
   };
+
+  useEffect(() => {
+    // 초기 상태 선언
+    if (searchData) {
+      loadEditData();
+    } else {
+      clearContent();
+    }
+  }, [searchData, isEdit, loadEditData, clearContent]);
+
+  useEffect(() => {
+    // 임시 저장된 데이터 불러오기
+    if (!isEdit) {
+      setPostTitle(savedEditorTitle || '');
+
+      if (savedEditorContent) {
+        const savedEditorState = EditorState
+          .createWithContent(convertFromRaw(savedEditorContent));
+        setPostContent(savedEditorState);
+      }
+    }
+  }, [isEdit, savedEditorTitle, savedEditorContent, setPostTitle, setPostContent]);
+
+  useEffect(() => {
+    // 수정 상태일 때 초기 상태 불러오기
+    if (isEdit && data) {
+      setPostTitle(data.post.postTitle);
+
+      const contentState = EditorState
+        .createWithContent(
+          convertFromHTML((data.post.postContent)),
+        );
+
+      setPostContent(contentState);
+    }
+  }, [data, isEdit, setPostContent, setPostTitle]);
 
   return (
     <>
@@ -290,8 +293,19 @@ function HlogEditor() {
         <S.Header>
           <button type="button" className="exit" onClick={handleExit}>나가기</button>
           <div className="utils">
-            <button type="button" className="normal-button" onClick={handleSaveContent}>임시저장</button>
-            <button type="button" className="normal-button post" onClick={isEdit ? editPost : createPost}>포스트</button>
+            {
+              isEdit
+                ? (
+                  <button type="button" className="normal-button post" onClick={editPost}>포스트</button>
+                )
+                : (
+                  <>
+                    <button type="button" className="normal-button" onClick={handleSaveContent}>임시저장</button>
+                    <button type="button" className="normal-button post" onClick={createPost}>포스트</button>
+                  </>
+                )
+
+            }
           </div>
         </S.Header>
         <AutosizeableTextarea

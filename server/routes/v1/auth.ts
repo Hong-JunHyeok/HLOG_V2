@@ -149,7 +149,7 @@ router.post(
 
       res.cookie('hlogRefreshToken', refreshToken, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 1d
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
       });
 
       setJsonResponser(res, {
