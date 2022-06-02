@@ -96,6 +96,9 @@ const StyledFallbackLoader = {
       color: ${ColorSet['--primary']};
     }
  `,
+  ScrollLoader: styled.div`
+    
+  `,
 };
 
 export default StyledFallbackLoader;

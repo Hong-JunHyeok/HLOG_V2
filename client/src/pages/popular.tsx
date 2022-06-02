@@ -7,7 +7,7 @@ import PostList from '@/components/Post/PostList';
 import useIntersection from '@/hooks/useIntersection';
 
 const PopularPage = () => {
-  const { fetchNextPage, data } = usePopularPostInfinite();
+  const { fetchNextPage, hasNextPage, data } = usePopularPostInfinite();
   const mergePosts = useMemo(() => data.pages.flatMap((page) => page.result), [data.pages]);
 
   const onIntersect = useCallback(async (
@@ -17,10 +17,12 @@ const PopularPage = () => {
     const entry = entries[0];
     if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      await fetchNextPage();
+      if (hasNextPage) {
+        await fetchNextPage();
+      }
       observer.observe(entry.target);
     }
-  }, [fetchNextPage]);
+  }, [fetchNextPage, hasNextPage]);
 
   const target = useIntersection(onIntersect);
 
@@ -32,7 +34,7 @@ const PopularPage = () => {
       <PageLayout>
         <HomeTab />
         <PostList posts={mergePosts} />
-        <div ref={target}>Target</div>
+        <div ref={target} />
       </PageLayout>
     </>
   );
