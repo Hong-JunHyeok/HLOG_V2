@@ -1,27 +1,41 @@
-import { lazy, Suspense } from 'react';
+import { useCallback, useMemo } from 'react';
 import PageLayout from '@/components/Common/PageLayout';
-import ErrorBoundary from '@/components/Common/ErrorBoundary';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import HomeTab from '@/components/Common/HomeTab';
-import PostListError from '@/components/Common/Error/PostListError';
-import { PostFallbackLoader } from '@/components/Common/Loader/FallbackLoader';
+import usePopularPostInfinite from '@/hooks/queries/usePopularPostInfinite';
+import PostList from '@/components/Post/PostList';
+import useIntersection from '@/hooks/useIntersection';
 
-const PopularPostList = lazy(() => import('@/components/Post/PostList/PopularPostList'));
+const PopularPage = () => {
+  const { fetchNextPage, data } = usePopularPostInfinite();
+  const mergePosts = useMemo(() => data.pages.flatMap((page) => page.result), [data.pages]);
 
-const PopularPage = () => (
-  <>
-    <SEOHelmet
-      title="HLOG | 최신 게시글"
-    />
-    <PageLayout>
-      <HomeTab />
-      <ErrorBoundary fallback={<PostListError />}>
-        <Suspense fallback={<PostFallbackLoader />}>
-          <PopularPostList />
-        </Suspense>
-      </ErrorBoundary>
-    </PageLayout>
-  </>
-);
+  const onIntersect = useCallback(async (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver,
+  ) => {
+    const entry = entries[0];
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      await fetchNextPage();
+      observer.observe(entry.target);
+    }
+  }, [fetchNextPage]);
+
+  const target = useIntersection(onIntersect);
+
+  return (
+    <>
+      <SEOHelmet
+        title="HLOG | 인기 게시글"
+      />
+      <PageLayout>
+        <HomeTab />
+        <PostList posts={mergePosts} />
+        <div ref={target}>Target</div>
+      </PageLayout>
+    </>
+  );
+};
 
 export default PopularPage;

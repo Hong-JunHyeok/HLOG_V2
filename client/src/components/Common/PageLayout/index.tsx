@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import PageError from '../Error/PageError';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
@@ -16,11 +15,7 @@ const PageLayout = ({ children }: PageLayoutProps) => (
       title="HLOG"
     />
     <ErrorBoundary fallback={<PageError />}>
-      <ErrorBoundary fallback={<>Header Error</>}>
-        <Suspense fallback={<>Loading...</>}>
-          <Header />
-        </Suspense>
-      </ErrorBoundary>
+      <Header />
       <StyledPageLayout.Container>
         {children}
       </StyledPageLayout.Container>

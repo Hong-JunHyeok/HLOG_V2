@@ -73,9 +73,15 @@ router.get(
   "/recent",
   async (req: Request, res: Response, next: NextFunction) => {
     const postRepository = getRepository(Post);
+    const page = Number(req.query.page) || 1;
+    const size = Number(req.query.size) || 10;
 
     try {
-      const posts = await postRepository
+      const totalPostCount = await postRepository.count();
+      const lastPage = Math.ceil(totalPostCount / size);
+
+      const posts = 
+        await postRepository
         .createQueryBuilder("posts")
         .select([
           "posts.id",
@@ -90,15 +96,19 @@ router.get(
         ])
         .leftJoin("posts.user", "user")
         .leftJoinAndSelect("posts.like", "like")
-        .orderBy("posts.createdAt", "DESC")
-        .orderBy("posts.updatedAt", "DESC")
-        .getMany();
+        .orderBy('posts.createdAt', 'DESC')
+        .orderBy('posts.updatedAt', 'DESC')
+        .take(size)
+        .skip(size * (page - 1))
+        .getMany();  
+
 
       setJsonResponser(res, {
         code: 200,
         message: "모든 포스터조회 성공",
         payload: {
           posts,
+          isLast: lastPage <= page
         },
       });
     } catch (error) {
@@ -113,8 +123,13 @@ router.get(
   "/popular",
   async (req: Request, res: Response, next: NextFunction) => {
     const postRepository = getRepository(Post);
+    const page = Number(req.query.page) || 1;
+    const size = Number(req.query.size) || 10;
 
     try {
+      const totalPostCount = await postRepository.count();
+      const lastPage = Math.ceil(totalPostCount / size);
+
       const posts = await postRepository
         .createQueryBuilder("posts")
         .select([
@@ -138,6 +153,8 @@ router.get(
         .leftJoinAndSelect("posts.like", "likes")
         .orderBy("likeCount", "DESC")
         .orderBy('posts.createdAt', "DESC")
+        .take(size)
+        .skip(size * (page - 1))
         .getMany();
 
       setJsonResponser(res, {
@@ -145,6 +162,7 @@ router.get(
         message: "인기 포스터조회 성공",
         payload: {
           posts,
+          isLast: lastPage <= page
         },
       });
     } catch (error) {

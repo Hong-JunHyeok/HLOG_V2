@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { HelmetProvider } from 'react-helmet-async';
@@ -25,11 +25,13 @@ const App = () => (
   <StrictMode>
     <HelmetProvider>
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ResetStyle />
-          <RouteContainer />
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <Suspense>
+          <QueryClientProvider client={queryClient}>
+            <ResetStyle />
+            <RouteContainer />
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </Suspense>
       </Provider>
     </HelmetProvider>
   </StrictMode>
