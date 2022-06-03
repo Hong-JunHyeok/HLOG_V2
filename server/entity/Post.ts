@@ -21,6 +21,9 @@ export class Post extends Common {
   @Column({ nullable: false, comment: "게시글의 본문", type: "text" })
   postContent: string;
 
+  @Column({ comment: "게시글 조회수", type: "int" })
+  postHits: number;
+
   @ManyToOne(() => User, (user) => user.posts, {
     nullable: true,
     onDelete: 'CASCADE',

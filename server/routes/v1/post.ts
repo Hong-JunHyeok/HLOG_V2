@@ -406,12 +406,10 @@ router.delete(
   }
 );
 
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
-  const id = Number(req.params.id);
+router.get("/:postId", async (req: Request, res: Response, next: NextFunction) => {
+  const postId = Number(req.params.postId);
 
   const postRepository = getRepository(Post);
-
-  console.log(req.params);
 
   try {
     const post = await postRepository
@@ -429,8 +427,22 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
         "user.profileUrl",
       ])
       .leftJoin("posts.user", "user")
-      .where("posts.id = :id", { id })
+      .where("posts.id = :postId", { postId })
       .getOne();
+
+    if(!req.cookies[postId]) {
+      res.cookie(String(postId), true, {
+        maxAge: 60 * 1000
+      })
+      await postRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :id", {id: postId})
+      .set({
+        postHits: () => "postHits + 1"
+      })
+      .execute();
+    }
 
     setJsonResponser(res, {
       code: 200,
