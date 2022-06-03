@@ -56,15 +56,22 @@ const StyledHeader = {
       font-size: 2rem;
     }
   `,
-
+  SearchButton: styled.button`
+    padding: 1rem;
+    margin-left: auto;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  `,
   HeaderMenus: styled.div`
     width: 100%;
     display: flex;
     list-style: none;
-    margin: 0 2rem 0 auto;
+    margin: 0 0 0 auto;
     display: flex;
     .write {
-      margin: auto 0 auto auto; 
+      margin: auto 0 auto 1.4rem; 
       padding: .5rem 1rem;
       font-size: 1rem;
       border-radius: 1rem;
@@ -98,6 +105,7 @@ const StyledHeader = {
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin-left: 1.4rem;
     svg {
       width: 40px;
       height: 40px; 
@@ -147,7 +155,7 @@ const StyledHeader = {
     background-position: center;
   `,
   LoginButton: styled.button`
-      margin: auto 0 auto auto; 
+      margin: auto 0 auto 1.4rem;
       padding: .5rem 1rem;
       font-size: 1rem;
       border-radius: 1rem;

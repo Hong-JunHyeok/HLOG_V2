@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
+import { useNavigate } from 'react-router-dom';
 import StyledCommentInput from './StyledCommentInput';
 import useCreateComment from '@/hooks/mutations/useCreateComment';
 import useAuth from '@/hooks/useAuth';
@@ -18,7 +19,8 @@ const CommentInput = ({
   const [comment, setComment] = useState('');
   const createComment = useCreateComment(postId);
   const { state: { isAuthenticated } } = useAuth();
-  const { isOpen, openModal } = useModal();
+  const { isOpen, openModal, closeModal } = useModal();
+  const navigate = useNavigate();
 
   const handleCreateComment = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -32,6 +34,11 @@ const CommentInput = ({
     setComment('');
   };
 
+  const handleRequireLoginModal = () => {
+    closeModal();
+    navigate('/login');
+  };
+
   return (
     <>
       <StyledCommentInput.Container onSubmit={handleCreateComment}>
@@ -40,12 +47,10 @@ const CommentInput = ({
           <FontAwesomeIcon icon={solid('paper-plane')} />
         </button>
       </StyledCommentInput.Container>
-      {isOpen
-    && (
-    <Modal>
-      로그인이 필요한 서비스입니다.
-    </Modal>
-    )}
+      <Modal visible={isOpen}>
+        로그인이 필요한 서비스입니다.
+        <button onClick={handleRequireLoginModal} type="button">확인</button>
+      </Modal>
     </>
   );
 };

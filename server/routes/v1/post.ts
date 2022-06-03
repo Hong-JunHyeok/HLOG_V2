@@ -1,13 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import multer from "multer";
 import path from "path";
 import setJsonResponser from "../../utils/setJsonResponser";
-import { getRepository } from "typeorm";
+import { getRepository, Like as ORMLike } from "typeorm";
 import { Post } from "../../entity/Post";
 import {accessTokenValidator} from "../../middlewares/tokenValidator";
 import { User } from "../../entity/User";
-import { Like } from "../../entity/Like";
+import { Like } from '../../entity/Like';
 
 const router = express.Router();
 
@@ -172,6 +171,39 @@ router.get(
     }
   }
 );
+
+router.get('/search', 
+async(req,res,next) => {
+  const { q } = req.query;
+
+  try {
+    const postRepository = getRepository(Post);
+    const posts = await postRepository
+    .createQueryBuilder('posts')
+    .select([
+      'posts.id',
+      'posts.postTitle',
+      "posts.createdAt",
+      "posts.updatedAt",
+      'posts.postThumbnail',
+      "user.username",
+    ])
+    .leftJoin('posts.user', 'user')
+    .where("posts.postTitle like :q", { q: `%${q}%` })
+    .getMany()
+
+    setJsonResponser(res, {
+      code: 200,
+      message: "검색된 결과 조회완료",
+      payload: {
+        posts
+      }
+    })
+  } 
+  catch(error) {
+    next(error);
+  }
+})
 
 router.get(
   "/user/:userId",
