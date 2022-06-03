@@ -6,6 +6,7 @@ export interface PostType {
   postThumbnail: string;
   postContent: string;
   postSummary: string;
+  postHits: number;
   createdAt: string;
   updatedAt: string;
   user: UserType;

@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import stringCutter from '@/utils/stringCutter';
 import S from './StyledPostItem';
 import { PostType } from '@/@types/post';
@@ -14,6 +16,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
   postThumbnail,
   postTitle,
   postSummary,
+  postHits,
   user: {
     username,
     profileUrl,
@@ -37,7 +40,11 @@ const PostItem: React.FunctionComponent<PostType> = ({
             ? <S.Figure profileUrl={startWithURL(profileUrl)} />
             : <DefaultProfile />}
         </S.ProfileContainer>
-        <span>{username}</span>
+        <span className="username">{username}</span>
+        <S.Viewer>
+          <FontAwesomeIcon icon={solid('eye')} />
+          {postHits}
+        </S.Viewer>
         {/* <S.Like onClick={(event) => {
           event.stopPropagation();
           toggleLiked();
