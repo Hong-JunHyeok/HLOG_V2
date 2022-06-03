@@ -21,6 +21,7 @@ function RouteContainer() {
         <Route path="write" element={<Pages.WritePostPage />} />
         <Route path="login" element={<Pages.LoginPage />} />
         <Route path="join" element={<Pages.JoinPage />} />
+        <Route path="search" element={<Pages.SearchPage />} />
         <Route
           path="*"
           element={<>Not Found</>}
