@@ -4,7 +4,7 @@ import { Suspense, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import useDeleteComment from '@/hooks/mutations/useDeleteComment';
-import { CommentType } from '@/types/Comment';
+import { CommentType } from '@/@types/comment';
 import StyledCommentItem from './StyledCommentItem';
 import startWithURL from '@/utils/startWithURL';
 import DefaultProfile from '@/../public/assets/default_profile.svg';

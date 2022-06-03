@@ -1,5 +1,5 @@
-import { CommentType } from '@/types/Comment';
-import { ReplyType } from '@/types/Reply';
+import { CommentType } from '@/@types/comment';
+import { ReplyType } from '@/@types/reply';
 import CommentItem from '../CommentItem/CommentItem';
 import StyledCommentList from './StyledCommentList';
 

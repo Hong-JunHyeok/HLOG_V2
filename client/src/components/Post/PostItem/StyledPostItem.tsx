@@ -75,6 +75,17 @@ const StyledPostItem = {
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
+    `,
+  Viewer: styled.div`
+    display: flex;
+    align-items: center;
+    font-size: .8rem;
+    margin-left: auto;
+    svg {
+      width: .8rem;
+      height: .8rem;
+      margin-right: 10px;
+    }   
   `,
   Figure: styled.figure<ProfileProps>`
     width: 100%;

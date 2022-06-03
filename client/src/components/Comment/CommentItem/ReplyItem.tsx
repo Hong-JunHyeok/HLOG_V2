@@ -6,7 +6,7 @@ import DefaultProfile from '@/../public/assets/default_profile.svg';
 import useMyInfo from '@/hooks/queries/useMyInfo';
 import useToggle from '@/hooks/useToggle';
 import useInput from '@/hooks/useInput';
-import { ReplyType } from '@/types/Reply';
+import { ReplyType } from '@/@types/reply';
 import useEditReply from '@/hooks/mutations/useEditReply';
 import useDeleteReply from '@/hooks/mutations/useDeleteReply';
 
