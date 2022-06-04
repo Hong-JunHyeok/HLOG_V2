@@ -89,6 +89,7 @@ router.get(
           "posts.postThumbnail",
           "posts.postTitle",
           "posts.postSummary",
+          "posts.postHits",
           "user.username",
           "user.id",
           "user.profileUrl",
@@ -96,7 +97,6 @@ router.get(
         .leftJoin("posts.user", "user")
         .leftJoinAndSelect("posts.like", "like")
         .orderBy('posts.createdAt', 'DESC')
-        .orderBy('posts.updatedAt', 'DESC')
         .take(size)
         .skip(size * (page - 1))
         .getMany();  
@@ -138,20 +138,21 @@ router.get(
           "posts.postThumbnail",
           "posts.postTitle",
           "posts.postSummary",
+          "posts.postHits",
           "user.username",
           "user.id",
           "user.profileUrl",
         ])
+        .leftJoin("posts.user", "user")
+        .leftJoinAndSelect("posts.like", "like")
         .addSelect((qb) => {
           return qb
             .select("COUNT(*) AS count")
             .from(Like, "like")
-            .where("post = posts.id");
+            .where("like.post = posts.id");
         }, "likeCount")
-        .leftJoin("posts.user", "user")
-        .leftJoinAndSelect("posts.like", "likes")
-        .orderBy("likeCount", "DESC")
-        .orderBy('posts.createdAt', "DESC")
+        .orderBy('likeCount', "DESC")
+        .addOrderBy("posts.postHits", "DESC")
         .take(size)
         .skip(size * (page - 1))
         .getMany();
@@ -303,6 +304,162 @@ router.patch(
 );
 
 
+router.get(
+  "/like/:postId",
+  accessTokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const likeRepository = getRepository(Like);
+
+      const me = await userRepository.findOne({
+        where: {
+          id: req.body.decodedUserId,
+        },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user: me,
+          post: postId,
+        },
+      });
+
+      setJsonResponser(res, {
+        code: 200,
+        message: "좋아요 여부 조회성공",
+        payload: !!alreadyLiked,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/like/:postId",
+  accessTokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const postRepository = getRepository(Post);
+      const likeRepository = getRepository(Like);
+
+      const post = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!post) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { id: req.body.decodedUserId, },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          post,
+        },
+      });
+
+      if (alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "이미 좋아요를 했습니다.",
+        });
+      }
+
+      const newLike = new Like();
+
+      newLike.user = user;
+      newLike.post = post;
+
+      await likeRepository.save(newLike);
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 성공",
+        payload: {
+          newLike,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/unlike/:postId",
+  accessTokenValidator,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+
+    try {
+      const userRepository = getRepository(User);
+      const postRepository = getRepository(Post);
+      const likeRepository = getRepository(Like);
+
+      const post = await postRepository.findOne({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!post) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "게시글 정보가 없습니다.",
+        });
+      }
+
+      const user = await userRepository.findOne({
+        where: { id: req.body.decodedUserId, },
+      });
+
+      const alreadyLiked = await likeRepository.findOne({
+        where: {
+          user,
+          post,
+        },
+      });
+
+      if (!alreadyLiked) {
+        return setJsonResponser(res, {
+          code: 403,
+          message: "좋아요를 하지않은 상태에서 취소를 할 수 없습니다.",
+        });
+      }
+
+      await likeRepository.delete({
+        user,
+        post,
+      });
+
+      return setJsonResponser(res, {
+        code: 201,
+        message: "좋아요 취소 성공",
+      });
+    } catch (error) {
+      console.error(error);
+
+      next(error);
+    }
+  }
+);
+
+
 router.patch(
   '/:postId', 
   accessTokenValidator, 
@@ -427,12 +584,16 @@ router.get("/:postId", async (req: Request, res: Response, next: NextFunction) =
         "user.profileUrl",
       ])
       .leftJoin("posts.user", "user")
+      .leftJoinAndSelect("posts.like", "likes", "likes.post = posts.id")
       .where("posts.id = :postId", { postId })
       .getOne();
 
     if(!req.cookies[postId]) {
-      res.cookie(String(postId), true, {
-        maxAge: 60 * 1000
+      console.log(req.headers['x-forwarded-for']);
+      const userIp = req.ip;
+
+      res.cookie(String(postId), userIp, {
+        maxAge: 24 * 60 * 60 * 1000
       })
       await postRepository
       .createQueryBuilder()
@@ -453,160 +614,5 @@ router.get("/:postId", async (req: Request, res: Response, next: NextFunction) =
     next(error);
   }
 });
-
-router.get(
-  "/like/:postId",
-  accessTokenValidator,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params;
-
-    try {
-      const userRepository = getRepository(User);
-      const likeRepository = getRepository(Like);
-
-      const me = await userRepository.findOne({
-        where: {
-          id: req.body.decodedUserId,
-        },
-      });
-
-      const alreadyLiked = await likeRepository.findOne({
-        where: {
-          user: me,
-          post: postId,
-        },
-      });
-
-      setJsonResponser(res, {
-        code: 200,
-        message: "좋아요 여부 조회성공",
-        payload: !!alreadyLiked,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-router.post(
-  "/like/:postId",
-  accessTokenValidator,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params;
-
-    try {
-      const userRepository = getRepository(User);
-      const postRepository = getRepository(Post);
-      const likeRepository = getRepository(Like);
-
-      const post = await postRepository.findOne({
-        where: {
-          id: Number(postId),
-        },
-      });
-
-      if (!post) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "게시글 정보가 없습니다.",
-        });
-      }
-
-      const user = await userRepository.findOne({
-        where: { id: req.body.decodedUserId, },
-      });
-
-      const alreadyLiked = await likeRepository.findOne({
-        where: {
-          user,
-          post,
-        },
-      });
-
-      if (alreadyLiked) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "이미 좋아요를 했습니다.",
-        });
-      }
-
-      const newLike = new Like();
-
-      newLike.user = user;
-      newLike.post = post;
-
-      await likeRepository.save(newLike);
-
-      return setJsonResponser(res, {
-        code: 201,
-        message: "좋아요 성공",
-        payload: {
-          newLike,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-router.delete(
-  "/unlike/:postId",
-  accessTokenValidator,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params;
-
-    try {
-      const userRepository = getRepository(User);
-      const postRepository = getRepository(Post);
-      const likeRepository = getRepository(Like);
-
-      const post = await postRepository.findOne({
-        where: {
-          id: Number(postId),
-        },
-      });
-
-      if (!post) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "게시글 정보가 없습니다.",
-        });
-      }
-
-      const user = await userRepository.findOne({
-        where: { id: req.body.decodedUserId, },
-      });
-
-      const alreadyLiked = await likeRepository.findOne({
-        where: {
-          user,
-          post,
-        },
-      });
-
-      if (!alreadyLiked) {
-        return setJsonResponser(res, {
-          code: 403,
-          message: "좋아요를 하지않은 상태에서 취소를 할 수 없습니다.",
-        });
-      }
-
-      await likeRepository.delete({
-        user,
-        post,
-      });
-
-      return setJsonResponser(res, {
-        code: 201,
-        message: "좋아요 취소 성공",
-      });
-    } catch (error) {
-      console.error(error);
-
-      next(error);
-    }
-  }
-);
 
 export default router;

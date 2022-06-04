@@ -37,12 +37,4 @@ export class Like {
   })
   @JoinColumn({ name: "post" })
   post: Post;
-
-  @ManyToOne(() => Comment, (comment) => comment.id, {
-    nullable: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  })
-  @JoinColumn({ name: "comment" })
-  comment: Comment;
 }

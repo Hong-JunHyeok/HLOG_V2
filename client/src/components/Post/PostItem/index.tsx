@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,15 +17,15 @@ const PostItem: React.FunctionComponent<PostType> = ({
   postTitle,
   postSummary,
   postHits,
+  like,
   user: {
     username,
     profileUrl,
   },
 }) => {
   const navigate = useNavigate();
-  // const [liked, toggleLiked] = useToggle(false);
-
   const handlePushPostView = () => navigate(`/post/${id}`);
+  const likeNumber = useMemo(() => like.length, [like]);
 
   return (
     <S.Container onClick={handlePushPostView}>
@@ -45,15 +45,10 @@ const PostItem: React.FunctionComponent<PostType> = ({
           <FontAwesomeIcon icon={solid('eye')} />
           {postHits}
         </S.Viewer>
-        {/* <S.Like onClick={(event) => {
-          event.stopPropagation();
-          toggleLiked();
-        }}
-        >
-          {liked
-            ? <FontAwesomeIcon icon={solid('thumbs-up')} />
-            : <FontAwesomeIcon icon={regular('thumbs-up')} />}
-        </S.Like> */}
+        <S.Like>
+          <FontAwesomeIcon icon={solid('heart')} />
+          {likeNumber}
+        </S.Like>
       </S.Meta>
     </S.Container>
   );

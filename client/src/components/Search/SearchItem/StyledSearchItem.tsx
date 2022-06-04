@@ -24,6 +24,7 @@ const StyledSearchItem = {
     .username {
       color: ${ColorSet['--greyOpacity600']};
       margin-top: auto;
+      margin-bottom: 1rem;
     }
   `,
   Thumbnail: styled.figure<ThumbnailProps>`

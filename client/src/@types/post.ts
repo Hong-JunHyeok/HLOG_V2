@@ -1,3 +1,4 @@
+import { LikeType } from './like';
 import type { UserType } from './user';
 
 export interface PostType {
@@ -10,4 +11,5 @@ export interface PostType {
   createdAt: string;
   updatedAt: string;
   user: UserType;
+  like: LikeType[];
 }

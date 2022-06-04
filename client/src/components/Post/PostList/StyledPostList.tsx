@@ -4,6 +4,7 @@ import mediaQueryHelper from '@/styles/mediaHelper';
 const StyledPostList = {
   Container: styled.section`
     min-height: 90vh;
+    padding: 0 1rem;
   `,
 
   PostList: styled.div`

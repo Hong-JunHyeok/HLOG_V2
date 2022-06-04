@@ -12,13 +12,14 @@ import useMyInfo from '@/hooks/queries/useMyInfo';
 import CommentInput from '@/components/Comment/CommentInput/CommentInput';
 import useComments from '@/hooks/queries/useComment';
 import CommentList from '@/components/Comment/CommentList/CommentList';
+import PostUtil from '../PostUtil';
 
 const PostView: React.FunctionComponent = () => {
   const { postId } = useParams<'postId'>();
   const navigator = useNavigate();
   const customAxios = useInterceptedAxios();
-  const { data: postData } = usePost(+postId);
   const { data: userData } = useMyInfo();
+  const { data: postData } = usePost(+postId);
   const { data: commentData } = useComments(+postId);
 
   const { post } = postData;
@@ -83,6 +84,15 @@ const PostView: React.FunctionComponent = () => {
         }}
         />
 
+        <S.PostUtilContainer>
+          <Suspense>
+            <PostUtil
+              post={post}
+              user={userData?.user}
+            />
+          </Suspense>
+        </S.PostUtilContainer>
+
         <S.CommentContainer>
           <CommentInput postId={id} />
           <Suspense>
@@ -90,7 +100,6 @@ const PostView: React.FunctionComponent = () => {
           </Suspense>
         </S.CommentContainer>
       </S.Container>
-
     </>
   );
 };

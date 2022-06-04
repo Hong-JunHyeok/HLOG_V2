@@ -24,7 +24,7 @@ const LoginForm = () => {
     openModal: openErrorModal,
   } = useModal();
 
-  const handlePushMain = () => navigate('/');
+  const handlePushPrevPage = () => navigate(-1);
 
   const onSubmit = async (data: LoginFormType) => {
     const { email, password } = data;
@@ -33,7 +33,7 @@ const LoginForm = () => {
       email,
       password,
     })
-      .then(handlePushMain)
+      .then(handlePushPrevPage)
       .catch((error) => {
         setLoginErrorMessage(error.response.data.message);
         openErrorModal();
