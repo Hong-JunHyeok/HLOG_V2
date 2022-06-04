@@ -11,6 +11,7 @@ const customAxios = axios.create(AxiosConfigure);
 customAxios.interceptors.request.use((config) => {
   // 모든 Request Header에 Access토큰을 넣어주는 역할
   const hlogToken = localStorage.getItem('hlog_access_token');
+  // TODO: cookie에 refresh토큰이 있다면 accessToken 재발급
 
   if (!config.headers.authorization && hlogToken) {
     config.headers.authorization = JSON.parse(hlogToken);

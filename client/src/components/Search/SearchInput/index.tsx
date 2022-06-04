@@ -1,5 +1,6 @@
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect } from 'react';
 import useSearchData from '@/hooks/useSearchData';
 import StyledSearchInput from './StyledSearchInput';
 
@@ -11,6 +12,12 @@ const SearchInput = () => {
   };
 
   const handleClearSearchData = () => setSearch('');
+
+  // TODO: debouncing
+
+  useEffect(() => {
+    // TODO: Focus when rendering
+  }, []);
 
   return (
     <StyledSearchInput.Container>

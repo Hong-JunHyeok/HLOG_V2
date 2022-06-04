@@ -11,7 +11,6 @@ import { convertToHTML, convertFromHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import S from './StyledEditor';
 import useLocalStorage from '@/utils/useLocalStorage';
-import SuccessModal from '@/components/Modal/Success/SuccessModal';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';
@@ -166,7 +165,6 @@ function HlogEditor() {
     storedValue: savedEditorContent,
     setValue: setSavedEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
-  const [createPostSuccessModal, setCreatePostSuccessModal] = useState(false);
 
   const handleExit = () => navigate(-1);
 
@@ -288,12 +286,11 @@ function HlogEditor() {
   }, [data, isEdit, setPostContent, setPostTitle]);
 
   return (
-    <>
-      <S.Container>
-        <S.Header>
-          <button type="button" className="exit" onClick={handleExit}>나가기</button>
-          <div className="utils">
-            {
+    <S.Container>
+      <S.Header>
+        <button type="button" className="exit" onClick={handleExit}>나가기</button>
+        <div className="utils">
+          {
               isEdit
                 ? (
                   <button type="button" className="normal-button post" onClick={editPost}>포스트</button>
@@ -306,42 +303,33 @@ function HlogEditor() {
                 )
 
             }
-          </div>
-        </S.Header>
-        <AutosizeableTextarea
-          placeholder="제목을 입력하세요."
-          value={postTitle}
-          onChange={(e) => setPostTitle(e.target.value)}
-          className="title-input"
-        />
-        <div className="RichEditor-root">
-          <BlockStyleControls
-            editorState={postContent}
-            onToggle={toggleBlockType}
-          />
-          <InlineStyleControls
-            editorState={postContent}
-            onToggle={toggleInlineStyle}
-          />
-          <Editor
-            editorState={postContent}
-            handleKeyCommand={handleKeyCommand}
-            onChange={setPostContent}
-            blockStyleFn={blockStyleClassMap}
-            placeholder="내용을 입력해주세요..."
-            spellCheck
-          />
         </div>
-      </S.Container>
-
-      {createPostSuccessModal
-        && (
-        <SuccessModal
-          successTitle="포스트 성공"
-          onClose={() => setCreatePostSuccessModal(false)}
+      </S.Header>
+      <AutosizeableTextarea
+        placeholder="제목을 입력하세요."
+        value={postTitle}
+        onChange={(e) => setPostTitle(e.target.value)}
+        className="title-input"
+      />
+      <div className="RichEditor-root">
+        <BlockStyleControls
+          editorState={postContent}
+          onToggle={toggleBlockType}
         />
-        )}
-    </>
+        <InlineStyleControls
+          editorState={postContent}
+          onToggle={toggleInlineStyle}
+        />
+        <Editor
+          editorState={postContent}
+          handleKeyCommand={handleKeyCommand}
+          onChange={setPostContent}
+          blockStyleFn={blockStyleClassMap}
+          placeholder="내용을 입력해주세요..."
+          spellCheck
+        />
+      </div>
+    </S.Container>
   );
 }
 

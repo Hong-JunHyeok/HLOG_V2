@@ -43,7 +43,6 @@ router.get(
           "user.profileUrl",
         ])
         .leftJoin("replies.user", "user")
-        .leftJoinAndSelect("replies.like", "like")
         .where("replies.commentId = :id", { id: commentId })
         .orderBy("replies.createdAt", "DESC")
         .orderBy("replies.updatedAt", "DESC")

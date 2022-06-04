@@ -48,8 +48,14 @@ const CommentInput = ({
         </button>
       </StyledCommentInput.Container>
       <Modal visible={isOpen}>
-        로그인이 필요한 서비스입니다.
-        <button onClick={handleRequireLoginModal} type="button">확인</button>
+        <StyledCommentInput.LoginRequireModal>
+          <span className="require_content">
+            <span className="decoration">로그인</span>
+            이 필요한 서비스입니다.
+
+          </span>
+          <button onClick={handleRequireLoginModal} type="button">확인</button>
+        </StyledCommentInput.LoginRequireModal>
       </Modal>
     </>
   );

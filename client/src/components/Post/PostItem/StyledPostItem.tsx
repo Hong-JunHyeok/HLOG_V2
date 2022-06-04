@@ -66,10 +66,6 @@ const StyledPostItem = {
       font-weight: lighter;
     }
   `,
-  Like: styled.div`
-    margin-left: auto;
-    display: flex;
-  `,
   ProfileContainer: styled.div`
     width: 40px;
     height: 40px;
@@ -81,6 +77,14 @@ const StyledPostItem = {
     align-items: center;
     font-size: .8rem;
     margin-left: auto;
+    svg {
+      width: .8rem;
+      height: .8rem;
+      margin-right: 10px;
+    }   
+    `,
+  Like: styled.div`
+    margin-left: 1rem;
     svg {
       width: .8rem;
       height: .8rem;

@@ -73,6 +73,10 @@ const StyledView = {
     padding: 2rem 1rem;
     margin: 0 auto;
   `,
+  PostUtilContainer: styled.div`
+    max-width: 1000px;
+    margin: 0 auto;
+  `,
   CommentContainer: styled.div`
     max-width: 1000px;
     margin: 0 auto;
