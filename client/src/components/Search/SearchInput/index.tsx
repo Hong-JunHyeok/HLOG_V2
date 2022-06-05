@@ -1,10 +1,11 @@
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import useSearchData from '@/hooks/useSearchData';
 import StyledSearchInput from './StyledSearchInput';
 
 const SearchInput = () => {
+  const searchRef = useRef<HTMLInputElement>(null);
   const { search, setSearch } = useSearchData();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,16 +14,17 @@ const SearchInput = () => {
 
   const handleClearSearchData = () => setSearch('');
 
-  // TODO: debouncing
-
   useEffect(() => {
-    // TODO: Focus when rendering
+    if (searchRef.current) {
+      searchRef.current.focus();
+    }
   }, []);
 
   return (
     <StyledSearchInput.Container>
       <FontAwesomeIcon icon={solid('magnifying-glass')} className="search-icon" />
       <input
+        ref={searchRef}
         type="text"
         value={search}
         onChange={handleChange}

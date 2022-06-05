@@ -20,7 +20,8 @@ module.exports = {
     "react/state-in-constructor": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "no-unsafe-optional-chaining": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-param-reassign": "off"
   },
   plugins: ["@typescript-eslint"],
   extends: [
