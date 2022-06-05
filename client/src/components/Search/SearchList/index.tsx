@@ -3,11 +3,13 @@ import useSearch from '@/hooks/queries/useSearch';
 import useSearchData from '@/hooks/useSearchData';
 import SearchItem from '../SearchItem';
 import StyledSearchList from './StyledSearchList';
+import useDebounce from '@/hooks/useDebounce';
 
 const SearchList = () => {
   const [animatedParentRef] = useAutoAnimate<HTMLDivElement>();
   const { search } = useSearchData();
-  const { data } = useSearch(search);
+  const debouncedSearch = useDebounce(search);
+  const { data } = useSearch(debouncedSearch);
 
   return (
     <StyledSearchList.Container ref={animatedParentRef}>

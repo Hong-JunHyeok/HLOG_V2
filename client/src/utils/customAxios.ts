@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, HeadersDefaults } from 'axios';
 
 const AxiosConfigure: AxiosRequestConfig = {
   baseURL: process.env.API_SERVER_URL,
@@ -7,6 +7,10 @@ const AxiosConfigure: AxiosRequestConfig = {
 };
 
 const customAxios = axios.create(AxiosConfigure);
+
+interface CommonHeaderProperties extends HeadersDefaults {
+  authorization: string;
+}
 
 customAxios.interceptors.request.use((config) => {
   // 모든 Request Header에 Access토큰을 넣어주는 역할
@@ -35,6 +39,7 @@ customAxios.interceptors.response.use(
       };
       const accessToken = await refreshToken();
       prevRequest.headers.authorization = accessToken;
+      (customAxios.defaults.headers as CommonHeaderProperties).authorization = accessToken;
       return customAxios(prevRequest);
     }
     return Promise.reject(error);
