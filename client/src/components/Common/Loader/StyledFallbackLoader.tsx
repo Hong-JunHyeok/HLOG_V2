@@ -96,8 +96,24 @@ const StyledFallbackLoader = {
       color: ${ColorSet['--primary']};
     }
  `,
-  ScrollLoader: styled.div`
+  PostView: styled.main``,
+  HeadLine: styled.section`
+  position: relative;
+    padding: 5rem 1rem 1rem 1rem;
+    z-index: 0;
+    height: 100vh;
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.3));
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     
+    ${mediaQueryHelper('medium')} {
+      padding-top: 6rem;
+    }
+
+    ${mediaQueryHelper('large')} {
+      padding-top: 7rem;
+    }
   `,
 };
 

@@ -1,25 +1,27 @@
 import React from 'react';
 import ModalPortal from './ModalPortal';
 import S from './StyledModal';
+import useModal from '@/hooks/useModal';
 
 interface ModalProps {
   children: React.ReactNode;
-  visible?: boolean;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, visible = false }) => (
-  <ModalPortal>
-    {visible
-      ? (
-        <S.Container>
-          <S.Article>
-            {children}
-          </S.Article>
-        </S.Container>
-      )
-      : null}
+const Modal: React.FC<ModalProps> = ({ children }) => {
+  const { isOpen } = useModal();
 
-  </ModalPortal>
-);
+  return (
+    <ModalPortal>
+      {isOpen
+        && (
+          <S.Container>
+            <S.Article>
+              {children}
+            </S.Article>
+          </S.Container>
+        )}
+    </ModalPortal>
+  );
+};
 
 export default Modal;

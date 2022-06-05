@@ -40,3 +40,9 @@ export const CommentFallbackLoader = () => (
     <SkeletonComment />
   </S.CommentList>
 );
+
+export const PostViewFallbackLoader = () => (
+  <S.PostView>
+    <S.HeadLine />
+  </S.PostView>
+);

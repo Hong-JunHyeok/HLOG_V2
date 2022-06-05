@@ -4,17 +4,15 @@ import StyledErrorModal from './StyledErrorModal';
 
 interface ErrorModalProps {
   errorTitle: string;
-  visible: boolean;
 }
 
 const ErrorModal = ({
   errorTitle,
-  visible,
 }: ErrorModalProps) => {
   const { closeModal } = useModal();
 
   return (
-    <Modal visible={visible}>
+    <Modal>
       <StyledErrorModal.Container>
         <div className="info">
           <span className="title">{errorTitle}</span>

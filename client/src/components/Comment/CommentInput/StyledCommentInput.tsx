@@ -33,31 +33,7 @@ const StyledCommentInput = {
       color: ${ColorSet['--primary']};
     }
   `,
-  LoginRequireModal: styled.div`
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .require_content {
-      font-size: 1.3rem;
-     & > .decoration {
-       color: ${ColorSet['--primary']};
-       font-weight: bold;
-     } 
-    }
-    button {
-      margin-top: 1rem;
-      width: 50px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: ${ColorSet['--white']};
-      background-color: ${ColorSet['--primary']};
-      border-radius: 10px;
-    }
-  `,
+
 };
 
 export default StyledCommentInput;

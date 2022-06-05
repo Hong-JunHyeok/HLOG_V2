@@ -5,6 +5,7 @@ import S from './StyledJoinForm';
 import useJoin from '@/hooks/useJoin';
 import useModal from '@/hooks/useModal';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
+import useAuth from '@/hooks/useAuth';
 
 interface JoinFormType {
   email: string;
@@ -18,8 +19,9 @@ const JoinForm = () => {
     register, handleSubmit, formState: { errors },
     getValues,
   } = useForm({ mode: 'onChange' });
-  const { isOpen, openModal } = useModal();
+  const { openModal } = useModal();
   const [joinErrorMessage, setJoinErrorMessage] = useState('');
+  const { state: { isAuthenticated } } = useAuth();
   const join = useJoin();
   const navigate = useNavigate();
 
@@ -34,6 +36,8 @@ const JoinForm = () => {
       setJoinErrorMessage(error.response.data.message);
     }
   };
+
+  if (isAuthenticated) return null;
 
   return (
     <>
@@ -129,7 +133,6 @@ const JoinForm = () => {
       </S.Container>
       <ErrorModal
         errorTitle={joinErrorMessage}
-        visible={isOpen}
       />
     </>
   );

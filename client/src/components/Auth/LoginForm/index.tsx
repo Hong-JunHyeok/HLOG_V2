@@ -20,7 +20,6 @@ const LoginForm = () => {
   const login = useLogin();
   const [loginErrorMessage, setLoginErrorMessage] = useState('');
   const {
-    isOpen: isErrorModalOpen,
     openModal: openErrorModal,
   } = useModal();
 
@@ -94,7 +93,6 @@ const LoginForm = () => {
         </S.Info>
       </S.Container>
       <ErrorModal
-        visible={isErrorModalOpen}
         errorTitle={loginErrorMessage}
       />
     </>
