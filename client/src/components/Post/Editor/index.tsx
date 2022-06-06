@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   EditorState, DraftEditorCommand, RichUtils,
-  convertFromRaw, convertToRaw, Editor,
+  convertFromRaw, convertToRaw,
 } from 'draft-js';
+import Editor from '@draft-js-plugins/editor';
 import 'draft-js/dist/Draft.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
