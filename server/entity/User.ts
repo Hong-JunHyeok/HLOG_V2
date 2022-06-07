@@ -2,7 +2,6 @@ import { Entity, Column, Index, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
-import { Question } from "./Question";
 
 require("dotenv").config();
 
@@ -38,10 +37,4 @@ export class User extends Common {
     cascade: true,
   })
   comments: Comment[];
-
-  @OneToMany(() => Question, (question) => question.user, {
-    nullable: false,
-    cascade: true,
-  })
-  questions: Question[];
 }

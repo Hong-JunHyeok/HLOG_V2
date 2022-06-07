@@ -221,7 +221,7 @@ router.get(
           order: {
             createdAt: "DESC",
           },
-          relations: ['user']
+          relations: ['user', 'like']
         });
 
       setJsonResponser(res, {
@@ -247,11 +247,7 @@ const upload = multer({
     filename: (req, file, callback) => {
       const ext = path.extname(file.originalname);
       const timestamp = new Date().getTime().valueOf();
-      const basename = path.basename(file.originalname)
-        .replace(" ","")
-        .replace(/\(/g, "")
-        .replace(/\)/g, "")
-      const filename = basename + timestamp + ext;  
+      const filename = timestamp + ext;  
       callback(null, filename + ext);
     },
   }),

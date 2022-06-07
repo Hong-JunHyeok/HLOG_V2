@@ -30,10 +30,4 @@ export class Comment extends Common {
     cascade: true,
   })
   reply: Reply[];
-
-  @OneToMany(() => Like, (like) => like.comment, {
-    nullable: true,
-    cascade: true,
-  })
-  like: Like[];
 }

@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Common } from "../utils/CommonEntity";
 import { User } from "./User";
-import { Like } from "./Like";
 import { Comment } from "./Comment";
 
 @Entity({
@@ -23,11 +22,4 @@ export class Reply extends Common {
     onUpdate: 'CASCADE'
   })
   comment: Comment;
-
-  @OneToMany(() => Like, (like) => like.comment, {
-    nullable: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  like: Like[];
 }
