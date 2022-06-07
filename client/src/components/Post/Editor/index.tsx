@@ -11,7 +11,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { convertToHTML, convertFromHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import S from './StyledEditor';
-import useLocalStorage from '@/utils/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';

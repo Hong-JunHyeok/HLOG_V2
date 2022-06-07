@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { UserType } from '@/@types/user';
-import useLocalStorage from '@/utils/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import useAuth from '../useAuth';
 import customAxios from '@/utils/customAxios';
 

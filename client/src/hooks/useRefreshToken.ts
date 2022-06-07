@@ -1,5 +1,5 @@
 import customAxios from '@/utils/customAxios';
-import useLocalStorage from '@/utils/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
 
 const useRefreshToken = () => {
   const {

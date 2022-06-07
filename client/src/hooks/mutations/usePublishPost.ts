@@ -2,7 +2,7 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import customAxios from '@/utils/customAxios';
 import useModal from '../useModal';
-import useLocalStorage from '@/utils/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import useEditor from '../useEditor';
 
 const usePublishPost = () => {

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`렌더링 테스트 Footer 컴포넌트가 기존의 스냅샷과 동일하다 1`] = `
+<div>
+  <footer
+    class="css-z7xpex"
+  >
+    <span>
+      All Copyright reserved
+    </span>
+    <span
+      class="css-1g39gi5"
+    >
+      HLOG
+    </span>
+  </footer>
+</div>
+`;

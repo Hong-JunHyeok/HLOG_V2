@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import StyledHomeTab from './StyledHomeTab';
 
-const MenuList: React.FC = () => {
+const HomeTab: React.FC = () => {
   const activeStyle = ({ isActive }: { isActive: boolean }) => ({
     color: isActive ? '#3182f6' : '#4e5968',
   });
@@ -31,4 +31,4 @@ const MenuList: React.FC = () => {
   );
 };
 
-export default MenuList;
+export default HomeTab;

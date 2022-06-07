@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import useLocalStorage from '@/utils/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import customAxios from '@/utils/customAxios';
 import useAuth from '../useAuth';
 
