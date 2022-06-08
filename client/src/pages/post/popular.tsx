@@ -34,7 +34,7 @@ const PopularPage = () => {
       <PageLayout>
         <HomeTab />
         <PostList posts={mergePosts} />
-        <div ref={target} />
+        <div ref={target}>rkawls</div>
       </PageLayout>
     </>
   );

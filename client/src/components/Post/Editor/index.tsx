@@ -1,14 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback, useEffect, useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  EditorState, DraftEditorCommand, RichUtils,
-  convertFromRaw, convertToRaw,
+  EditorState, RichUtils,
+  convertFromRaw, convertToRaw, KeyBindingUtil, getDefaultKeyBinding,
 } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 import 'draft-js/dist/Draft.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { convertToHTML, convertFromHTML } from 'draft-convert';
+import { Slide, toast, ToastContainer } from 'react-toastify';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import S from './StyledEditor';
 import useLocalStorage from '@/hooks/useLocalStorage';
@@ -112,7 +115,6 @@ const INLINE_STYLES = [
   { label: <FontAwesomeIcon icon={solid('bold')} />, style: 'BOLD' },
   { label: <FontAwesomeIcon icon={solid('italic')} />, style: 'ITALIC' },
   { label: <FontAwesomeIcon icon={solid('underline')} />, style: 'UNDERLINE' },
-  { label: 'Monospace', style: 'CODE' },
 ];
 
 function InlineStyleControls(props: {
@@ -175,6 +177,11 @@ function HlogEditor() {
     setSavedEditorTitle(postTitle);
     const content = postContent.getCurrentContent();
     setSavedEditorContent(convertToRaw(content));
+
+    toast('임시저장 되었습니다.', {
+      type: 'success',
+      theme: 'colored',
+    });
   };
 
   const toggleBlockType = (blockType: string) => changeEditorContent(
@@ -191,13 +198,114 @@ function HlogEditor() {
     ),
   );
 
-  const handleKeyCommand = (command: DraftEditorCommand) => {
-    const newState = RichUtils.handleKeyCommand(postContent, command);
-    if (newState) {
-      setPostContent(newState);
+  const toggleBlock = (type) => RichUtils.toggleBlockType(postContent, type);
+
+  const handleKeyCommand = (command) => {
+    let editorState = RichUtils.handleKeyCommand(postContent, command);
+
+    if (!editorState && command === 'strikethrough') {
+      editorState = RichUtils.toggleInlineStyle(postContent, 'STRIKETHROUGH');
+    }
+    if (!editorState && command === 'header-one') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'header-two') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'header-three') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'underline') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'ordered-list-item') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'unordered-list-item') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'code-block') {
+      editorState = toggleBlock(command);
+    }
+    if (!editorState && command === 'save') {
+      handleSaveContent();
+    }
+
+    if (editorState) {
+      setPostContent(editorState);
       return 'handled';
     }
     return 'not-handled';
+  };
+
+  const keyBindingFunction = (event: React.KeyboardEvent<Element>) => {
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.shiftKey
+      && event.key === 'x'
+    ) {
+      return 'strikethrough';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.shiftKey
+      && event.key === 'o'
+    ) {
+      return 'ordered-list-item';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.shiftKey
+      && event.key === 'u'
+    ) {
+      return 'unordered-list-item';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.shiftKey
+      && event.key === ','
+    ) {
+      return 'code-block';
+    }
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.key === '1'
+    ) {
+      return 'header-one';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.key === '2'
+    ) {
+      return 'header-two';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.key === '3'
+    ) {
+      return 'header-three';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.key === 'u'
+    ) {
+      return 'underline';
+    }
+
+    if (
+      KeyBindingUtil.hasCommandModifier(event)
+      && event.key === 's'
+    ) {
+      return 'save';
+    }
+
+    return getDefaultKeyBinding(event);
   };
 
   const blockStyleClassMap = (contentBlock) => {
@@ -305,6 +413,18 @@ function HlogEditor() {
 
             }
         </div>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          transition={Slide}
+        />
       </S.Header>
       <AutosizeableTextarea
         placeholder="제목을 입력하세요."
@@ -313,17 +433,20 @@ function HlogEditor() {
         className="title-input"
       />
       <div className="RichEditor-root">
-        <BlockStyleControls
-          editorState={postContent}
-          onToggle={toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={postContent}
-          onToggle={toggleInlineStyle}
-        />
+        <S.ToolContainer>
+          <BlockStyleControls
+            editorState={postContent}
+            onToggle={toggleBlockType}
+          />
+          <InlineStyleControls
+            editorState={postContent}
+            onToggle={toggleInlineStyle}
+          />
+        </S.ToolContainer>
         <Editor
           editorState={postContent}
           handleKeyCommand={handleKeyCommand}
+          keyBindingFn={keyBindingFunction}
           onChange={setPostContent}
           blockStyleFn={blockStyleClassMap}
           placeholder="내용을 입력해주세요..."

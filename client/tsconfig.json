@@ -29,6 +29,6 @@
   ],
   "include": [
     "./src/**/*", 
-    "@type", "jest.setup.js", 
+    "@type"
   ],
 }

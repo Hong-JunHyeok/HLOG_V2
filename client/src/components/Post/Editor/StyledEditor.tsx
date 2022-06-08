@@ -5,15 +5,12 @@ import mediaQueryHelper from '@/styles/mediaHelper';
 const StyledEditor = {
   Container: styled.div`
   margin: 0 auto;
-  max-width: 1000px;
 
   .RichEditor-root {
     background: #fff;
-    border: 1px solid #ddd;
     font-size: 14px;
-    padding: 15px;
+    padding: 1rem;
     margin: 0 auto;
-    max-width: 1000px;
   }
 
   .RichEditor-editor {
@@ -54,9 +51,6 @@ const StyledEditor = {
     font-size: 14px;
     margin-bottom: 5px;
     user-select: none;
-    & > .RichEditor-styleButton {
-      margin: 1rem;
-    }
   }
 
   .block_controls {
@@ -70,8 +64,6 @@ const StyledEditor = {
 
   .inline_controls {
     display: inline-block;
-    ${mediaQueryHelper('medium')} {
-    }
   }
 
   .RichEditor-styleButton {
@@ -79,7 +71,12 @@ const StyledEditor = {
     cursor: pointer;
     margin-right: 16px;
     padding: 2px 0;
+    padding: 1rem;
     display: inline-block;
+    transition: ease-in .1s;
+    &:hover {
+      background-color: ${ColorSet['--greyOpacity100']}; 
+    }
   }
 
   .RichEditor-activeButton {
@@ -94,6 +91,8 @@ const StyledEditor = {
     resize: none;
     font-size: 48px;
     font-weight: bold;
+    padding: 0 1rem;
+    color: ${ColorSet['--greyOpacity800']};
 
     &::placeholder {
       font-size: 48px;
@@ -105,75 +104,64 @@ const StyledEditor = {
     background-color: ${ColorSet['--white']};
     width: 100%;
     height: 100%;
-    overflow-y: auto;
   }
 
   .DraftEditor-editorContainer,
   .public-DraftEditor-content {
-    height: 90vw;
     padding-top: 1rem;
-
-    ${mediaQueryHelper('medium')} {
-      height: 45vw;
-    }
-    ${mediaQueryHelper('large')} {
-      height: 28vw;
-    }
+    min-height: 50vh;
   }
   `,
 
   ToolContainer: styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  background-color: ${ColorSet['--white']};
-  border-bottom: 1px solid ${ColorSet['--greyOpacity200']};
-`,
-  ToolItem: styled.li`
-  border-radius: 5px;
-  margin: 0.4rem;
-  padding: 0.6rem;
-
-  cursor: pointer;
-  &:hover {
-    background-color: ${ColorSet['--greyOpacity300']}
-  }
-`,
-  Header: styled.div`
-  display: flex;
-    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
     background-color: ${ColorSet['--white']};
-    border-bottom: 1px solid ${ColorSet['--greyOpacity200']};
-    border-left: 1px solid ${ColorSet['--greyOpacity200']};
-    border-right: 1px solid ${ColorSet['--greyOpacity200']};
-    .exit {
-      padding: 0 1rem;
-      border-right: 1px solid ${ColorSet['--greyOpacity200']};
+  `,
+  ToolItem: styled.li`
+    border-radius: 5px;
+    margin: 0.4rem;
+    padding: 0.6rem;
+
+    cursor: pointer;
+    &:hover {
+      background-color: ${ColorSet['--greyOpacity300']}
     }
-
-    .utils {
+  `,
+  Header: styled.div`
       display: flex;
-      align-items: center;
-      margin-left: auto;
-      margin-right: 1rem;
+      height: 50px;
+      background-color: ${ColorSet['--white']};
+      box-shadow: rgb(0 0 0 / 10%) 0px 4px 12px;
+      .exit {
+        padding: 0 1rem;
+        border-right: 1px solid ${ColorSet['--greyOpacity200']};
+      }
 
-      .normal-button {
-        border: 1px solid ${ColorSet['--greyOpacity300']};
-        border-radius: 5px;
-        margin-left: 0.8rem;
-        padding: 0.5rem 1rem;
-        background-color: ${ColorSet['--white']};
-        &:hover {
-          filter: brightness(80%);
+      .utils {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 1rem;
+
+        .normal-button {
+          border: 1px solid ${ColorSet['--greyOpacity300']};
+          border-radius: 5px;
+          margin-left: 0.8rem;
+          padding: 0.5rem 1rem;
+          background-color: ${ColorSet['--white']};
+          &:hover {
+            filter: brightness(80%);
+          }
+        }
+
+        .post {
+          background-color: ${ColorSet['--primary']};
+          color: ${ColorSet['--white']};
+          margin-left: 1rem;
         }
       }
-
-      .post {
-        background-color: ${ColorSet['--primary']};
-        color: ${ColorSet['--white']};
-        margin-left: 1rem;
-      }
-    }
-`,
+  `,
 };
 
 export default StyledEditor;
