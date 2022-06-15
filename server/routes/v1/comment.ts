@@ -49,7 +49,6 @@ router.delete(
 
         
         if (me.id !== comment.user.id) {
-        console.log(comment);
         return setJsonResponser(res, {
           code: 401,
           message: "자기가 쓴 댓글만 삭제할 수 있습니다.",
