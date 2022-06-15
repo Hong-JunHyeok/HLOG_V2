@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import {
   useMemo,
 } from 'react';
@@ -59,7 +59,7 @@ const PostUtil = ({
     <StyledLike.Container>
       <StyledLike.Section>
         <StyledLike.Like onClick={handleClickLike}>
-          <FontAwesomeIcon icon={regular('thumbs-up')} className={isLiked ? 'liked' : ''} />
+          <FontAwesomeIcon icon={regular('heart')} className={isLiked ? 'liked' : ''} />
           {likeNumber}
         </StyledLike.Like>
       </StyledLike.Section>

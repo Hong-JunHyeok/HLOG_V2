@@ -21,10 +21,15 @@ const PostItem: React.FunctionComponent<PostType> = ({
   user: {
     username,
     profileUrl,
+    id: userId,
   },
 }) => {
   const navigate = useNavigate();
   const handlePushPostView = () => navigate(`/post/${id}`);
+  const handlePushUserProfile = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(`/user/${userId}`);
+  };
   const likeNumber = useMemo(() => like.length, [like]);
 
   return (
@@ -35,7 +40,7 @@ const PostItem: React.FunctionComponent<PostType> = ({
         <p>{stringCutter(postSummary, 150)}</p>
       </S.Content>
       <S.Meta>
-        <S.ProfileContainer>
+        <S.ProfileContainer onClick={handlePushUserProfile}>
           {profileUrl
             ? <S.Figure profileUrl={startWithURL(profileUrl)} />
             : <DefaultProfile />}

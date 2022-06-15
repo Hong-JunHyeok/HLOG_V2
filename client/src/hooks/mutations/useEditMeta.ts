@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
+import { MY_INFO_QUERY_KEY } from '@/constants/queries';
 import useInterceptedAxios from '../useInterceptedAxios';
 
 const useEditMeta = () => {
@@ -14,10 +15,7 @@ const useEditMeta = () => {
 
   const { mutate } = useMutation(updateMeta, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['my_info']);
-    },
-    onError: (error) => {
-      console.log(error);
+      queryClient.invalidateQueries([MY_INFO_QUERY_KEY]);
     },
   });
 

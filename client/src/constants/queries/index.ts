@@ -1,0 +1,9 @@
+export const MY_INFO_QUERY_KEY = 'my_info' as const;
+export const USER_INFO_QUERY_KEY = 'user_info' as const;
+export const USER_POSTS_QUERY_KEY = 'user_posts' as const;
+export const COMMENT_QUERY_KEY = 'comment' as const;
+export const REPLY_QUERY_KEY = 'reply' as const;
+export const POST_QUERY_KEY = 'post' as const;
+export const POPULAR_POSTS_QUERY_KEY = 'popular_posts' as const;
+export const RECENT_POSTS_QUERY_KEY = 'recent_posts' as const;
+export const SEARCH_QUERY_KEY = 'search' as const;

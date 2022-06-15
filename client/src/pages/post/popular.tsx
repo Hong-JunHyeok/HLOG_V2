@@ -1,43 +1,23 @@
-import { useCallback, useMemo } from 'react';
+import { Suspense } from 'react';
 import PageLayout from '@/components/Common/PageLayout';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import HomeTab from '@/components/Common/HomeTab';
-import usePopularPostInfinite from '@/hooks/queries/usePopularPostInfinite';
-import PostList from '@/components/Post/PostList';
-import useIntersection from '@/hooks/useIntersection';
+import PopularPostList from '@/components/Post/PostList/PopularPostList';
+import { PostFallbackLoader } from '@/components/Common/Loader/FallbackLoader';
 
-const PopularPage = () => {
-  const { fetchNextPage, hasNextPage, data } = usePopularPostInfinite();
-  const mergePosts = useMemo(() => data.pages.flatMap((page) => page.result), [data.pages]);
+const PopularPage = () => (
+  <>
+    <SEOHelmet
+      title="HLOG | 인기 게시글"
+    />
+    <PageLayout>
+      <HomeTab />
 
-  const onIntersect = useCallback(async (
-    entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver,
-  ) => {
-    const entry = entries[0];
-    if (entry.isIntersecting) {
-      observer.unobserve(entry.target);
-      if (hasNextPage) {
-        await fetchNextPage();
-      }
-      observer.observe(entry.target);
-    }
-  }, [fetchNextPage, hasNextPage]);
-
-  const target = useIntersection(onIntersect);
-
-  return (
-    <>
-      <SEOHelmet
-        title="HLOG | 인기 게시글"
-      />
-      <PageLayout>
-        <HomeTab />
-        <PostList posts={mergePosts} />
-        <div ref={target}>rkawls</div>
-      </PageLayout>
-    </>
-  );
-};
+      <Suspense fallback={<PostFallbackLoader />}>
+        <PopularPostList />
+      </Suspense>
+    </PageLayout>
+  </>
+);
 
 export default PopularPage;

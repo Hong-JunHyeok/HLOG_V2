@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from 'react-query';
 import customAxios from '@/utils/customAxios';
+import { RECENT_POSTS_QUERY_KEY } from '@/constants/queries';
 
 const useRecentPostInfinite = () => {
   const fetchPost = async ({ pageParam = 1 }) => {
@@ -13,7 +14,7 @@ const useRecentPostInfinite = () => {
     };
   };
 
-  const query = useInfiniteQuery(['recent_posts'], fetchPost, {
+  const query = useInfiniteQuery([RECENT_POSTS_QUERY_KEY], fetchPost, {
     getNextPageParam: (lastPage) => {
       if (!lastPage.isLast) return lastPage.nextPage;
       return undefined;

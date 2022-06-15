@@ -1,7 +1,7 @@
 import React from 'react';
 import S from './StyledFallbackLoader';
 
-const SkeletonPost = () => (
+export const SkeletonPost = () => (
   <S.PostSkeletonView>
     <S.Thumbnail />
     <S.Content>
