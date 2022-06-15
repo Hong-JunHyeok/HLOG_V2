@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import S from './StyledJoinForm';
 import useJoin from '@/hooks/useJoin';
-import useModal from '@/hooks/useModal';
-import ErrorModal from '@/components/Modal/Error/ErrorModal';
+import useModals from '@/hooks/useModals';
 import useAuth from '@/hooks/useAuth';
+import { AUTH_ERROR_MODAL_KEY } from '@/constants/modals';
+import ErrorModal from '@/components/Modal/Error/ErrorModal';
 
 interface JoinFormType {
   email: string;
@@ -19,8 +19,7 @@ const JoinForm = () => {
     register, handleSubmit, formState: { errors },
     getValues,
   } = useForm({ mode: 'onChange' });
-  const { openModal } = useModal();
-  const [joinErrorMessage, setJoinErrorMessage] = useState('');
+  const { openModal } = useModals();
   const { state: { isAuthenticated } } = useAuth();
   const join = useJoin();
   const navigate = useNavigate();
@@ -32,8 +31,10 @@ const JoinForm = () => {
         replace: true,
       });
     } catch (error) {
-      openModal();
-      setJoinErrorMessage(error.response.data.message);
+      openModal(
+        AUTH_ERROR_MODAL_KEY,
+        () => <ErrorModal errorTitle={error.response.data.message} />,
+      );
     }
   };
 
@@ -131,9 +132,7 @@ const JoinForm = () => {
           <span className="info_text">HLOG에서 양질의 포스트들을 확인해보세요.</span>
         </S.Info>
       </S.Container>
-      <ErrorModal
-        errorTitle={joinErrorMessage}
-      />
+
     </>
   );
 };

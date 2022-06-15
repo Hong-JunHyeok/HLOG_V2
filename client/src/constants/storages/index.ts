@@ -1,0 +1,2 @@
+export const HLOG_ACCESS_TOKEN_KEY = 'HLOG_ACCESS_TOKEN_KEY' as const;
+export const HLOG_REFRESH_TOKEN_KEY = 'HLOG_REFRESH_TOKEN_KEY' as const;

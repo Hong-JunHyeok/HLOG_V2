@@ -11,7 +11,8 @@ import { PostType } from '@/@types/post';
 import { UserType } from '@/@types/user';
 import usePostUnlike from '@/hooks/mutations/usePostUnlike';
 import useAuth from '@/hooks/useAuth';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
+import LoginRequireModal from '@/components/Modal/Auth/LoginRequireModal';
 
 interface PostUtilProps {
   post: PostType;
@@ -22,7 +23,7 @@ const PostUtil = ({
   post,
   user,
 }: PostUtilProps) => {
-  const { openModal } = useModal();
+  const { openModal } = useModals();
   const { state: { isAuthenticated } } = useAuth();
   const likeNumber = useMemo(() => post.like.length, [post.like]);
   const isLiked = useMemo(
@@ -35,7 +36,7 @@ const PostUtil = ({
   const handleClickLike = (event: React.MouseEvent) => {
     event.preventDefault();
     if (!isAuthenticated) {
-      openModal();
+      openModal('login_require', LoginRequireModal);
       return;
     }
 

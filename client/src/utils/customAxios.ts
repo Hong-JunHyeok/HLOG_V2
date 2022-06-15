@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, HeadersDefaults } from 'axios';
+import { HLOG_ACCESS_TOKEN_KEY } from '@/constants/storages';
 
 const AxiosConfigure: AxiosRequestConfig = {
   baseURL: process.env.API_SERVER_URL,
@@ -14,12 +15,12 @@ interface CommonHeaderProperties extends HeadersDefaults {
 
 customAxios.interceptors.request.use((config) => {
   // 모든 Request Header에 Access토큰을 넣어주는 역할
-  const hlogToken = localStorage.getItem('hlog_access_token');
-  // TODO: cookie에 refresh토큰이 있다면 accessToken 재발급
+  const hlogToken = localStorage.getItem(HLOG_ACCESS_TOKEN_KEY);
 
   if (!config.headers.authorization && hlogToken) {
     config.headers.authorization = JSON.parse(hlogToken);
   }
+
   return config;
 }, (error) => error);
 

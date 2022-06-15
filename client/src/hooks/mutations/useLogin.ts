@@ -3,6 +3,7 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import customAxios from '@/utils/customAxios';
 import useAuth from '../useAuth';
 import { MY_INFO_QUERY_KEY } from '@/constants/queries';
+import { HLOG_ACCESS_TOKEN_KEY } from '@/constants/storages';
 
 interface LoginProps {
   email: string;
@@ -12,7 +13,7 @@ interface LoginProps {
 const useLogin = () => {
   const { loginDispatch } = useAuth();
   const queryClient = useQueryClient();
-  const { setValue } = useLocalStorage('hlog_access_token', '');
+  const { setValue } = useLocalStorage(HLOG_ACCESS_TOKEN_KEY, '');
 
   const login = (data: LoginProps) => customAxios.post('/auth/login', data);
 

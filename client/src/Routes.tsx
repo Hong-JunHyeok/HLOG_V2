@@ -4,6 +4,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Pages from '@/pages';
+import ModalsProvider from './components/Modal/ModalsProvider';
 
 function RouteContainer() {
   return (
@@ -26,7 +27,9 @@ function RouteContainer() {
           path="*"
           element={<>Not Found</>}
         />
+
       </Routes>
+      <ModalsProvider />
     </BrowserRouter>
   );
 }

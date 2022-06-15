@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import S from './StyledLoginForm';
 import useLogin from '@/hooks/mutations/useLogin';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
+import { AUTH_ERROR_MODAL_KEY } from '@/constants/modals';
 import ErrorModal from '@/components/Modal/Error/ErrorModal';
 
 interface LoginFormType {
@@ -18,33 +18,33 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const login = useLogin();
-  const [loginErrorMessage, setLoginErrorMessage] = useState('');
-  const {
-    openModal: openErrorModal,
-  } = useModal();
+  const { openModal } = useModals();
 
-  const handlePushPrevPage = () => navigate(-1);
+  const handlePushMainPage = () => navigate('/', {
+    replace: true,
+  });
 
   const onSubmit = async (data: LoginFormType) => {
     const { email, password } = data;
 
-    login({
-      email,
-      password,
-    })
-      .then(handlePushPrevPage)
-      .catch((error) => {
-        setLoginErrorMessage(error.response.data.message);
-        openErrorModal();
+    try {
+      await login({
+        email,
+        password,
       });
+      handlePushMainPage();
+    } catch (error) {
+      openModal(
+        AUTH_ERROR_MODAL_KEY,
+        () => <ErrorModal errorTitle={error.response.data.message} />,
+      );
+    }
   };
-
-  const onError = (error) => new Error(error);
 
   return (
     <>
       <S.Container>
-        <S.Form onSubmit={handleSubmit(onSubmit, onError)}>
+        <S.Form onSubmit={handleSubmit(onSubmit)}>
           <div className="form_head">
             <h1>로그인</h1>
             <span>계정에 접근하려면 정보를 입력하세요.</span>
@@ -86,15 +86,12 @@ const LoginForm = () => {
           <button className="login_btn" type="submit">로그인</button>
 
           <Link to="/join" className="not_a_user">회원이 아니신가요?</Link>
-          <Link to="/forgot" className="forgot_password">비밀번호를 잊으셨나요?</Link>
+          {/* <Link to="/forgot" className="forgot_password">비밀번호를 잊으셨나요?</Link> */}
         </S.Form>
         <S.Info>
           <span className="info_text">HLOG에서 글을 작성해보세요.</span>
         </S.Info>
       </S.Container>
-      <ErrorModal
-        errorTitle={loginErrorMessage}
-      />
     </>
   );
 };

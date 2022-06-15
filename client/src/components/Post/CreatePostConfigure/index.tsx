@@ -2,18 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { convertToHTML } from 'draft-convert';
 import AutosizeableTextarea from '@/components/Common/AutosizeableTextarea';
 import StyledCreatePostConfigure from './StyledCreatePostConfigure';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
 import useDragAndDrop from '@/hooks/useDragAndDrop';
 import usePublishPost from '@/hooks/mutations/usePublishPost';
 import useEditThumbnail from '@/hooks/mutations/useEditThumbnail';
 import useEditor from '@/hooks/useEditor';
+import { POST_CONFIGURE_MODAL_KEY } from '@/constants/modals';
 
 const CreatePostConfigure = () => {
   const [thumbnail, setThumbnail] = useState<File>(null);
   const [prevThumbnail, setPrevThumbnail] = useState<string | null>('');
   const [summary, setSummary] = useState('');
-  const { closeModal } = useModal();
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
+  const { closeModal } = useModals();
 
   const isDragging = useDragAndDrop({
     dragRef: thumbnailInputRef,
@@ -28,6 +29,15 @@ const CreatePostConfigure = () => {
   const {
     postTitle, postContent,
   } = useEditor();
+
+  const handleFileSelectButtonClick = () => {
+    // TODO: 썸네일 드레그, 클릭 지원하기
+    thumbnailInputRef.current.click();
+  };
+
+  const handleCancel = () => {
+    closeModal(POST_CONFIGURE_MODAL_KEY);
+  };
 
   const handlePublishPost = async () => {
     const contentToHtml = convertToHTML({
@@ -73,7 +83,7 @@ const CreatePostConfigure = () => {
             ? <img className="prev_thumbnail" src={prevThumbnail} alt="" />
             : (
               <div className={`upload_thumbnail ${isDragging && 'dragging'}`} ref={thumbnailInputRef}>
-                <button type="button">썸네일 업로드</button>
+                <button type="button" onClick={handleFileSelectButtonClick}>썸네일 업로드</button>
                 <input type="file" />
               </div>
             )
@@ -94,7 +104,7 @@ const CreatePostConfigure = () => {
       </StyledCreatePostConfigure.PostSummarySecyion>
 
       <StyledCreatePostConfigure.PublishSection>
-        <button type="button" className="button" onClick={closeModal}>취소</button>
+        <button type="button" className="button" onClick={handleCancel}>취소</button>
         <button type="button" className="button primary" onClick={handlePublishPost}>발행하기</button>
       </StyledCreatePostConfigure.PublishSection>
 

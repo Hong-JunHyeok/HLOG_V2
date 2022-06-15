@@ -5,7 +5,8 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import StyledCommentInput from './StyledCommentInput';
 import useCreateComment from '@/hooks/mutations/useCreateComment';
 import useAuth from '@/hooks/useAuth';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
+import LoginRequireModal from '@/components/Modal/Auth/LoginRequireModal';
 
 interface CommentInputProps {
   postId: number
@@ -17,13 +18,13 @@ const CommentInput = ({
   const [comment, setComment] = useState('');
   const createComment = useCreateComment(postId);
   const { state: { isAuthenticated } } = useAuth();
-  const { openModal } = useModal();
+  const { openModal } = useModals();
 
   const handleCreateComment = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!isAuthenticated) {
-      openModal();
+      openModal('login_require', LoginRequireModal);
       return;
     }
 
