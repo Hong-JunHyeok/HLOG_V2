@@ -147,7 +147,7 @@ router.post(
       const accessToken = Token.createAccessToken(existUser.id);
       const refreshToken = Token.createRefreshToken(existUser.id);
 
-      res.cookie('hlogRefreshToken', refreshToken, {
+      res.cookie('HLOG_REFRESH_TOKEN', refreshToken, {
         httpOnly: true,
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
       });

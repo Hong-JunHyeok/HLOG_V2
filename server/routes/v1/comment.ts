@@ -3,7 +3,6 @@ import { getRepository } from "typeorm";
 import { Comment } from "../../entity/Comment";
 import { Post } from "../../entity/Post";
 import { User } from "../../entity/User";
-import { Like } from "../../entity/Like";
 import { accessTokenValidator } from "../../middlewares/tokenValidator";
 import setJsonResponser from "../../utils/setJsonResponser";
 
@@ -49,7 +48,6 @@ router.delete(
 
         
         if (me.id !== comment.user.id) {
-        console.log(comment);
         return setJsonResponser(res, {
           code: 401,
           message: "자기가 쓴 댓글만 삭제할 수 있습니다.",

@@ -585,7 +585,6 @@ router.get("/:postId", async (req: Request, res: Response, next: NextFunction) =
       .getOne();
 
     if(!req.cookies[postId]) {
-      console.log(req.headers['x-forwarded-for']);
       const userIp = req.ip;
 
       res.cookie(String(postId), userIp, {
