@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import customAxios from '@/utils/customAxios';
+import { COMMENT_QUERY_KEY } from '@/constants/queries';
 
 const useEditComment = (commentId: number) => {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ const useEditComment = (commentId: number) => {
 
   const { mutateAsync } = useMutation(editComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['comment', commentId]);
+      queryClient.invalidateQueries([COMMENT_QUERY_KEY, commentId]);
     },
   });
 

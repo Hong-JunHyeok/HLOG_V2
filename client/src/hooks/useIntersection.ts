@@ -1,16 +1,26 @@
 import { useRef, useEffect } from 'react';
 
 const useIntersection = (
-  callback: IntersectionObserverCallback,
-  options?: IntersectionObserverInit,
+  callback: () => void,
+  options?: {
+    setting?: IntersectionObserverInit
+    disable?: boolean
+  },
 ) => {
   const target = useRef(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(callback, options);
+    const observer = new IntersectionObserver((
+      entries,
+    ) => {
+      entries.forEach((entry) => entry.isIntersecting && callback());
+    }, options?.setting);
     observer.observe(target.current);
+
+    if (options?.disable) { observer.unobserve(target.current); }
+
     return () => observer.disconnect();
-  }, [callback, options]);
+  }, [target, callback, options]);
 
   return target;
 };

@@ -44,8 +44,8 @@ router.get(
         ])
         .leftJoin("replies.user", "user")
         .where("replies.commentId = :id", { id: commentId })
-        .orderBy("replies.createdAt", "DESC")
-        .orderBy("replies.updatedAt", "DESC")
+        .orderBy("replies.createdAt", "ASC")
+        .addOrderBy("replies.updatedAt", "ASC")
         .getMany();
 
       setJsonResponser(res, {

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import customAxios from '@/utils/customAxios';
 import useAuth from '../useAuth';
+import { MY_INFO_QUERY_KEY } from '@/constants/queries';
 
 interface LoginProps {
   email: string;
@@ -19,7 +20,7 @@ const useLogin = () => {
     onSuccess: (response) => {
       setValue(response.data.payload.accessToken);
       loginDispatch();
-      queryClient.invalidateQueries(['my_info']);
+      queryClient.invalidateQueries([MY_INFO_QUERY_KEY]);
     },
   });
 

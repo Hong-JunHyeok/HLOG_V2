@@ -1,5 +1,3 @@
-import { useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
 import { Suspense, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -32,8 +30,6 @@ const CommentItem = ({
     commentContent,
   } = comment;
   const { data: myData } = useMyInfo();
-  const { postId } = useParams<{ postId: string }>();
-  const queryClient = useQueryClient();
 
   const [editCommentValue, changeEditCommentValue, setEditCommentValue] = useInput(commentContent);
   const editComment = useEditComment(comment.id);
@@ -68,13 +64,12 @@ const CommentItem = ({
 
   const handleEditComment = async () => {
     await editComment(editCommentValue);
-    queryClient.invalidateQueries(['comment', +postId]);
     handleUnEdit();
   };
 
   const handleDeleteComment = async () => {
     await deleteComment();
-    queryClient.invalidateQueries(['comment', +postId]);
+    alert('성공적으로 삭제되었습니다.');
   };
 
   return (

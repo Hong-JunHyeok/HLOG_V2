@@ -3,6 +3,7 @@ import { UserType } from '@/@types/user';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import useAuth from '../useAuth';
 import customAxios from '@/utils/customAxios';
+import { MY_INFO_QUERY_KEY } from '@/constants/queries';
 
 interface QueryResult {
   user: UserType;
@@ -13,15 +14,18 @@ export default function useMyInfo(): UseQueryResult<QueryResult> {
     storedValue: hlogToken,
   } = useLocalStorage('hlog_access_token', '');
   const getMyInfo = () => customAxios.get('/user/me');
-  const { state: { isAuthenticated }, loginDispatch } = useAuth();
+  const { loginDispatch, logoutDispatch } = useAuth();
 
   return useQuery(
-    ['my_info'],
+    [MY_INFO_QUERY_KEY],
     getMyInfo,
     {
-      enabled: !!hlogToken || isAuthenticated,
+      enabled: !!hlogToken,
       onSuccess: () => {
         loginDispatch();
+      },
+      onError: () => {
+        logoutDispatch();
       },
     },
   );

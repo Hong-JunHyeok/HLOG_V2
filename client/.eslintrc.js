@@ -21,7 +21,8 @@ module.exports = {
     "jsx-a11y/label-has-associated-control": "off",
     "no-unsafe-optional-chaining": "off",
     "react/require-default-props": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react/jsx-no-useless-fragment": "off"
   },
   plugins: ["@typescript-eslint"],
   extends: [
