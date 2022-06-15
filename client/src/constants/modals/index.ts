@@ -1,0 +1,4 @@
+export const AUTH_ERROR_MODAL_KEY = 'AUTH_ERROR_MODAL_KEY' as const;
+export const LOGIN_REQUIRE_MODAL_KEY = 'LOGIN_REQUIRE_MODAL_KEY' as const;
+export const HELP_MODAL_KEY = 'HELP_MODAL_KEY' as const;
+export const POST_CONFIGURE_MODAL_KEY = 'POST_CONFIGURE_MODAL_KEY' as const;

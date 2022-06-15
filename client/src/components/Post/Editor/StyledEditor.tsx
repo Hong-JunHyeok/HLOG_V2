@@ -108,7 +108,7 @@ const StyledEditor = {
 
   .DraftEditor-editorContainer,
   .public-DraftEditor-content {
-    padding-top: 1rem;
+
     min-height: 50vh;
   }
   `,

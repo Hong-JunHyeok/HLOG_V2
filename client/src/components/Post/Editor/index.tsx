@@ -18,8 +18,11 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import useSearchParam from '@/hooks/useSearchParam';
 import usePost from '@/hooks/queries/usePost';
 import useEditPost from '@/hooks/mutations/useEditPost';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
 import useEditor from '@/hooks/useEditor';
+import HelpModal from '@/components/Modal/Post/HelpModal';
+import CreatePostConfigure from '../CreatePostConfigure';
+import { HELP_MODAL_KEY, POST_CONFIGURE_MODAL_KEY } from '../../../constants/modals/index';
 
 interface StyleButtonProps {
   active: boolean;
@@ -79,7 +82,7 @@ const BLOCK_TYPES = [
     ),
     style: 'header-three',
   },
-  { label: 'Blockquote', style: 'blockquote' },
+  { label: <FontAwesomeIcon icon={solid('quote-left')} />, style: 'blockquote' },
   { label: <FontAwesomeIcon icon={solid('list-ul')} />, style: 'unordered-list-item' },
   { label: <FontAwesomeIcon icon={solid('list-ol')} />, style: 'ordered-list-item' },
   { label: <FontAwesomeIcon icon={solid('code')} />, style: 'code-block' },
@@ -157,7 +160,6 @@ function HlogEditor() {
   }, []);
 
   const { data } = usePost(+searchData?.postId, isEdit);
-  const { openModal: openPostConfigureModal } = useModal();
 
   const {
     storedValue: savedEditorTitle,
@@ -168,6 +170,7 @@ function HlogEditor() {
     storedValue: savedEditorContent,
     setValue: setSavedEditorContent,
   } = useLocalStorage('hlog_editor_content', '');
+  const { openModal } = useModals();
 
   const handleExit = () => navigate(-1);
 
@@ -352,10 +355,16 @@ function HlogEditor() {
 
   const createPost = () => {
     if (!postTitle || !postContent.getCurrentContent().hasText()) {
-      return;
+      toast.warn('빈칸이 존재합니다.', {
+        theme: 'colored',
+      });
     }
 
-    openPostConfigureModal();
+    openModal(POST_CONFIGURE_MODAL_KEY, CreatePostConfigure);
+  };
+
+  const handleViewHelp = () => {
+    openModal(HELP_MODAL_KEY, HelpModal);
   };
 
   useEffect(() => {
@@ -395,65 +404,69 @@ function HlogEditor() {
   }, [data, isEdit, setPostContent, setPostTitle]);
 
   return (
-    <S.Container>
-      <S.Header>
-        <button type="button" className="exit" onClick={handleExit}>나가기</button>
-        <div className="utils">
-          {
+    <>
+      <S.Container>
+        <S.Header>
+          <button type="button" className="exit" onClick={handleExit}>나가기</button>
+          <div className="utils">
+            {
               isEdit
                 ? (
                   <button type="button" className="normal-button post" onClick={editPost}>포스트</button>
                 )
                 : (
                   <>
+                    <button type="button" className="normal-button" onClick={handleViewHelp}>
+                      <FontAwesomeIcon icon={solid('circle-info')} />
+                    </button>
                     <button type="button" className="normal-button" onClick={handleSaveContent}>임시저장</button>
                     <button type="button" className="normal-button post" onClick={createPost}>포스트</button>
                   </>
                 )
-
             }
+          </div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            transition={Slide}
+          />
+        </S.Header>
+        <AutosizeableTextarea
+          placeholder="제목을 입력하세요."
+          value={postTitle}
+          onChange={(e) => setPostTitle(e.target.value)}
+          className="title-input"
+        />
+        <div className="RichEditor-root">
+          <S.ToolContainer>
+            <BlockStyleControls
+              editorState={postContent}
+              onToggle={toggleBlockType}
+            />
+            <InlineStyleControls
+              editorState={postContent}
+              onToggle={toggleInlineStyle}
+            />
+          </S.ToolContainer>
+          <Editor
+            editorState={postContent}
+            handleKeyCommand={handleKeyCommand}
+            keyBindingFn={keyBindingFunction}
+            onChange={setPostContent}
+            blockStyleFn={blockStyleClassMap}
+            placeholder="내용을 입력해주세요..."
+            spellCheck
+          />
         </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          transition={Slide}
-        />
-      </S.Header>
-      <AutosizeableTextarea
-        placeholder="제목을 입력하세요."
-        value={postTitle}
-        onChange={(e) => setPostTitle(e.target.value)}
-        className="title-input"
-      />
-      <div className="RichEditor-root">
-        <S.ToolContainer>
-          <BlockStyleControls
-            editorState={postContent}
-            onToggle={toggleBlockType}
-          />
-          <InlineStyleControls
-            editorState={postContent}
-            onToggle={toggleInlineStyle}
-          />
-        </S.ToolContainer>
-        <Editor
-          editorState={postContent}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={keyBindingFunction}
-          onChange={setPostContent}
-          blockStyleFn={blockStyleClassMap}
-          placeholder="내용을 입력해주세요..."
-          spellCheck
-        />
-      </div>
-    </S.Container>
+      </S.Container>
+    </>
   );
 }
 

@@ -4,7 +4,7 @@ import { POPULAR_POSTS_QUERY_KEY } from '@/constants/queries';
 
 const usePopularPostInfinite = () => {
   const fetchPost = async ({ pageParam = 1 }) => {
-    const result = await customAxios.get(`/post/popular?page=${pageParam}&size=5`);
+    const result = await customAxios.get(`/post/popular?page=${pageParam}&size=10`);
 
     const { posts, isLast } = result.data.payload;
     return {

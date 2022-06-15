@@ -4,7 +4,7 @@ import { RECENT_POSTS_QUERY_KEY } from '@/constants/queries';
 
 const useRecentPostInfinite = () => {
   const fetchPost = async ({ pageParam = 1 }) => {
-    const result = await customAxios.get(`/post/recent?page=${pageParam}&size=5`);
+    const result = await customAxios.get(`/post/recent?page=${pageParam}&size=10`);
 
     const { posts, isLast } = result.data.payload;
     return {

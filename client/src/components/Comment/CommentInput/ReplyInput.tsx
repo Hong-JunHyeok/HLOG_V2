@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import StyledCommentInput from './StyledCommentInput';
 import useCreateReply from '@/hooks/mutations/useCreateReply';
 import useAuth from '@/hooks/useAuth';
-import useModal from '@/hooks/useModal';
+import useModals from '@/hooks/useModals';
+import LoginRequireModal from '@/components/Modal/Auth/LoginRequireModal';
 
 interface ReplyInputProps {
   commentId: number;
@@ -16,13 +17,13 @@ const ReplyInput = ({
   const [reply, setReply] = useState('');
   const createReply = useCreateReply();
   const { state: { isAuthenticated } } = useAuth();
-  const { openModal } = useModal();
+  const { openModal } = useModals();
 
   const handleCreateReply = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!isAuthenticated) {
-      openModal();
+      openModal('login_require', LoginRequireModal);
       return;
     }
 
