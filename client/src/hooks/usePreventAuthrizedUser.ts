@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import useMyInfo from './queries/useMyInfo';
 import useAuth from './useAuth';
 
-const usePreventNormalUser = (redirectLocation = '/') => {
+const usePreventAuthrizedUser = (redirectLocation = '/') => {
   const navigate = useNavigate();
   const { data } = useMyInfo();
   const { state: { isAuthenticated } } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated || !data) {
+    if (isAuthenticated || data) {
       navigate(redirectLocation, {
         replace: true,
       });
@@ -17,4 +17,4 @@ const usePreventNormalUser = (redirectLocation = '/') => {
   }, [data, isAuthenticated, navigate, redirectLocation]);
 };
 
-export default usePreventNormalUser;
+export default usePreventAuthrizedUser;

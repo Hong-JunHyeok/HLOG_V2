@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import Editor from '@/components/Post/Editor';
 import ColorSet from '@/styles/colorSet';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
-import useScroller from '@/hooks/useScroller';
-// import CreatePostConfigure from '@/components/Post/CreatePostConfigure';
+import useScrollEffect from '@/hooks/useScrollEffect';
+import usePreventNormalUser from '@/hooks/usePreventNormalUser';
 
 const StyledWritePostPage = {
   Container: styled.section`
@@ -19,12 +19,8 @@ const StyledWritePostPage = {
 };
 
 const WritePostPage = () => {
-  // const { isOpen } = useModal();
-  const { scrollTop } = useScroller();
-
-  useEffect(() => {
-    scrollTop();
-  }, [scrollTop]);
+  useScrollEffect('TOP');
+  usePreventNormalUser();
 
   return (
     <Suspense>
@@ -38,7 +34,6 @@ const WritePostPage = () => {
           </ErrorBoundary>
         </StyledWritePostPage.EditorContainer>
       </StyledWritePostPage.Container>
-      {/* <CreatePostConfigure /> */}
     </Suspense>
   );
 };

@@ -1,5 +1,5 @@
-import { Suspense, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { Suspense } from 'react';
 import Footer from '@/components/Common/Footer';
 import Header from '@/components/Common/Header';
 import mediaQueryHelper from '@/styles/mediaHelper';
@@ -25,11 +25,7 @@ const StyledSettingPage = {
 };
 
 function SettingPage() {
-  const redirector = usePreventNormalUser();
-
-  useEffect(() => {
-    redirector();
-  }, [redirector]);
+  usePreventNormalUser();
 
   return (
     <>

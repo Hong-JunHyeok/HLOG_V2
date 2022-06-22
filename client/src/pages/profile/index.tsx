@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import styled from '@emotion/styled';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
@@ -6,8 +6,8 @@ import UserLog from '@/components/Profile/UserLog';
 
 import mediaQueryHelper from '@/styles/mediaHelper';
 import UserPost from '@/components/Profile/UserPost';
-import useScroller from '@/hooks/useScroller';
 import ErrorBoundary from '@/components/Common/ErrorBoundary';
+import useScrollEffect from '@/hooks/useScrollEffect';
 
 const StyledProfilePage = {
   ProfileContainer: styled.main`
@@ -28,25 +28,21 @@ const StyledProfilePage = {
 };
 
 const ProfilePage = () => {
-  const { scrollTop } = useScroller();
-
-  useEffect(() => {
-    scrollTop();
-  });
+  useScrollEffect('TOP');
 
   return (
-    <Suspense>
+    <>
       <Header />
       <StyledProfilePage.ProfileContainer>
         <ErrorBoundary fallback={<>로딩중</>}>
-          <>
+          <Suspense>
             <UserLog />
             <UserPost />
-          </>
+          </Suspense>
         </ErrorBoundary>
       </StyledProfilePage.ProfileContainer>
       <Footer />
-    </Suspense>
+    </>
   );
 };
 

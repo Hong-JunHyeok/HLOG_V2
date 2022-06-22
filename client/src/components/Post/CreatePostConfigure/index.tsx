@@ -35,7 +35,7 @@ const CreatePostConfigure = () => {
     thumbnailInputRef.current.click();
   };
 
-  const handleCancel = () => {
+  const handleCloseConfigureModal = () => {
     closeModal(POST_CONFIGURE_MODAL_KEY);
   };
 
@@ -63,6 +63,9 @@ const CreatePostConfigure = () => {
         postId,
         thumbnail: formedThumbnail,
       });
+      handleCloseConfigureModal();
+    } else {
+      handleCloseConfigureModal();
     }
   };
 
@@ -104,7 +107,7 @@ const CreatePostConfigure = () => {
       </StyledCreatePostConfigure.PostSummarySecyion>
 
       <StyledCreatePostConfigure.PublishSection>
-        <button type="button" className="button" onClick={handleCancel}>취소</button>
+        <button type="button" className="button" onClick={handleCloseConfigureModal}>취소</button>
         <button type="button" className="button primary" onClick={handlePublishPost}>발행하기</button>
       </StyledCreatePostConfigure.PublishSection>
 

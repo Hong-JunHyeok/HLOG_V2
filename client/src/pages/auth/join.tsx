@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import SEOHelmet from '@/components/Common/SEOHelmet';
 import JoinForm from '../../components/Auth/JoinForm';
+import usePreventAuthrizedUser from '@/hooks/usePreventAuthrizedUser';
 
 const StyledJoinPage = {
   Container: styled.main`
@@ -14,6 +15,7 @@ const StyledJoinPage = {
 };
 
 export default function Join() {
+  usePreventAuthrizedUser();
   return (
     <>
       <SEOHelmet

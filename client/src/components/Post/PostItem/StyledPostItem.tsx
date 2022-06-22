@@ -38,12 +38,12 @@ const StyledPostItem = {
     flex-grow: 1;
     background-color: white;
     padding: 1em;
-
     h1 {
       font-size: 18px;
       font-weight: bold;
     }
     p {
+      overflow-wrap: anywhere;
       font-weight: lighter;
     }
   `,

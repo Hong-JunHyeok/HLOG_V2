@@ -25,6 +25,7 @@ const useInput = (
 
       if (options) {
         if (options.logging) {
+          // eslint-disable-next-line
           console.dir(value);
         }
         if (options.onlyEng) {

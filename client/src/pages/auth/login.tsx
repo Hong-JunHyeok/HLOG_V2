@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import LoginForm from '@/components/Auth/LoginForm';
 
 import SEOHelmet from '@/components/Common/SEOHelmet';
+import usePreventAuthrizedUser from '@/hooks/usePreventAuthrizedUser';
 
 const StyledLoginPage = {
   Container: styled.main`
@@ -15,6 +16,7 @@ const StyledLoginPage = {
 };
 
 export default function Login() {
+  usePreventAuthrizedUser();
   return (
     <>
       <SEOHelmet

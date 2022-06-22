@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { HelmetProvider } from 'react-helmet-async';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 
 import { AxiosResponse } from 'axios';
@@ -23,13 +23,13 @@ const store = createStore(rootReducer);
 const App = () => (
   <StrictMode>
     <HelmetProvider>
-      <Provider store={store}>
+      <ReduxProvider store={store}>
         <QueryClientProvider client={queryClient}>
           <ResetStyle />
           <RouteContainer />
           <ReactQueryDevtools />
         </QueryClientProvider>
-      </Provider>
+      </ReduxProvider>
     </HelmetProvider>
   </StrictMode>
 );

@@ -15,7 +15,7 @@ const SearchPage = () => (
   <StyledSearchPage.Contaienr>
     <SearchInput />
     <ErrorBoundary fallback={<PageError />}>
-      <Suspense>
+      <Suspense fallback={<>Loading</>}>
         <SearchList />
       </Suspense>
     </ErrorBoundary>

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import ColorSet from '@/styles/colorSet';
-import mediaQueryHelper from '@/styles/mediaHelper'
+import mediaQueryHelper from '@/styles/mediaHelper';
 
 const StyledMenuList = {
   MenuContainer: styled.ul`
@@ -43,6 +43,6 @@ const StyledMenuList = {
       min-width: 400px;
     }
   `,
-}
+};
 
 export default StyledMenuList;
